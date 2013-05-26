@@ -13,7 +13,7 @@ set clipboard=unnamed
 set title "編集中のファイル名をステータスラインに表示
 set showcmd "入力中のコマンドを右下に表示
 set ruler "座標を右下に表示
-set scrolloff=5 "スクロール時の余白確保
+set scrolloff=3 "スクロール時の余白確保
 set textwidth=0 "自動折り返しをしない
 
 "---------------------------
@@ -45,6 +45,10 @@ NeoBundle 'vim-scripts/Zenburn'
 NeoBundle 'ujihisa/unite-colorscheme'
 " NERDTree
 NeoBundle 'scrooloose/nerdtree'
+" Markdownプラグイン
+NeoBundle 'hallison/vim-markdown'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'tyru/open-browser.vim'
 
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
