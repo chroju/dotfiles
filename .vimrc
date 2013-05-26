@@ -8,11 +8,22 @@ set fileencoding=UTF-8
 set termencoding=UTF-8
 "バックアップファイルを作るディレクトリ
 set backupdir=$HOME/vimbackup
-"クリップボードをWindowsと連携
+"クリップボードをOSと連携
 set clipboard=unnamed
 set title "編集中のファイル名をステータスラインに表示
 set showcmd "入力中のコマンドを右下に表示
 set ruler "座標を右下に表示
+set scrolloff=5 "スクロール時の余白確保
+set textwidth=0 "自動折り返しをしない
+
+"---------------------------
+" NerdTree
+"---------------------------
+" 引数なしでvimを開いた場合のみNERDTree起動
+let file_name = expand("%")
+if has('vim_starting') &&  file_name == ""
+    autocmd VimEnter * NERDTree ./
+endif
 
 "---------------------------
 " NeoBundle
@@ -32,6 +43,8 @@ NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'vim-scripts/Zenburn'
 " カラースキームを手軽に変更
 NeoBundle 'ujihisa/unite-colorscheme'
+" NERDTree
+NeoBundle 'scrooloose/nerdtree'
 
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
@@ -47,8 +60,9 @@ syntax enable
 " 256色で使用する
 set t_Co=256
 
-" カーソルライン設定
+" カーソルラインのハイライト
 set cursorline
+" カレントウィンドウのみに罫線を引く
 augroup cch
 	autocmd! cch
 	autocmd WinLeave * set nocursorline
@@ -91,13 +105,15 @@ endfunction
 " ステータスライン設定ここまで
 
 "---------------------------
-" Serach
+" Search
 "---------------------------
 set incsearch "インクリメンタルサーチを行う
 set hlsearch "検索結果をハイライトする
 set ignorecase "検索時に文字の大小を区別しない
 set smartcase "検索時に大文字を含んでいたら大小を区別する
 set wrapscan "検索をファイルの先頭へループする
+"Escの2回押しでハイライト消去
+:nnoremap <ESC><ESC>  :nohlsearch<CR>
 
 "---------------------------
 " imput assist
@@ -119,4 +135,12 @@ set smarttab
 set shiftwidth=4
 "ファイル内の <Tab> が対応する空白の数
 set tabstop=4
+
+"---------------------------
+" Complete
+"---------------------------
+set wildmenu "コマンド補完を強化
+set wildmode=list:full " リスト表示，最長マッチ
+set history=1000 " コマンド・検索パターンの履歴数
+set complete+=k " 補完に辞書ファイル追加
 
