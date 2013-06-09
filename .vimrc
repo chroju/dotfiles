@@ -49,6 +49,8 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'hallison/vim-markdown'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'tyru/open-browser.vim'
+" Evervim
+NeoBundle 'kakkyz81/evervim'
 
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
@@ -148,3 +150,7 @@ set wildmode=list:full " リスト表示，最長マッチ
 set history=1000 " コマンド・検索パターンの履歴数
 set complete+=k " 補完に辞書ファイル追加
 
+"---------------------------
+" Evervim
+"---------------------------
+let g:evervim_devtoken='S=s19:U=23282c:E=1467e4e8032:C=13f269d5436:P=1cd:A=en-devtoken:V=2:H=3d650edbd18e6d866a60bdc3e9cae317'
