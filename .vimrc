@@ -16,6 +16,7 @@ set ruler "座標を右下に表示
 set scrolloff=3 "スクロール時の余白確保
 set textwidth=0 "自動折り返しをしない
 
+
 "---------------------------
 " NerdTree
 "---------------------------
@@ -24,6 +25,9 @@ let file_name = expand("%")
 if has('vim_starting') &&  file_name == ""
     autocmd VimEnter * NERDTree ./
 endif
+" NERDTreeToggleをF6に割り当て
+nmap <F6> :NERDTreeToggle
+
 
 "---------------------------
 " NeoBundle
@@ -51,10 +55,20 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'tyru/open-browser.vim'
 " Evervim
 NeoBundle 'kakkyz81/evervim'
-
+" todo.txt
+NeoBundle 'freitass/todo.txt-vim'
+" コメントアウト機能
+NeoBundle 'tomtom/tcomment_vim.git'
+" 超絶補完
+NeoBundle 'Shougo/neocomplcache.vim'
+" 括弧の補完
+NeoBundle 'tpope/vim-surround'
+" メモ？
+NeoBundle 'git://github.com/fuenor/qfixhowm.git'
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
 filetype indent plugin on     " required!
+
 
 "---------------------------
 " Visual
@@ -110,6 +124,7 @@ function! s:GetHighlight(hi)
 endfunction
 " ステータスライン設定ここまで
 
+
 "---------------------------
 " Search
 "---------------------------
@@ -120,6 +135,7 @@ set smartcase "検索時に大文字を含んでいたら大小を区別する
 set wrapscan "検索をファイルの先頭へループする
 "Escの2回押しでハイライト消去
 :nnoremap <ESC><ESC>  :nohlsearch<CR>
+
 
 "---------------------------
 " imput assist
@@ -142,6 +158,7 @@ set shiftwidth=4
 "ファイル内の <Tab> が対応する空白の数
 set tabstop=4
 
+
 "---------------------------
 " Complete
 "---------------------------
@@ -150,7 +167,77 @@ set wildmode=list:full " リスト表示，最長マッチ
 set history=1000 " コマンド・検索パターンの履歴数
 set complete+=k " 補完に辞書ファイル追加
 
+
 "---------------------------
 " Evervim
 "---------------------------
 let g:evervim_devtoken='S=s19:U=23282c:E=1467e4e8032:C=13f269d5436:P=1cd:A=en-devtoken:V=2:H=3d650edbd18e6d866a60bdc3e9cae317'
+
+
+"---------------------------
+" Key mapping
+"---------------------------
+" common
+nnoremap <C-h> :<C-u>help<Space>
+command! Todo edit ~/Dropbox/notes/todo/todo.txt
+noremap <Space>l $
+noremap <Space>h ^
+
+" 行移動
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+
+" plugins
+nnoremap [EverVim] <Nop>
+nmap ,e [EverVim]
+nnoremap <silent> [EverVim]c :<C-u>EvervimCreate<CR>
+nnoremap [NeoBundle] <Nop>
+nmap ,n [NeoBundle]
+nnoremap <silent> [NeoBundle]i :<C-u>NeoBundleInstall<CR>
+" 日付、現在日時の短縮入力
+inoremap <Leader>date <C-R>=strftime("%Y-%m-%d")<CR>
+inoremap <Leader>now <C-R>=strftime("%Y-%m-%d (%a) %H:%M")<CR>
+
+" easy open .vimrc
+let vimrcbody = '$HOME/.vimrc'
+
+function! OpenFile(file)
+    let empty_buffer = 
+\        line('$') == 1 && strlen(getline('1')) == 0
+    if empty_buffer && !&modified
+        execute 'e ' . a:file
+    else
+        execute 'tabnew ' . a:file
+    endif
+endfunction 
+
+command! OpenMyVimrc call OpenFile(vimrcbody)
+nnoremap <Space><Space> :<C-u>OpenMyVimrc<CR>
+
+" easy reload .vimrc
+function! SourceIfExists(file)
+    if filereadable(expand(a:file))
+        execute 'source ' . a:file
+    endif
+    echo 'Reloaded vimrc.'
+endfunction
+
+nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
+\ :source $MYVIMRC<CR>
+\ :call SourceIfExists('~/vimfiles/ftplugin/' . &filetype . '.vim')<CR>
+
+
+"---------------------------
+" QFixHowm
+"---------------------------
+
+"howm_dirはファイルを保存したいディレクトリを設定。
+let howm_dir             = '~/Dropbox/notes/memo'
+let howm_filename        = '%Y-%m-%d-%H%M%S.txt'
+let howm_fileencoding    = 'utf-8'
+let howm_fileformat      = 'unix'
+let howm_filetype        = 'markdown'
+
+let QFixHowm_DiaryFile = 'diary/%Y/%m/%Y-%m-%d-000000.howm'
