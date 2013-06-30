@@ -182,12 +182,19 @@ nnoremap <C-h> :<C-u>help<Space>
 command! Todo edit ~/Dropbox/notes/todo/todo.txt
 noremap <Space>l $
 noremap <Space>h ^
+nnoremap w :<C-u>w<CR>
 
 " 行移動
 nnoremap j gj
 nnoremap k gk
 nnoremap gj j
 nnoremap gk k
+
+" 入力効率化
+onoremap ) t)
+onoremap ( t(
+vnoremap ) t)
+vnoremap ( t(
 
 " plugins
 nnoremap [EverVim] <Nop>
@@ -211,7 +218,7 @@ function! OpenFile(file)
     else
         execute 'tabnew ' . a:file
     endif
-endfunction 
+endfunction
 
 command! OpenMyVimrc call OpenFile(vimrcbody)
 nnoremap <Space><Space> :<C-u>OpenMyVimrc<CR>
