@@ -1,0 +1,31 @@
+"3.7.1 (created: 2013/05/22 20:32:57)
+
+command! clip javascript Evernote.Overlay.init(null)
+map <C-r> :source<Space>~/.vimperatorrc<Return>
+map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<Return>
+map ,y :copy<Space>titleAndURL<Return>
+map <silent> e :clearly<Space>save<Return>
+noremap j 5j
+noremap k 5k
+set focuscontent
+style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+vmap <silent> <C-g> y<Esc><Esc>P
+" タブ移動
+nnoremap h <C-p>
+nnoremap l <C-n>
+" undo一覧から開く
+nnoremap U :undo<Space>
+
+" ブラウザ再起動
+nnoremap <C-r> :restart<CR>
+" direct_bookmark
+let g:direct_sbm_use_services_by_tag = "h"
+let g:direct_sbm_use_services_by_post = "h"
+source! /Users/Numa10/.vimperatorrc.local
+
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='www\.feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
+
+" vim: set ft=vimperator:
