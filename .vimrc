@@ -6,32 +6,25 @@ set nocompatible		" viとの互換設定を解除
 set encoding=UTF-8		" エンコード設定
 set fileencoding=UTF-8
 set termencoding=UTF-8
-"バックアップファイルを作るディレクトリ
-set backupdir=$HOME/vimbackup
-"クリップボードをOSと連携
-set clipboard=unnamed
-set title "編集中のファイル名をステータスラインに表示
-set showcmd "入力中のコマンドを右下に表示
-set ruler "座標を右下に表示
-set scrolloff=3 "スクロール時の余白確保
-set textwidth=0 "自動折り返しをしない
-
-
-"---------------------------
-" NerdTree
-"---------------------------
-" 引数なしでvimを開いた場合のみNERDTree起動
-let file_name = expand("%")
-if has('vim_starting') &&  file_name == ""
-    autocmd VimEnter * NERDTree ./
-endif
-" NERDTreeToggleをF6に割り当て
-nmap <F6> :NERDTreeToggle
+set nobackup			" バックアップファイルを作成しない
+set noswapfile			" スワップファイルを作成しない
+set clipboard=unnamed	"クリップボードをOSと連携
+set title				"編集中のファイル名をステータスラインに表示
+set showcmd				"入力中のコマンドを右下に表示
+set ruler				"座標を右下に表示
+set scrolloff=3			"スクロール時の余白確保
+set textwidth=0			"自動折り返しをしない
+set visualbell t_vb=	"ビープ音をビジュアルベル（空文字）に置き換え
+set noerrorbells		"エラー時にビープ音を鳴らさない
+" デフォルト設定のtxtファイルのtextwidthを上書き
+autocmd FileType text setlocal textwidth=0
 
 
 "---------------------------
 " NeoBundle
 "---------------------------
+filetype off
+
 if has('vim_starting')
 	set runtimepath+=~/.vim/bundle/neobundle.vim/
 	call neobundle#rc(expand('~/.vim/bundle/'))
@@ -45,6 +38,8 @@ NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'vim-scripts/Zenburn'
+NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'vim-scripts/twilight'
 " カラースキームを手軽に変更
 NeoBundle 'ujihisa/unite-colorscheme'
 " NERDTree
@@ -63,8 +58,8 @@ NeoBundle 'tomtom/tcomment_vim.git'
 NeoBundle 'Shougo/neocomplcache.vim'
 " 括弧の補完
 NeoBundle 'tpope/vim-surround'
-" メモ？
-NeoBundle 'git://github.com/fuenor/qfixhowm.git'
+" howm
+NeoBundle 'fuenor/qfixhowm.git'
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
 filetype indent plugin on     " required!
@@ -74,7 +69,7 @@ filetype indent plugin on     " required!
 " Visual
 "---------------------------
 "カラースキーム設定
-colorscheme jellybeans
+colorscheme hybrid
 syntax enable
 
 " 256色で使用する
@@ -128,13 +123,14 @@ endfunction
 "---------------------------
 " Search
 "---------------------------
-set incsearch "インクリメンタルサーチを行う
-set hlsearch "検索結果をハイライトする
-set ignorecase "検索時に文字の大小を区別しない
-set smartcase "検索時に大文字を含んでいたら大小を区別する
-set wrapscan "検索をファイルの先頭へループする
+set incsearch	"インクリメンタルサーチを行う
+set hlsearch	"検索結果をハイライトする
+set ignorecase	"検索時に文字の大小を区別しない
+set smartcase	"検索時に大文字を含んでいたら大小を区別する
+set wrapscan	"検索をファイルの先頭へループする
+
 "Escの2回押しでハイライト消去
-:nnoremap <ESC><ESC>  :nohlsearch<CR>
+nnoremap <ESC><ESC>  :nohlsearch<CR>
 
 
 "---------------------------
@@ -179,7 +175,7 @@ let g:evervim_devtoken='S=s19:U=23282c:E=1467e4e8032:C=13f269d5436:P=1cd:A=en-de
 "---------------------------
 " common
 nnoremap <C-h> :<C-u>help<Space>
-command! Todo edit ~/Dropbox/notes/todo/todo.txt
+nnoremap todo :<C-u>tabnew<Space>~/Dropbox/notes/todo/todo.txt<CR>
 noremap <Space>l $
 noremap <Space>h ^
 nnoremap w :<C-u>w<CR>
@@ -197,12 +193,21 @@ vnoremap ) t)
 vnoremap ( t(
 
 " plugins
+" NERDTreeToggleをF6に割り当て
+nmap <F6> :NERDTreeToggle
+" EverVim
 nnoremap [EverVim] <Nop>
 nmap ,e [EverVim]
 nnoremap <silent> [EverVim]c :<C-u>EvervimCreate<CR>
+nnoremap <silent> [EverVim]n :<C-u>EvervimNotebookList<CR>
+nnoremap <silent> [EverVim]t :<C-u>EvervimListTags<CR>
+" NeoBundle
 nnoremap [NeoBundle] <Nop>
 nmap ,n [NeoBundle]
 nnoremap <silent> [NeoBundle]i :<C-u>NeoBundleInstall<CR>
+nnoremap <silent> [NeoBundle]c :<C-u>NeoBundleClean<CR>
+nnoremap <silent> [NeoBundle]u :<C-u>NeoBundleInstall!<CR>
+
 " 日付、現在日時の短縮入力
 inoremap <Leader>date <C-R>=strftime("%Y-%m-%d")<CR>
 inoremap <Leader>now <C-R>=strftime("%Y-%m-%d (%a) %H:%M")<CR>
@@ -237,14 +242,25 @@ nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
 
 
 "---------------------------
+" unite colorscheme
+"---------------------------
+let g:unite_enable_start_insert = 1
+let g:unite_enable_split_vertically = 1
+if globpath(&rtp, 'plugin/unite.vim') != ''
+  nnoremap sc :<C-u>Unite colorscheme<Cr>
+endif
+
+
+"---------------------------
 " QFixHowm
 "---------------------------
 
-"howm_dirはファイルを保存したいディレクトリを設定。
-let howm_dir             = '~/Dropbox/notes/memo'
-let howm_filename        = '%Y-%m-%d-%H%M%S.txt'
-let howm_fileencoding    = 'utf-8'
-let howm_fileformat      = 'unix'
-let howm_filetype        = 'markdown'
+let howm_dir			= '~/Dropbox/notes/memo'
+let howm_filename		= '%Y-%m-%d-%H%M%S.txt'
+let howm_fileencoding	= 'utf-8'
+let howm_fileformat		= 'unix'
+let QFixHowm_FileType	= 'markdown'
+let QFixHowm_SaveTime	= 2
+let QFixHowm_DiaryFile	= 'diary/%Y/%m/%Y-%m-%d-000000.howm'
+let QFixHowm_Title = "="
 
-let QFixHowm_DiaryFile = 'diary/%Y/%m/%Y-%m-%d-000000.howm'
