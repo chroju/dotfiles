@@ -16,6 +16,7 @@ set scrolloff=3			"スクロール時の余白確保
 set textwidth=0			"自動折り返しをしない
 set visualbell t_vb=	"ビープ音をビジュアルベル（空文字）に置き換え
 set noerrorbells		"エラー時にビープ音を鳴らさない
+set ambiwidth=double	"マルチバイト文字のズレを防ぐ
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd FileType text setlocal textwidth=0
 
@@ -33,6 +34,7 @@ endif
 NeoBundle 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'Shougo/unite.vim.git'
+NeoBundle 'h1mesuke/unite-outline'
 " カラースキーム
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'tomasr/molokai'
@@ -45,7 +47,7 @@ NeoBundle 'ujihisa/unite-colorscheme'
 " NERDTree
 NeoBundle 'scrooloose/nerdtree'
 " Markdownプラグイン
-NeoBundle 'hallison/vim-markdown'
+"NeoBundle 'hallison/vim-markdown'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'tyru/open-browser.vim'
 " Evervim
@@ -55,12 +57,23 @@ NeoBundle 'freitass/todo.txt-vim'
 " コメントアウト機能
 NeoBundle 'tomtom/tcomment_vim.git'
 " 超絶補完
-NeoBundle 'Shougo/neocomplcache.vim'
+NeoBundle 'Shougo/neocomplete.vim'
 " 括弧の補完
 NeoBundle 'tpope/vim-surround'
 " howm
 NeoBundle 'fuenor/qfixhowm.git'
+" vim hacksをvimで読む
+NeoBundle 'choplin/unite-vim_hacks'
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'mattn/wwwrenderer-vim'
+NeoBundle 'thinca/vim-openbuf'
+" Google Tasks
+NeoBundle 'mattn/googletasks-vim'
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
+" Ruby & Rails
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'Shougo/neosnippet.vim'
 
 filetype indent plugin on     " required!
 
@@ -134,7 +147,7 @@ nnoremap <ESC><ESC>  :nohlsearch<CR>
 
 
 "---------------------------
-" imput assist
+" input assist
 "---------------------------
 " オートインデント
 set autoindent
@@ -153,6 +166,11 @@ set smarttab
 set shiftwidth=4
 "ファイル内の <Tab> が対応する空白の数
 set tabstop=4
+" 括弧の自動補完
+inoremap ( ()<Left>
+inoremap " ""<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
 
 
 "---------------------------
@@ -165,9 +183,19 @@ set complete+=k " 補完に辞書ファイル追加
 
 
 "---------------------------
-" Evervim
+" Tab
 "---------------------------
-let g:evervim_devtoken='S=s19:U=23282c:E=1467e4e8032:C=13f269d5436:P=1cd:A=en-devtoken:V=2:H=3d650edbd18e6d866a60bdc3e9cae317'
+nnoremap [Tag] <Nop>
+nmap t [Tag] " Tab jump
+for n in range(1, 9)
+	execute 'nnoremap <silent> [Tag]'.n ':<C-u>tabnext'.n.'<CR>'
+endfor
+" t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
+
+map <silent> [Tag]c :tablast <bar> tabnew<CR> " tc 新しいタブを一番右に作る
+map <silent> [Tag]x :tabclose<CR> " tx タブを閉じる
+map <silent> [Tag]n :tabnext<CR> " tn 次のタブ
+map <silent> [Tag]p :tabprevious<CR> " tp 前のタブ
 
 
 "---------------------------
@@ -180,6 +208,10 @@ noremap <Space>l $
 noremap <Space>h ^
 nnoremap w :<C-u>w<CR>
 
+" タブ操作
+nnoremap tc :<C-u>tabnew<CR>
+nnoremap tx :<C-u>tabclose<CR>
+
 " 行移動
 nnoremap j gj
 nnoremap k gk
@@ -191,6 +223,9 @@ onoremap ) t)
 onoremap ( t(
 vnoremap ) t)
 vnoremap ( t(
+
+" buffer
+nmap bb :ls<CR>:buf
 
 " plugins
 " NERDTreeToggleをF6に割り当て
@@ -207,6 +242,11 @@ nmap ,n [NeoBundle]
 nnoremap <silent> [NeoBundle]i :<C-u>NeoBundleInstall<CR>
 nnoremap <silent> [NeoBundle]c :<C-u>NeoBundleClean<CR>
 nnoremap <silent> [NeoBundle]u :<C-u>NeoBundleInstall!<CR>
+" Unite
+nnoremap [Unite] <Nop>
+nmap ,u [Unite]
+nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
+nnoremap <silent> [Unite]r :<C-u>Unite file_mru<CR>
 
 " 日付、現在日時の短縮入力
 inoremap <Leader>date <C-R>=strftime("%Y-%m-%d")<CR>
@@ -255,7 +295,8 @@ endif
 " QFixHowm
 "---------------------------
 
-let howm_dir			= '~/Dropbox/notes/memo'
+let howm_dir			= '~/Dropbox/notes/'
+let QFixHowm_RootDir	= '~/Dropbox/notes/'
 let howm_filename		= '%Y-%m-%d-%H%M%S.txt'
 let howm_fileencoding	= 'utf-8'
 let howm_fileformat		= 'unix'
@@ -263,4 +304,15 @@ let QFixHowm_FileType	= 'markdown'
 let QFixHowm_SaveTime	= 2
 let QFixHowm_DiaryFile	= 'diary/%Y/%m/%Y-%m-%d-000000.howm'
 let QFixHowm_Title = "="
+let QFixHowm_Key ="g"
+let QFixHowm_KeyB = ","
+
+" howmディレクトリをhdコマンドで変更
+command! -nargs=1 Hd let howm_dir = QFixHowm_RootDir.'/'.<q-args>|echo howm_dir
+
+"---------------------------
+" Evervim
+"---------------------------
+let g:evervim_devtoken='S=s19:U=23282c:E=1467e4e8032:C=13f269d5436:P=1cd:A=en-devtoken:V=2:H=3d650edbd18e6d866a60bdc3e9cae317'
+
 

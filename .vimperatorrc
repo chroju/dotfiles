@@ -5,6 +5,8 @@ map <C-r> :source<Space>~/.vimperatorrc<Return>
 map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<Return>
 map ,y :copy<Space>titleAndURL<Return>
 map <silent> e :clearly<Space>save<Return>
+map ,g :open<Space>google<Space>
+map ,tg :tabopen<Space>google<Space>
 noremap j 5j
 noremap k 5k
 set focuscontent
