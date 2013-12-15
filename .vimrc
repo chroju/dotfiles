@@ -70,10 +70,13 @@ NeoBundle 'thinca/vim-openbuf'
 " Google Tasks
 NeoBundle 'mattn/googletasks-vim'
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
+" zencoding
+NeoBundle 'mattn/emmet-vim'
 " Ruby & Rails
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'vim-scripts/dbext.vim'
 
 filetype indent plugin on     " required!
 
@@ -153,7 +156,7 @@ nnoremap <ESC><ESC>  :nohlsearch<CR>
 set autoindent
 " 不可視文字の表示
 set list
-set listchars=tab:^.,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+set listchars=tab:^.,trail:-,eol:$
 " 行頭、行末をすっ飛ばしてカーソル移動
 set whichwrap=b,s,h,l,<,>,[,]
 "閉じ括弧が入力されたとき、対応する括弧をmatchtime秒表示
@@ -252,8 +255,12 @@ nnoremap <silent> [Unite]r :<C-u>Unite file_mru<CR>
 inoremap <Leader>date <C-R>=strftime("%Y-%m-%d")<CR>
 inoremap <Leader>now <C-R>=strftime("%Y-%m-%d (%a) %H:%M")<CR>
 
-" easy open .vimrc
-let vimrcbody = '$HOME/.vimrc'
+" easy open vimrc
+if has("win64")
+	let vimrcbody = '$HOME/_vimrc'
+else
+	let vimrcbody = '$HOME/.vimrc'
+endif
 
 function! OpenFile(file)
     let empty_buffer = 
@@ -315,4 +322,13 @@ command! -nargs=1 Hd let howm_dir = QFixHowm_RootDir.'/'.<q-args>|echo howm_dir
 "---------------------------
 let g:evervim_devtoken='S=s19:U=23282c:E=1467e4e8032:C=13f269d5436:P=1cd:A=en-devtoken:V=2:H=3d650edbd18e6d866a60bdc3e9cae317'
 
+"---------------------------
+" Rails.vim
+"---------------------------
+" :Rconfigでroutes.rb表示
+autocmd User Rails Rnavcommand config config   -glob=*.*  -suffix= -default=routes.rb
+" Alias
+autocmd User Rails nmap :<C-u>Rcontroller :<C-u>Rc
+autocmd User Rails nmap :<C-u>Rmodel :<C-u>Rm
+autocmd User Rails nmap :<C-u>Rview :<C-u>Rv
 
