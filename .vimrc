@@ -58,7 +58,7 @@ NeoBundle 'freitass/todo.txt-vim'
 NeoBundle 'tomtom/tcomment_vim.git'
 " 超絶補完
 NeoBundle 'Shougo/neocomplete.vim'
-" 括弧の補完
+" 括弧の操作補完
 NeoBundle 'tpope/vim-surround'
 " howm
 NeoBundle 'fuenor/qfixhowm.git'
@@ -70,13 +70,17 @@ NeoBundle 'thinca/vim-openbuf'
 " Google Tasks
 NeoBundle 'mattn/googletasks-vim'
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
-" zencoding
+" emmet
 NeoBundle 'mattn/emmet-vim'
 " Ruby & Rails
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'vim-scripts/dbext.vim'
+NeoBundle 'AndrewRadev/switch.vim'
+" text edit support
+NeoBundle 'vim-scripts/Align'
+NeoBundle 'vim-scripts/YankRing.vim'
 
 filetype indent plugin on     " required!
 
@@ -166,7 +170,7 @@ set matchtime=3
 set smartindent
 "行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする。
 set smarttab
-set shiftwidth=4
+set shiftwidth=2
 "ファイル内の <Tab> が対応する空白の数
 set tabstop=4
 " 括弧の自動補完
@@ -174,6 +178,8 @@ inoremap ( ()<Left>
 inoremap " ""<Left>
 inoremap [ []<Left>
 inoremap { {}<Left>
+inoremap ' ''<Left>
+inoremap < <><Left>
 
 
 "---------------------------
@@ -230,7 +236,7 @@ vnoremap ( t(
 " buffer
 nmap bb :ls<CR>:buf
 
-" plugins
+" pluginS
 " NERDTreeToggleをF6に割り当て
 nmap <F6> :NERDTreeToggle
 " EverVim
@@ -250,10 +256,11 @@ nnoremap [Unite] <Nop>
 nmap ,u [Unite]
 nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite file_mru<CR>
-
 " 日付、現在日時の短縮入力
 inoremap <Leader>date <C-R>=strftime("%Y-%m-%d")<CR>
 inoremap <Leader>now <C-R>=strftime("%Y-%m-%d (%a) %H:%M")<CR>
+" switch.vim
+nnoremap ! :Switch<CR>
 
 " easy open vimrc
 if has("win64")
@@ -331,4 +338,75 @@ autocmd User Rails Rnavcommand config config   -glob=*.*  -suffix= -default=rout
 autocmd User Rails nmap :<C-u>Rcontroller :<C-u>Rc
 autocmd User Rails nmap :<C-u>Rmodel :<C-u>Rm
 autocmd User Rails nmap :<C-u>Rview :<C-u>Rv
+
+
+"---------------------------
+" Neocomplete
+"---------------------------
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+"[EOF]
+
 

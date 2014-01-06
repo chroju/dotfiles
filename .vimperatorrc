@@ -1,17 +1,30 @@
 "3.7.1 (created: 2013/05/22 20:32:57)
+/* vim: set filetype=vim : */
 
 command! clip javascript Evernote.Overlay.init(null)
+
+"============================
+" General
+"============================
+
+set focuscontent
+set visualbell
+highlight Bell display:none
+
+
+"============================
+" Key mapping
+"============================
+
 map <C-r> :source<Space>~/.vimperatorrc<Return>
 map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<Return>
 map ,y :copy<Space>titleAndURL<Return>
 map <silent> e :clearly<Space>save<Return>
 map ,g :open<Space>google<Space>
 map ,tg :tabopen<Space>google<Space>
+" 移動幅
 noremap j 5j
 noremap k 5k
-set focuscontent
-style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
-vmap <silent> <C-g> y<Esc><Esc>P
 " タブ移動
 nnoremap h <C-p>
 nnoremap l <C-n>
@@ -20,15 +33,50 @@ nnoremap U :undo<Space>
 let g:hint_tombloo_key = 'r'
 " ブラウザ再起動
 nnoremap <C-r> :restart<CR>
+" これなんだっけ。。。"
+vmap <silent> <C-g> y<Esc><Esc>P
+" これもなんだっけ。。。"
+style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+
+
+"============================
+" plugin
+"============================
+
+" plugin_loader
+let g:plugin_loader_roots="~/.vimperator/vimperator-plugins/ ~/vimperator/vimperator-plugins/"
+let g:plugin_loader_plugins="_libly,direct_bookmark,sbmcommentsviewer,caret-hint,appendAnchor,evernote-clearly-vimp,stella,feedSomeKeys_3,commandBookmarklet,copy"
+
 " direct_bookmark
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
 source! /Users/Numa10/.vimperatorrc.local
 
+" feedSomeKeys
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='cloud\.feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
-lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r,t q p n L,l<CR>
+lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
+" 動かない
+lazy fmaps -e=vkeydown -u='www\.pixiv\.net/member_illust\.php?mode=manga&illust_id=[0-9]+$' j k
 
-" vim: set ft=vimperator:
+" copy.js
+javascript <<EOM
+(function () {
+  liberator.globalVariables.copy_templates = [
+    { label: 'titleAndURL',    value: '%TITLE%\n%URL%' },
+    { label: 'title',          value: '%TITLE%', map: ',y' },
+    { label: 'anchor',         value: '<a href="%URL%">%TITLE%</a>' },
+    { label: 'selanchor',      value: '<a href="%URL%" title="%TITLE%">%SEL%</a>' },
+    { label: 'htmlblockquote', value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
+
+    { label: 'amazon',   value: 'copy clean amazon url from current page',
+      custom: function() {
+        var m = content.document.location.pathname.match(/dp\/(\d+)/);
+        return m ? ('http://amazon.jp/dp/' + m[1]) : null;
+      }
+    },
+  ];
+})();
+EOM
