@@ -42,12 +42,13 @@ NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'vim-scripts/Zenburn'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'vim-scripts/twilight'
+NeoBundle 'cocopon/iceberg.vim'
 " カラースキームを手軽に変更
 NeoBundle 'ujihisa/unite-colorscheme'
 " NERDTree
 NeoBundle 'scrooloose/nerdtree'
 " Markdownプラグイン
-"NeoBundle 'hallison/vim-markdown'
+NeoBundle 'rcmdnk/vim-markdown'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'tyru/open-browser.vim'
 " Evervim
