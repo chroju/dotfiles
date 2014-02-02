@@ -1,42 +1,71 @@
-"3.7.1 (created: 2013/05/22 20:32:57)
-/* vim: set filetype=vim : */
-
-command! clip javascript Evernote.Overlay.init(null)
+" vim: set filetype=vim :
 
 "============================
 " General
 "============================
 
+" 入力欄に自動フォーカスしない
 set focuscontent
+" ビジュアルベルを表示しない
 set visualbell
 highlight Bell display:none
-
+" :oなどでの補完候補をサーチエンジン、履歴に限定
+set complete=sl
+" Hintモードでアルファベット使用
+set hintchars=asdfghjkl
+" Hintモードのフォント拡大
+hi Hint -append font-size:12pt;
+" ツールバーはアドオンとタブのみ表示
+set gui=addons,nobookmarks,nomenu,nonavigation,tas
+" commandモードでIMEオフ
+style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
 
 "============================
 " Key mapping
 "============================
 
-map <C-r> :source<Space>~/.vimperatorrc<Return>
-map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<Return>
-map ,y :copy<Space>titleAndURL<Return>
-map <silent> e :clearly<Space>save<Return>
+" google検索を手早くする
 map ,g :open<Space>google<Space>
 map ,tg :tabopen<Space>google<Space>
+" OS分岐
+" dをブラウザ標準の「タブを閉じる」にマッピング
+" vimperatorrcのリロード
+js<<EOM
+if(liberator.has("MacUnix")) {
+  liberator.execute("map d <M-w>");
+  liberator.execute("map ,r :source<Space>~/.vimperatorrc<CR>");
+} else {
+  liberator.execute("map d <C-w>");
+  liberator.execute("map ,r :source<Space>~/_vimperatorrc<CR>");
+}
+EOM
 " 移動幅
 noremap j 5j
 noremap k 5k
 " タブ移動
 nnoremap h <C-p>
 nnoremap l <C-n>
+" タブの位置変更
+map <C-l> :tabmove! +1<CR>
+map <C-h> :tabmove! -1<CR>
 " undo一覧から開く
 nnoremap U :undo<Space>
 let g:hint_tombloo_key = 'r'
 " ブラウザ再起動
 nnoremap <C-r> :restart<CR>
-" これなんだっけ。。。"
+" VisualモードでC-gで選択しているテキストでGoogle検索
 vmap <silent> <C-g> y<Esc><Esc>P
-" これもなんだっけ。。。"
-style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+
+
+"============================
+" qmarks
+"============================
+qmark m https://mail.google.com/
+qmark b http://b.hatena.ne.jp/chroju
+qmark t http://chroju.tumblr.com/
+qmark f http://cloud.feedly.com/#latest
+qmark p http://getpocket.com/a/queue
+qmark B http://chroju.hatenablog.jp/
 
 
 "============================
@@ -44,32 +73,37 @@ style! -name=commandline-ime chrome://* #liberator-commandline-command input {im
 "============================
 
 " plugin_loader
-let g:plugin_loader_roots="~/.vimperator/vimperator-plugins/ ~/vimperator/vimperator-plugins/"
-let g:plugin_loader_plugins="_libly,direct_bookmark,sbmcommentsviewer,caret-hint,appendAnchor,evernote-clearly-vimp,stella,feedSomeKeys_3,commandBookmarklet,copy"
+let g:plugin_loader_roots = "~\vimperator\vimperator-plugins\ ~/.vimperator/vimperator-plugins/"
+let g:plugin_loader_plugins = "_libly,direct_bookmark,sbmcommentsviewer,caret-hint,appendAnchor,evernote-clearly-vimp,stella,feedSomeKeys_3,commandBookmarklet,copy"
+
+" Evernote Clearly
+nnoremap e :<C-u>js __readable_by_evernote.__readable_by_evernote__launch(false)<CR>
+nnoremap E :<C-u>js __readable_by_evernote.__readable_by_evernote__launch(true)<CR>
 
 " direct_bookmark
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
-source! /Users/Numa10/.vimperatorrc.local
+source! $HOME/.vimperatorrc.local
+" vのみではてブコメント表示
+map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<CR>
 
 " feedSomeKeys
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='cloud\.feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
+lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
 lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
-" 動かない
-lazy fmaps -e=vkeydown -u='www\.pixiv\.net/member_illust\.php?mode=manga&illust_id=[0-9]+$' j k
+lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
 
 " copy.js
 javascript <<EOM
 (function () {
   liberator.globalVariables.copy_templates = [
     { label: 'titleAndURL',    value: '%TITLE%\n%URL%' },
+    { label: 'markdown',       value: '[%TITLE%](%URL%)' },
     { label: 'title',          value: '%TITLE%', map: ',y' },
     { label: 'anchor',         value: '<a href="%URL%">%TITLE%</a>' },
     { label: 'selanchor',      value: '<a href="%URL%" title="%TITLE%">%SEL%</a>' },
-    { label: 'htmlblockquote', value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
 
     { label: 'amazon',   value: 'copy clean amazon url from current page',
       custom: function() {
@@ -80,3 +114,33 @@ javascript <<EOM
   ];
 })();
 EOM
+" 特によく使う機能をキーマッピング
+map ,y :copy<Space>titleAndURL<CR>
+map ,my :copy<Space>markdown<CR>
+
+
+"============================
+" about:config
+"============================
+
+set! network.dns.disableIPv6=true
+set! network.http.pipelining=true
+set! network.http.proxy.pipelining=true
+set! network.http.pipelining.maxrequests=8
+set! network.http.max-connections-per-server=32
+set! security.dialog_enable_delay=0
+set! browser.tabs.closeWindowWithLastTab=false
+set! browser.cache.memory.capacity=16384
+set! browser.sessionstore.interval=500000
+set! dom.popup_maximum=50
+set! browser.cache.disk.enable=false
+set! browser.cache.memory.capacity=-1
+set! layout.spellcheckDefault=0
+set! javascript.options.mem.high_water_mark=32
+
+
+"読み込み完了メッセージ
+echo "vimperatorrc loaded."
+
+" [EOF]
+
