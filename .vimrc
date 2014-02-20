@@ -1,24 +1,31 @@
 "---------------------------
 " Common
 "---------------------------
-set number				" 行数表示
-set nocompatible		" viとの互換設定を解除
-set encoding=UTF-8		" エンコード設定
-set fileencoding=UTF-8
-set termencoding=UTF-8
-set nobackup			" バックアップファイルを作成しない
-set noswapfile			" スワップファイルを作成しない
-set clipboard=unnamed	"クリップボードをOSと連携
-set title				"編集中のファイル名をステータスラインに表示
-set showcmd				"入力中のコマンドを右下に表示
-set ruler				"座標を右下に表示
-set scrolloff=3			"スクロール時の余白確保
-set textwidth=0			"自動折り返しをしない
-set visualbell t_vb=	"ビープ音をビジュアルベル（空文字）に置き換え
-set noerrorbells		"エラー時にビープ音を鳴らさない
-set ambiwidth=double	"マルチバイト文字のズレを防ぐ
+set number							" 行数表示
+set notitle							" 変なタイトル表示しない
+set nocompatible				" viとの互換設定を解除
+set nobackup						" バックアップファイルを作成しない
+set noswapfile					" スワップファイルを作成しない
+set clipboard+=unnamed	" クリップボードをOSと連携
+set showcmd							" 入力中のコマンドを右下に表示
+set ruler								" 座標を右下に表示
+set scrolloff=3					" スクロール時の余白確保
+set textwidth=0					" 自動折り返しをしない
+set noerrorbells				" エラー時にビープ音を鳴らさない
+set visualbell					" ビープ音をビジュアルベル（空文字）に置き換え
+set t_vb=								" ビープ音をビジュアルベル（空文字）に置き換え
+set ambiwidth=double		" マルチバイト文字のズレを防ぐ
+" 内部文字コード設定
+set encoding=UTF-8
+" ファイルの文字コード自動判別設定
+set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,UTF-8
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd FileType text setlocal textwidth=0
+
+" set augroup
+augroup MyAutoCmd
+  autocmd!
+augroup END
 
 
 "---------------------------
@@ -82,6 +89,9 @@ NeoBundle 'AndrewRadev/switch.vim'
 " text edit support
 NeoBundle 'vim-scripts/Align'
 NeoBundle 'vim-scripts/YankRing.vim'
+NeoBundle 'vim-scripts/Changed'
+" ステータスライン
+NeoBundle 'itchyny/lightline.vim'
 
 filetype indent plugin on     " required!
 
@@ -90,7 +100,7 @@ filetype indent plugin on     " required!
 " Visual
 "---------------------------
 "カラースキーム設定
-colorscheme hybrid
+colorscheme iceberg
 syntax enable
 
 " 256色で使用する
@@ -173,7 +183,7 @@ set smartindent
 set smarttab
 set shiftwidth=2
 "ファイル内の <Tab> が対応する空白の数
-set tabstop=4
+set tabstop=2
 " 括弧の自動補完
 inoremap ( ()<Left>
 inoremap " ""<Left>
@@ -195,17 +205,17 @@ set complete+=k " 補完に辞書ファイル追加
 "---------------------------
 " Tab
 "---------------------------
-nnoremap [Tag] <Nop>
-nmap t [Tag] " Tab jump
+nnoremap [Tab] <Nop>
+nmap t [Tab] " Tab jump
 for n in range(1, 9)
-	execute 'nnoremap <silent> [Tag]'.n ':<C-u>tabnext'.n.'<CR>'
+	execute 'nnoremap <silent> [Tab]'.n ':<C-u>tabnext'.n.'<CR>'
 endfor
 " t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
 
-map <silent> [Tag]c :tablast <bar> tabnew<CR> " tc 新しいタブを一番右に作る
-map <silent> [Tag]x :tabclose<CR> " tx タブを閉じる
-map <silent> [Tag]n :tabnext<CR> " tn 次のタブ
-map <silent> [Tag]p :tabprevious<CR> " tp 前のタブ
+map <silent> [Tab]c :tablast <bar> tabnew<CR> " tc 新しいタブを一番右に作る
+map <silent> [Tab]x :tabclose<CR> " tx タブを閉じる
+map <silent> [Tab]n :tabnext<CR> " tn 次のタブ
+map <silent> [Tab]p :tabprevious<CR> " tp 前のタブ
 
 
 "---------------------------
@@ -213,7 +223,7 @@ map <silent> [Tag]p :tabprevious<CR> " tp 前のタブ
 "---------------------------
 " common
 nnoremap <C-h> :<C-u>help<Space>
-nnoremap todo :<C-u>tabnew<Space>~/Dropbox/notes/todo/todo.txt<CR>
+nnoremap todo :<C-u>tabnew<Space>~/Dropbox/notes/gtd/gtd.txt<CR>
 noremap <Space>l $
 noremap <Space>h ^
 nnoremap w :<C-u>w<CR>
@@ -237,9 +247,9 @@ vnoremap ( t(
 " buffer
 nmap bb :ls<CR>:buf
 
-" pluginS
+" plugins
 " NERDTreeToggleをF6に割り当て
-nmap <F6> :NERDTreeToggle
+nmap <F6> :NERDTreeToggle<CR>
 " EverVim
 nnoremap [EverVim] <Nop>
 nmap ,e [EverVim]
@@ -251,12 +261,14 @@ nnoremap [NeoBundle] <Nop>
 nmap ,n [NeoBundle]
 nnoremap <silent> [NeoBundle]i :<C-u>NeoBundleInstall<CR>
 nnoremap <silent> [NeoBundle]c :<C-u>NeoBundleClean<CR>
-nnoremap <silent> [NeoBundle]u :<C-u>NeoBundleInstall!<CR>
+nnoremap <silent> [NeoBundle]I :<C-u>NeoBundleInstall!<CR>
 " Unite
 nnoremap [Unite] <Nop>
 nmap ,u [Unite]
 nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite file_mru<CR>
+nnoremap <silent> [Unite]c :<C-u>Unite colorscheme -auto-preview<CR>
+nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
 " 日付、現在日時の短縮入力
 inoremap <Leader>date <C-R>=strftime("%Y-%m-%d")<CR>
 inoremap <Leader>now <C-R>=strftime("%Y-%m-%d (%a) %H:%M")<CR>
@@ -408,6 +420,37 @@ endif
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
-"[EOF]
 
+"---------------------------
+" emmet
+"---------------------------
+" トリガーをC-yに変更
+let g:user_emmet_leader_key = '<C-y>'
+" insert, normalモードでのみ動作
+let g:user_emmet_mode = 'in'
+
+
+"---------------------------
+" lightline
+"---------------------------
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+			\             [ 'currentdir' ],
+      \             [ 'fugitive', 'filename' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&readonly?"\u2b64":""}',
+      \ },
+      \ 'component_function': {
+      \   'currentdir': 'MyCurrentDir',
+      \ },
+      \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
+      \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" },
+      \}
+
+function! MyCurrentDir()
+	return fnamemodify(getcwd(), ":p")
+endfunction
 
