@@ -6,19 +6,15 @@ set notitle							" 変なタイトル表示しない
 set nocompatible				" viとの互換設定を解除
 set nobackup						" バックアップファイルを作成しない
 set noswapfile					" スワップファイルを作成しない
+set hidden							" 未保存バッファがあっても無視する
 set clipboard+=unnamed	" クリップボードをOSと連携
 set showcmd							" 入力中のコマンドを右下に表示
 set ruler								" 座標を右下に表示
 set scrolloff=3					" スクロール時の余白確保
 set textwidth=0					" 自動折り返しをしない
 set noerrorbells				" エラー時にビープ音を鳴らさない
-set visualbell					" ビープ音をビジュアルベル（空文字）に置き換え
-set t_vb=								" ビープ音をビジュアルベル（空文字）に置き換え
+set vb t_vb=  					" ビープ音をビジュアルベル（空文字）に置き換え
 set ambiwidth=double		" マルチバイト文字のズレを防ぐ
-" 内部文字コード設定
-set encoding=UTF-8
-" ファイルの文字コード自動判別設定
-set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,UTF-8
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd FileType text setlocal textwidth=0
 
@@ -26,6 +22,20 @@ autocmd FileType text setlocal textwidth=0
 augroup MyAutoCmd
   autocmd!
 augroup END
+
+
+"---------------------------
+" encoding
+"---------------------------
+" 内部文字コード設定
+set encoding=UTF-8
+" 保存ファイルエンコード設定
+set fileencoding=UTF-8
+" ファイルの文字コード自動判別設定
+set fileencodings=ucs-bom,iso-2022-jp,cp932,sjis,euc-jp,UTF-8
+" 改行コード設定
+set fileformat=unix
+set fileformats=unix,dos,mac
 
 
 "---------------------------
@@ -39,10 +49,15 @@ if has('vim_starting')
 endif
 " originalrepos on github
 NeoBundle 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc'
-NeoBundle 'Shougo/unite.vim.git'
-NeoBundle 'h1mesuke/unite-outline'
-" カラースキーム
+NeoBundle 'Shougo/vimproc', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
+" colorscheme
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'nanotech/jellybeans.vim'
@@ -50,6 +65,9 @@ NeoBundle 'vim-scripts/Zenburn'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'vim-scripts/twilight'
 NeoBundle 'cocopon/iceberg.vim'
+" Unite
+NeoBundle 'Shougo/unite.vim.git'
+" NeoBundle 'Shougo/unite-outline'
 " カラースキームを手軽に変更
 NeoBundle 'ujihisa/unite-colorscheme'
 " NERDTree
@@ -84,6 +102,8 @@ NeoBundle 'mattn/emmet-vim'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'honza/vim-snippets'
 NeoBundle 'vim-scripts/dbext.vim'
 NeoBundle 'AndrewRadev/switch.vim'
 " text edit support
@@ -92,6 +112,12 @@ NeoBundle 'vim-scripts/YankRing.vim'
 NeoBundle 'vim-scripts/Changed'
 " ステータスライン
 NeoBundle 'itchyny/lightline.vim'
+" LESSハイライト
+NeoBundle 'groenewege/vim-less'
+" Gist
+NeoBundle 'mattn/Gist-vim'
+" 爆速カーソル移動
+NeoBundle 'Lokaltog/vim-easymotion'
 
 filetype indent plugin on     " required!
 
@@ -110,45 +136,13 @@ set t_Co=256
 set cursorline
 " カレントウィンドウのみに罫線を引く
 augroup cch
-	autocmd! cch
+	autocmd!
 	autocmd WinLeave * set nocursorline
 	autocmd WinEnter,BufRead * set cursorline
 augroup END
-:hi clear CursorLine
-:hi CursorLine gui=underline
-highlight CursorLine ctermbg=black guibg=black
+hi clear CursorLine
+hi CursorLine ctermbg=black guibg=black
 " カーソルライン設定ここまで
-
-"挿入モード時、ステータスラインの色を変更
-let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
-if has('syntax')
-  augroup InsertHook
-    autocmd!
-    autocmd InsertEnter * call s:StatusLine('Enter')
-    autocmd InsertLeave * call s:StatusLine('Leave')
-  augroup END
-endif
-
-let s:slhlcmd = ''
-function! s:StatusLine(mode)
-  if a:mode == 'Enter'
-    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
-    silent exec g:hi_insert
-  else
-    highlight clear StatusLine
-    silent exec s:slhlcmd
-  endif
-endfunction
-
-function! s:GetHighlight(hi)
-  redir => hl
-  exec 'highlight '.a:hi
-  redir END
-  let hl = substitute(hl, '[\r\n]', '', 'g')
-  let hl = substitute(hl, 'xxx', '', '')
-  return hl
-endfunction
-" ステータスライン設定ここまで
 
 
 "---------------------------
@@ -180,17 +174,18 @@ set matchtime=3
 "新しい行を作ったときに高度な自動インデントを行う
 set smartindent
 "行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする。
-set smarttab
+set expandtab
 set shiftwidth=2
 "ファイル内の <Tab> が対応する空白の数
 set tabstop=2
-" 括弧の自動補完
-inoremap ( ()<Left>
-inoremap " ""<Left>
-inoremap [ []<Left>
-inoremap { {}<Left>
-inoremap ' ''<Left>
-inoremap < <><Left>
+" 括弧の補完
+inoremap () ()<Left>
+inoremap "" ""<Left>
+inoremap [] []<Left>
+inoremap {} {}<Left>
+inoremap '' ''<Left>
+inoremap <> <><Left>
+inoremap ** **<Left>
 
 
 "---------------------------
@@ -206,7 +201,7 @@ set complete+=k " 補完に辞書ファイル追加
 " Tab
 "---------------------------
 nnoremap [Tab] <Nop>
-nmap t [Tab] " Tab jump
+nnoremap ,t [Tab] " Tab jump
 for n in range(1, 9)
 	execute 'nnoremap <silent> [Tab]'.n ':<C-u>tabnext'.n.'<CR>'
 endfor
@@ -222,11 +217,10 @@ map <silent> [Tab]p :tabprevious<CR> " tp 前のタブ
 " Key mapping
 "---------------------------
 " common
+nnoremap ,, :up<CR>
 nnoremap <C-h> :<C-u>help<Space>
-nnoremap todo :<C-u>tabnew<Space>~/Dropbox/notes/gtd/gtd.txt<CR>
 noremap <Space>l $
 noremap <Space>h ^
-nnoremap w :<C-u>w<CR>
 
 " タブ操作
 nnoremap tc :<C-u>tabnew<CR>
@@ -237,6 +231,10 @@ nnoremap j gj
 nnoremap k gk
 nnoremap gj j
 nnoremap gk k
+vnoremap j gj
+vnoremap k gk
+vnoremap gj j
+vnoremap gk k
 
 " 入力効率化
 onoremap ) t)
@@ -246,6 +244,14 @@ vnoremap ( t(
 
 " buffer
 nmap bb :ls<CR>:buf
+
+" GTD
+nnoremap [GTD] <Nop>
+nmap ,g [GTD]
+nnoremap <silent> [GTD]l :<C-u>tabnew<Space>~/Dropbox/todo.txt<CR>
+nnoremap <silent> [GTD]g :<C-u>tabnew<Space>~/Dropbox/notes/gtd/gtd.txt<CR>
+nnoremap <silent> [GTD]t :<C-u>tabnew<Space>~/Dropbox/notes/gtd/トリガーリスト.txt<CR>
+nnoremap <silent> [GTD]r :<C-u>tabnew<Space>~/Dropbox/notes/gtd/ルーチンタスクリスト.txt<CR>
 
 " plugins
 " NERDTreeToggleをF6に割り当て
@@ -262,6 +268,7 @@ nmap ,n [NeoBundle]
 nnoremap <silent> [NeoBundle]i :<C-u>NeoBundleInstall<CR>
 nnoremap <silent> [NeoBundle]c :<C-u>NeoBundleClean<CR>
 nnoremap <silent> [NeoBundle]I :<C-u>NeoBundleInstall!<CR>
+nnoremap <silent> [NeoBundle]u :<C-u>NeoBundleUpdate<CR>
 " Unite
 nnoremap [Unite] <Nop>
 nmap ,u [Unite]
@@ -321,7 +328,6 @@ endif
 "---------------------------
 " QFixHowm
 "---------------------------
-
 let howm_dir			= '~/Dropbox/notes/'
 let QFixHowm_RootDir	= '~/Dropbox/notes/'
 let howm_filename		= '%Y-%m-%d-%H%M%S.txt'
@@ -336,11 +342,6 @@ let QFixHowm_KeyB = ","
 
 " howmディレクトリをhdコマンドで変更
 command! -nargs=1 Hd let howm_dir = QFixHowm_RootDir.'/'.<q-args>|echo howm_dir
-
-"---------------------------
-" Evervim
-"---------------------------
-let g:evervim_devtoken='S=s19:U=23282c:E=1467e4e8032:C=13f269d5436:P=1cd:A=en-devtoken:V=2:H=3d650edbd18e6d866a60bdc3e9cae317'
 
 "---------------------------
 " Rails.vim
@@ -365,6 +366,8 @@ let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+" prevent completefunc conflicts
+let g:neocomplete#force_overwrite_completefunc = 1
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -377,7 +380,7 @@ let g:neocomplete#sources#dictionary#dictionaries = {
 if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+let g:neocomplete#keyword_patterns._ = '\h\w*'
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()
@@ -387,19 +390,17 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <TAB> setting is later, in NeoSnippets settings
+" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+inoremap <expr><C-h> pumvisible() ? neocomplete#smart_close_popup()."\<C-h>" : "\<C-h>"
+inoremap <expr><BS> pumvisible() ? neocomplete#smart_close_popup()."\<C-h>" : "\<C-h>"
+inoremap <expr><C-q> pumvisible() ? neocomplete#close_popup() : "\<C-q>"
+inoremap <expr><C-e> pumvisible() ? neocomplete#cancel_popup() : "\<C-e>"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -408,18 +409,30 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
+
+"---------------------------
+" NeoSnippet
+"---------------------------
+" snippets
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets,~/.vim/mysnippets'
+
+" Plugin Keymap
+imap <C-k>  <Plug>(neosnippet_expand_or_jump)
+smap <C-k>  <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
 
 "---------------------------
 " emmet
@@ -438,10 +451,11 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
 			\             [ 'currentdir' ],
-      \             [ 'fugitive', 'filename' ] ]
+      \             [ 'fugitive', 'filename', 'readonly', 'modified' ] ]
       \ },
       \ 'component': {
       \   'readonly': '%{&readonly?"\u2b64":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'
       \ },
       \ 'component_function': {
       \   'currentdir': 'MyCurrentDir',
