@@ -243,7 +243,10 @@ vnoremap ) t)
 vnoremap ( t(
 
 " buffer
-nmap bb :ls<CR>:buf
+nnoremap bb :ls<CR>:buf
+
+" 編集中のファイルのディレクトリに移動
+nnoremap ,d :execute ":lcd" . expand("%:p:h")<CR>
 
 " GTD
 nnoremap [GTD] <Nop>
@@ -321,7 +324,7 @@ nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
 let g:unite_enable_start_insert = 1
 let g:unite_enable_split_vertically = 1
 if globpath(&rtp, 'plugin/unite.vim') != ''
-  nnoremap sc :<C-u>Unite colorscheme<Cr>
+  nnoremap sc :<C-u>Unite colorscheme<CR>
 endif
 
 
@@ -342,6 +345,7 @@ let QFixHowm_KeyB = ","
 
 " howmディレクトリをhdコマンドで変更
 command! -nargs=1 Hd let howm_dir = QFixHowm_RootDir.'/'.<q-args>|echo howm_dir
+
 
 "---------------------------
 " Rails.vim
@@ -415,7 +419,6 @@ endif
 let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
 
-
 "---------------------------
 " NeoSnippet
 "---------------------------
@@ -433,6 +436,7 @@ imap <expr><TAB> neosnippet#jumpable() ?
 smap <expr><TAB> neosnippet#jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
 \: "\<TAB>"
+
 
 "---------------------------
 " emmet
