@@ -1,27 +1,22 @@
 "---------------------------
 " Common
 "---------------------------
-set number							" 行数表示
-set notitle							" 変なタイトル表示しない
-set nocompatible				" viとの互換設定を解除
-set nobackup						" バックアップファイルを作成しない
-set noswapfile					" スワップファイルを作成しない
-set hidden							" 未保存バッファがあっても無視する
-set clipboard+=unnamed	" クリップボードをOSと連携
-set showcmd							" 入力中のコマンドを右下に表示
-set ruler								" 座標を右下に表示
-set scrolloff=3					" スクロール時の余白確保
-set textwidth=0					" 自動折り返しをしない
-set noerrorbells				" エラー時にビープ音を鳴らさない
-set vb t_vb=  					" ビープ音をビジュアルベル（空文字）に置き換え
-set ambiwidth=double		" マルチバイト文字のズレを防ぐ
+set number              " 行数表示
+set notitle             " 変なタイトル表示しない
+set nocompatible        " viとの互換設定を解除
+set nobackup            " バックアップファイルを作成しない
+set noswapfile          " スワップファイルを作成しない
+set hidden              " 未保存バッファがあっても無視する
+set clipboard+=unnamed  " クリップボードをOSと連携
+set showcmd             " 入力中のコマンドを右下に表示
+set ruler               " 座標を右下に表示
+set scrolloff=3         " スクロール時の余白確保
+set textwidth=0         " 自動折り返しをしない
+set noerrorbells        " エラー時にビープ音を鳴らさない
+set vb t_vb=            " ビープ音をビジュアルベル（空文字）に置き換え
+set ambiwidth=double    " マルチバイト文字のズレを防ぐ
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd FileType text setlocal textwidth=0
-
-" set augroup
-augroup MyAutoCmd
-  autocmd!
-augroup END
 
 
 "---------------------------
@@ -44,8 +39,8 @@ set fileformats=unix,dos,mac
 filetype off
 
 if has('vim_starting')
-	set runtimepath+=~/.vim/bundle/neobundle.vim/
-	call neobundle#rc(expand('~/.vim/bundle/'))
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 " originalrepos on github
 NeoBundle 'Shougo/neobundle.vim'
@@ -99,6 +94,7 @@ NeoBundle 'mattn/googletasks-vim'
 " emmet
 NeoBundle 'mattn/emmet-vim'
 " Ruby & Rails
+NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'Shougo/neosnippet.vim'
@@ -136,9 +132,9 @@ set t_Co=256
 set cursorline
 " カレントウィンドウのみに罫線を引く
 augroup cch
-	autocmd!
-	autocmd WinLeave * set nocursorline
-	autocmd WinEnter,BufRead * set cursorline
+  autocmd!
+  autocmd WinLeave * set nocursorline
+  autocmd WinEnter,BufRead * set cursorline
 augroup END
 hi clear CursorLine
 hi CursorLine ctermbg=black guibg=black
@@ -148,11 +144,11 @@ hi CursorLine ctermbg=black guibg=black
 "---------------------------
 " Search
 "---------------------------
-set incsearch	"インクリメンタルサーチを行う
-set hlsearch	"検索結果をハイライトする
-set ignorecase	"検索時に文字の大小を区別しない
-set smartcase	"検索時に大文字を含んでいたら大小を区別する
-set wrapscan	"検索をファイルの先頭へループする
+set incsearch "インクリメンタルサーチを行う
+set hlsearch  "検索結果をハイライトする
+set ignorecase  "検索時に文字の大小を区別しない
+set smartcase "検索時に大文字を含んでいたら大小を区別する
+set wrapscan  "検索をファイルの先頭へループする
 
 "Escの2回押しでハイライト消去
 nnoremap <ESC><ESC>  :nohlsearch<CR>
@@ -203,7 +199,7 @@ set complete+=k " 補完に辞書ファイル追加
 nnoremap [Tab] <Nop>
 nnoremap ,t [Tab] " Tab jump
 for n in range(1, 9)
-	execute 'nnoremap <silent> [Tab]'.n ':<C-u>tabnext'.n.'<CR>'
+  execute 'nnoremap <silent> [Tab]'.n ':<C-u>tabnext'.n.'<CR>'
 endfor
 " t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
 
@@ -287,9 +283,9 @@ nnoremap ! :Switch<CR>
 
 " easy open vimrc
 if has("win64")
-	let vimrcbody = '$HOME/_vimrc'
+  let vimrcbody = '$HOME/_vimrc'
 else
-	let vimrcbody = '$HOME/.vimrc'
+  let vimrcbody = '$HOME/.vimrc'
 endif
 
 function! OpenFile(file)
@@ -331,14 +327,14 @@ endif
 "---------------------------
 " QFixHowm
 "---------------------------
-let howm_dir			= '~/Dropbox/notes/'
-let QFixHowm_RootDir	= '~/Dropbox/notes/'
-let howm_filename		= '%Y-%m-%d-%H%M%S.txt'
-let howm_fileencoding	= 'utf-8'
-let howm_fileformat		= 'unix'
-let QFixHowm_FileType	= 'markdown'
-let QFixHowm_SaveTime	= 2
-let QFixHowm_DiaryFile	= 'diary/%Y/%m/%Y-%m-%d-000000.howm'
+let howm_dir      = '~/Dropbox/notes/'
+let QFixHowm_RootDir  = '~/Dropbox/notes/'
+let howm_filename   = '%Y-%m-%d-%H%M%S.txt'
+let howm_fileencoding = 'utf-8'
+let howm_fileformat   = 'unix'
+let QFixHowm_FileType = 'markdown'
+let QFixHowm_SaveTime = 2
+let QFixHowm_DiaryFile  = 'diary/%Y/%m/%Y-%m-%d-000000.howm'
 let QFixHowm_Title = "="
 let QFixHowm_Key ="g"
 let QFixHowm_KeyB = ","
@@ -377,8 +373,9 @@ let g:neocomplete#force_overwrite_completefunc = 1
 let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
+    \ 'scheme' : $HOME.'/.gosh_completions',
+    \ 'ruby' : $VIMHOME.'/dict/ruby.dict'
+    \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -454,7 +451,7 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-			\             [ 'currentdir' ],
+      \             [ 'currentdir' ],
       \             [ 'fugitive', 'filename', 'readonly', 'modified' ] ]
       \ },
       \ 'component': {
@@ -469,6 +466,6 @@ let g:lightline = {
       \}
 
 function! MyCurrentDir()
-	return fnamemodify(getcwd(), ":p")
+  return fnamemodify(getcwd(), ":p")
 endfunction
 
