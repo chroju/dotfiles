@@ -194,22 +194,6 @@ set complete+=k " 補完に辞書ファイル追加
 
 
 "---------------------------
-" Tab
-"---------------------------
-nnoremap [Tab] <Nop>
-nnoremap ,t [Tab] " Tab jump
-for n in range(1, 9)
-  execute 'nnoremap <silent> [Tab]'.n ':<C-u>tabnext'.n.'<CR>'
-endfor
-" t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
-
-map <silent> [Tab]c :tablast <bar> tabnew<CR> " tc 新しいタブを一番右に作る
-map <silent> [Tab]x :tabclose<CR> " tx タブを閉じる
-map <silent> [Tab]n :tabnext<CR> " tn 次のタブ
-map <silent> [Tab]p :tabprevious<CR> " tp 前のタブ
-
-
-"---------------------------
 " Key mapping
 "---------------------------
 " common
@@ -217,6 +201,7 @@ nnoremap ,, :up<CR>
 nnoremap <C-h> :<C-u>help<Space>
 noremap <Space>l $
 noremap <Space>h ^
+inoremap <ESC> <ESC>:<C-u>up<CR>
 
 " タブ操作
 nnoremap tc :<C-u>tabnew<CR>
@@ -410,10 +395,10 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+" if !exists('g:neocomplete#force_omni_input_patterns')
+"   let g:neocomplete#force_omni_input_patterns = {}
+" endif
+" let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
 
 "---------------------------

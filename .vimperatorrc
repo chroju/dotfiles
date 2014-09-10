@@ -19,14 +19,18 @@ hi Hint -append font-size:12pt;
 set gui=addons,nobookmarks,nomenu,nonavigation,tas
 " commandモードでIMEオフ
 style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+" URLのyankでencodeをオフにする
+set yankencodedurl
+" タブ以外のツールバーを非表示
+set gui=none,tabs
 
 "============================
 " Key mapping
 "============================
 
 " google検索を手早くする
-noremap s :open<Space>google<Space>
-noremap ,s :tabopen<Space>google<Space>
+nnoremap s :open<Space>google<Space>
+nnoremap ,s :tabopen<Space>google<Space>
 " OS分岐
 " dをブラウザ標準の「タブを閉じる」にマッピング
 " vimperatorrcのリロード
@@ -93,6 +97,7 @@ qmark t http://chroju.tumblr.com/
 qmark f http://cloud.feedly.com/#latest
 qmark p http://getpocket.com/a/queue
 qmark B http://chroju.hatenablog.jp/
+qmark c https://www.google.com/calendar/
 
 
 "============================
@@ -104,13 +109,14 @@ let g:plugin_loader_roots = "~\vimperator\vimperator-plugins\ ~/.vimperator/vimp
 let g:plugin_loader_plugins = "_libly,direct_bookmark,sbmcommentsviewer,caret-hint,appendAnchor,evernote-clearly-vimp,stella,feedSomeKeys_3,commandBookmarklet,copy"
 
 " Evernote Clearly
-nnoremap e :<C-u>js __readable_by_evernote.__readable_by_evernote__launch(false)<CR>
-nnoremap E :<C-u>js __readable_by_evernote.__readable_by_evernote__launch(true)<CR>
+nnoremap e :<C-u>js __readable_by_evernote.context.menu__call(buffer.URL)<CR>
+nnoremap E :<C-u>js __readable_by_evernote.context__launch(true)<CR>
 
 " direct_bookmark
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
-source! $HOME/.vimperatorrc.local
+" source! $HOME/.vimperatorrc.local
+
 " vのみではてブコメント表示
 map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<CR>
 
@@ -150,20 +156,28 @@ map ,my :copy<Space>markdown<CR>
 " about:config
 "============================
 
+" IPv6
 set! network.dns.disableIPv6=true
-set! network.http.pipelining=true
-set! network.http.proxy.pipelining=true
+" pipeline関連設定
+set! network.http.pipelining=false
+set! network.http.proxy.pipelining=false
 set! network.http.pipelining.maxrequests=8
-set! network.http.max-connections-per-server=32
-set! security.dialog_enable_delay=0
+" 最後のタブを閉じてもウインドウを閉じない
 set! browser.tabs.closeWindowWithLastTab=false
-set! browser.cache.memory.capacity=16384
-set! browser.sessionstore.interval=500000
+" cacheの保存容量
+set! browser.cache.memory.capacity=65536
+" セッション保存間隔（頻繁だと動画読み込みに支障アリ？）
+set! browser.sessionstore.interval=300000
+" ポップアップブロック数の調整
 set! dom.popup_maximum=50
+" cache保存無効化
 set! browser.cache.disk.enable=false
-set! browser.cache.memory.capacity=-1
+" RAMキャッシュ容量設定
+set! browser.cache.memory.capacity=233016
+" スペルチェック無効化
 set! layout.spellcheckDefault=0
-set! javascript.options.mem.high_water_mark=32
+" アドオンインストル時の待ち時間をなくす
+set! security.dialog_enable_delay=0
 
 
 "読み込み完了メッセージ
