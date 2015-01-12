@@ -1,29 +1,9 @@
 "---------------------------
-" Common
-"---------------------------
-set number              " 行数表示
-set notitle             " 変なタイトル表示しない
-set nocompatible        " viとの互換設定を解除
-set nobackup            " バックアップファイルを作成しない
-set noswapfile          " スワップファイルを作成しない
-set hidden              " 未保存バッファがあっても無視する
-set clipboard+=unnamed  " クリップボードをOSと連携
-set showcmd             " 入力中のコマンドを右下に表示
-set ruler               " 座標を右下に表示
-set scrolloff=3         " スクロール時の余白確保
-set textwidth=0         " 自動折り返しをしない
-set noerrorbells        " エラー時にビープ音を鳴らさない
-set vb t_vb=            " ビープ音をビジュアルベル（空文字）に置き換え
-set ambiwidth=double    " マルチバイト文字のズレを防ぐ
-" デフォルト設定のtxtファイルのtextwidthを上書き
-autocmd FileType text setlocal textwidth=0
-
-
-"---------------------------
 " encoding
 "---------------------------
-" 内部文字コード設定
+" http://rbtnn.hateblo.jp/entry/2014/11/30/174749
 set encoding=UTF-8
+scriptencoding UTF-8
 " 保存ファイルエンコード設定
 set fileencoding=UTF-8
 " ファイルの文字コード自動判別設定
@@ -34,86 +14,128 @@ set fileformats=unix,dos,mac
 
 
 "---------------------------
+" Common
+"---------------------------
+" reset autocmd
+augroup vimrc
+  autocmd!
+augroup END
+
+set number              " 行数表示
+set notitle             " 変なタイトル表示しない
+set nobackup            " バックアップファイルを作成しない
+set noswapfile          " スワップファイルを作成しない
+set hidden              " 未保存バッファがあっても無視する
+set clipboard+=unnamed,autoselect  " クリップボードをOSと連携
+set showcmd             " 入力中のコマンドを右下に表示
+set ruler               " 座標を右下に表示
+set scrolloff=3         " スクロール時の余白確保
+set textwidth=0         " 自動折り返しをしない
+set noerrorbells        " エラー時にビープ音を鳴らさない
+set vb t_vb=            " ビープ音をビジュアルベル（空文字）に置き換え
+set ambiwidth=double    " マルチバイト文字のズレを防ぐ
+set laststatus=2
+" 以下3行、矢印キーによるアルファベット入力防止
+set notimeout
+set ttimeout
+set timeoutlen=100
+set noundofile " .un~ファイルを生成しない
+set helplang=ja
+" デフォルト設定のtxtファイルのtextwidthを上書き
+autocmd vimrc FileType text setlocal textwidth=0
+
+set helplang=ja
+
+"---------------------------
 " NeoBundle
 "---------------------------
 filetype off
 
 if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
-  call neobundle#rc(expand('~/.vim/bundle/'))
+  call neobundle#begin(expand('~/.vim/bundle/'))
+  NeoBundleFetch 'Shougo/neobundle.vim'
+  " originalrepos on github
+  NeoBundle 'Shougo/neobundle.vim'
+  NeoBundle 'Shougo/vimproc', {
+        \ 'build' : {
+        \     'windows' : 'tools\\update-dll-mingw',
+        \     'cygwin' : 'make -f make_cygwin.mak',
+        \     'mac' : 'make -f make_mac.mak',
+        \     'unix' : 'make -f make_unix.mak',
+        \    },
+        \ }
+  " colorscheme
+  NeoBundle 'altercation/vim-colors-solarized'
+  NeoBundle 'tomasr/molokai'
+  NeoBundle 'nanotech/jellybeans.vim'
+  NeoBundle 'vim-scripts/Zenburn'
+  NeoBundle 'w0ng/vim-hybrid'
+  NeoBundle 'vim-scripts/twilight'
+  NeoBundle 'cocopon/iceberg.vim'
+  " Unite
+  NeoBundle 'Shougo/unite.vim'
+  NeoBundle 'Shougo/unite-outline'
+  " カラースキームを手軽に変更
+  NeoBundle 'ujihisa/unite-colorscheme'
+  " NERDTree
+  NeoBundle 'scrooloose/nerdtree'
+  " Markdownプラグイン
+  NeoBundle 'rcmdnk/vim-markdown'
+  " quickrun
+  NeoBundle 'thinca/vim-quickrun'
+  NeoBundle 'tyru/open-browser.vim'
+  " " Evervim
+  " NeoBundle 'kakkyz81/evervim'
+  " todo.txt
+  NeoBundle 'freitass/todo.txt-vim'
+  " コメントアウト機能
+  NeoBundle 'tomtom/tcomment_vim.git'
+  " 超絶補完
+  NeoBundle 'Shougo/neocomplete.vim'
+  NeoBundle 'Shougo/neosnippet.vim'
+  NeoBundle 'Shougo/neosnippet-snippets'
+  NeoBundle 'honza/vim-snippets'
+  " 括弧の操作補完
+  NeoBundle 'tpope/vim-surround'
+  " howm
+  NeoBundle 'fuenor/qfixhowm.git'
+  " vim hacksをvimで読む
+  NeoBundle 'choplin/unite-vim_hacks'
+  NeoBundle 'mattn/webapi-vim'
+  NeoBundle 'mattn/wwwrenderer-vim'
+  NeoBundle 'thinca/vim-openbuf'
+  " emmet
+  NeoBundle 'mattn/emmet-vim'
+  " Ruby & Rails
+  NeoBundle 'vim-ruby/vim-ruby'
+  NeoBundle 'tpope/vim-rails'
+  NeoBundle 'tpope/vim-endwise'
+  NeoBundle 'vim-scripts/dbext.vim'
+  NeoBundle 'AndrewRadev/switch.vim'
+  " text edit support
+  NeoBundle 'vim-scripts/Align'
+  NeoBundle 'vim-scripts/YankRing.vim'
+  NeoBundle 'vim-scripts/Changed'
+  " ステータスライン
+  NeoBundle 'itchyny/lightline.vim'
+  " LESSハイライト
+  NeoBundle 'groenewege/vim-less'
+  " Gist
+  NeoBundle 'mattn/Gist-vim'
+  " 爆速カーソル移動
+  NeoBundle 'Lokaltog/vim-easymotion'
+  " NeoBundle 'Yggdroot/indentLine'
+  NeoBundle 'glidenote/memolist.vim'
+  call neobundle#end()
+
+  NeoBundleCheck
 endif
-" originalrepos on github
-NeoBundle 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
-" colorscheme
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'vim-scripts/Zenburn'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'vim-scripts/twilight'
-NeoBundle 'cocopon/iceberg.vim'
-" Unite
-NeoBundle 'Shougo/unite.vim.git'
-" NeoBundle 'Shougo/unite-outline'
-" カラースキームを手軽に変更
-NeoBundle 'ujihisa/unite-colorscheme'
-" NERDTree
-NeoBundle 'scrooloose/nerdtree'
-" Markdownプラグイン
-NeoBundle 'rcmdnk/vim-markdown'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'tyru/open-browser.vim'
-" Evervim
-NeoBundle 'kakkyz81/evervim'
-" todo.txt
-NeoBundle 'freitass/todo.txt-vim'
-" コメントアウト機能
-NeoBundle 'tomtom/tcomment_vim.git'
-" 超絶補完
-NeoBundle 'Shougo/neocomplete.vim'
-" 括弧の操作補完
-NeoBundle 'tpope/vim-surround'
-" howm
-NeoBundle 'fuenor/qfixhowm.git'
-" vim hacksをvimで読む
-NeoBundle 'choplin/unite-vim_hacks'
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'mattn/wwwrenderer-vim'
-NeoBundle 'thinca/vim-openbuf'
-" Google Tasks
-NeoBundle 'mattn/googletasks-vim'
-"NeoBundle 'https://bitbucket.org/kovisoft/slimv'
-" emmet
-NeoBundle 'mattn/emmet-vim'
-" Ruby & Rails
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-endwise'
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'honza/vim-snippets'
-NeoBundle 'vim-scripts/dbext.vim'
-NeoBundle 'AndrewRadev/switch.vim'
-" text edit support
-NeoBundle 'vim-scripts/Align'
-NeoBundle 'vim-scripts/YankRing.vim'
-NeoBundle 'vim-scripts/Changed'
-" ステータスライン
-NeoBundle 'itchyny/lightline.vim'
-" LESSハイライト
-NeoBundle 'groenewege/vim-less'
-" Gist
-NeoBundle 'mattn/Gist-vim'
-" 爆速カーソル移動
-NeoBundle 'Lokaltog/vim-easymotion'
+
+" %移動設定
+if !exists('loaded_matchit')
+  runtime macros/matchit.vim
+endif
 
 filetype indent plugin on     " required!
 
@@ -123,6 +145,7 @@ filetype indent plugin on     " required!
 "---------------------------
 "カラースキーム設定
 colorscheme iceberg
+highlight Normal ctermbg=none
 syntax enable
 
 " 256色で使用する
@@ -136,9 +159,12 @@ augroup cch
   autocmd WinLeave * set nocursorline
   autocmd WinEnter,BufRead * set cursorline
 augroup END
-hi clear CursorLine
-hi CursorLine ctermbg=black guibg=black
+highlight clear CursorLine
+highlight CursorLine ctermbg=17 guibg=black
 " カーソルライン設定ここまで
+
+" スペルチェックに下線を引く
+highlight SpellBad cterm=underline ctermbg=0
 
 
 "---------------------------
@@ -174,6 +200,8 @@ set expandtab
 set shiftwidth=2
 "ファイル内の <Tab> が対応する空白の数
 set tabstop=2
+"長い行も最後まで表示する
+set display=lastline
 " 括弧の補完
 inoremap () ()<Left>
 inoremap "" ""<Left>
@@ -199,9 +227,14 @@ set complete+=k " 補完に辞書ファイル追加
 " common
 nnoremap ,, :up<CR>
 nnoremap <C-h> :<C-u>help<Space>
-noremap <Space>l $
-noremap <Space>h ^
+nnoremap <Space>l $
+nnoremap <Space>h ^
 inoremap <ESC> <ESC>:<C-u>up<CR>
+nnoremap Y y$
+
+" インクリメント＆デクリメント
+nnoremap + <C-a>
+nnoremap - <C-p>
 
 " タブ操作
 nnoremap tc :<C-u>tabnew<CR>
@@ -239,13 +272,7 @@ nnoremap <silent> [GTD]r :<C-u>tabnew<Space>~/Dropbox/notes/gtd/ルーチンタ�
 
 " plugins
 " NERDTreeToggleをF6に割り当て
-nmap <F6> :NERDTreeToggle<CR>
-" EverVim
-nnoremap [EverVim] <Nop>
-nmap ,e [EverVim]
-nnoremap <silent> [EverVim]c :<C-u>EvervimCreate<CR>
-nnoremap <silent> [EverVim]n :<C-u>EvervimNotebookList<CR>
-nnoremap <silent> [EverVim]t :<C-u>EvervimListTags<CR>
+nnoremap <F6> :NERDTreeToggle<CR>
 " NeoBundle
 nnoremap [NeoBundle] <Nop>
 nmap ,n [NeoBundle]
@@ -300,19 +327,17 @@ nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
 
 
 "---------------------------
-" unite colorscheme
+" plugins
 "---------------------------
+""" unite colorscheme
 let g:unite_enable_start_insert = 1
 let g:unite_enable_split_vertically = 1
 if globpath(&rtp, 'plugin/unite.vim') != ''
   nnoremap sc :<C-u>Unite colorscheme<CR>
 endif
 
-
-"---------------------------
-" QFixHowm
-"---------------------------
-let howm_dir      = '~/Dropbox/notes/'
+""" QFixHowm
+let howm_dir      = '~/Dropbox/notes'
 let QFixHowm_RootDir  = '~/Dropbox/notes/'
 let howm_filename   = '%Y-%m-%d-%H%M%S.txt'
 let howm_fileencoding = 'utf-8'
@@ -320,28 +345,21 @@ let howm_fileformat   = 'unix'
 let QFixHowm_FileType = 'markdown'
 let QFixHowm_SaveTime = 2
 let QFixHowm_DiaryFile  = 'diary/%Y/%m/%Y-%m-%d-000000.howm'
-let QFixHowm_Title = "="
+let QFixHowm_Title = "title:"
 let QFixHowm_Key ="g"
 let QFixHowm_KeyB = ","
-
 " howmディレクトリをhdコマンドで変更
 command! -nargs=1 Hd let howm_dir = QFixHowm_RootDir.'/'.<q-args>|echo howm_dir
 
-
-"---------------------------
-" Rails.vim
-"---------------------------
+""" Rails.vim
 " :Rconfigでroutes.rb表示
-autocmd User Rails Rnavcommand config config   -glob=*.*  -suffix= -default=routes.rb
+autocmd vimrc User Rails Rnavcommand config config   -glob=*.*  -suffix= -default=routes.rb
 " Alias
-autocmd User Rails nmap :<C-u>Rcontroller :<C-u>Rc
-autocmd User Rails nmap :<C-u>Rmodel :<C-u>Rm
-autocmd User Rails nmap :<C-u>Rview :<C-u>Rv
+autocmd vimrc User Rails nmap :<C-u>Rcontroller :<C-u>Rc
+autocmd vimrc User Rails nmap :<C-u>Rmodel :<C-u>Rm
+autocmd vimrc User Rails nmap :<C-u>Rview :<C-u>Rv
 
-
-"---------------------------
-" Neocomplete
-"---------------------------
+""" neocomplete
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
@@ -389,11 +407,11 @@ inoremap <expr><C-q> pumvisible() ? neocomplete#close_popup() : "\<C-q>"
 inoremap <expr><C-e> pumvisible() ? neocomplete#cancel_popup() : "\<C-e>"
 
 " Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd vimrc FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd vimrc FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd vimrc FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd vimrc FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd vimrc FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " if !exists('g:neocomplete#force_omni_input_patterns')
 "   let g:neocomplete#force_omni_input_patterns = {}
@@ -401,9 +419,7 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
 
-"---------------------------
-" NeoSnippet
-"---------------------------
+""" NeoSnippet
 " snippets
 let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets,~/.vim/mysnippets'
 
@@ -420,18 +436,14 @@ smap <expr><TAB> neosnippet#jumpable() ?
 \: "\<TAB>"
 
 
-"---------------------------
-" emmet
-"---------------------------
+""" emmet
 " トリガーをC-yに変更
 let g:user_emmet_leader_key = '<C-y>'
 " insert, normalモードでのみ動作
 let g:user_emmet_mode = 'in'
 
 
-"---------------------------
-" lightline
-"---------------------------
+""" lightline
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -446,11 +458,17 @@ let g:lightline = {
       \ 'component_function': {
       \   'currentdir': 'MyCurrentDir',
       \ },
-      \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
-      \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" },
+      \ 'separator': { 'left': "", 'right': "" },
+      \ 'subseparator': { 'left': "|", 'right': "|" },
       \}
 
 function! MyCurrentDir()
   return fnamemodify(getcwd(), ":p")
 endfunction
+
+
+""" OpenBrowser
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nnoremap gx <Plug>(openbrowser-smart-search)
+vnoremap gx <Plug>(openbrowser-smart-search)
 
