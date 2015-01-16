@@ -40,11 +40,9 @@ set notimeout
 set ttimeout
 set timeoutlen=100
 set noundofile " .un~ファイルを生成しない
-set helplang=ja
+set helplang=ja,en
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd vimrc FileType text setlocal textwidth=0
-
-set helplang=ja
 
 "---------------------------
 " NeoBundle
@@ -53,91 +51,95 @@ filetype off
 
 if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
-  call neobundle#begin(expand('~/.vim/bundle/'))
-  NeoBundleFetch 'Shougo/neobundle.vim'
-  " originalrepos on github
-  NeoBundle 'Shougo/neobundle.vim'
-  NeoBundle 'Shougo/vimproc', {
-        \ 'build' : {
-        \     'windows' : 'tools\\update-dll-mingw',
-        \     'cygwin' : 'make -f make_cygwin.mak',
-        \     'mac' : 'make -f make_mac.mak',
-        \     'unix' : 'make -f make_unix.mak',
-        \    },
-        \ }
-  " colorscheme
-  NeoBundle 'altercation/vim-colors-solarized'
-  NeoBundle 'tomasr/molokai'
-  NeoBundle 'nanotech/jellybeans.vim'
-  NeoBundle 'vim-scripts/Zenburn'
-  NeoBundle 'w0ng/vim-hybrid'
-  NeoBundle 'vim-scripts/twilight'
-  NeoBundle 'cocopon/iceberg.vim'
-  " Unite
-  NeoBundle 'Shougo/unite.vim'
-  NeoBundle 'Shougo/unite-outline'
-  " カラースキームを手軽に変更
-  NeoBundle 'ujihisa/unite-colorscheme'
-  " NERDTree
-  NeoBundle 'scrooloose/nerdtree'
-  " Markdownプラグイン
-  NeoBundle 'rcmdnk/vim-markdown'
-  " quickrun
-  NeoBundle 'thinca/vim-quickrun'
-  NeoBundle 'tyru/open-browser.vim'
-  " " Evervim
-  " NeoBundle 'kakkyz81/evervim'
-  " todo.txt
-  NeoBundle 'freitass/todo.txt-vim'
-  " コメントアウト機能
-  NeoBundle 'tomtom/tcomment_vim.git'
-  " 超絶補完
-  NeoBundle 'Shougo/neocomplete.vim'
-  NeoBundle 'Shougo/neosnippet.vim'
-  NeoBundle 'Shougo/neosnippet-snippets'
-  NeoBundle 'honza/vim-snippets'
-  " 括弧の操作補完
-  NeoBundle 'tpope/vim-surround'
-  " howm
-  NeoBundle 'fuenor/qfixhowm.git'
-  " vim hacksをvimで読む
-  NeoBundle 'choplin/unite-vim_hacks'
-  NeoBundle 'mattn/webapi-vim'
-  NeoBundle 'mattn/wwwrenderer-vim'
-  NeoBundle 'thinca/vim-openbuf'
-  " emmet
-  NeoBundle 'mattn/emmet-vim'
-  " Ruby & Rails
-  NeoBundle 'vim-ruby/vim-ruby'
-  NeoBundle 'tpope/vim-rails'
-  NeoBundle 'tpope/vim-endwise'
-  NeoBundle 'vim-scripts/dbext.vim'
-  NeoBundle 'AndrewRadev/switch.vim'
-  " text edit support
-  NeoBundle 'vim-scripts/Align'
-  NeoBundle 'vim-scripts/YankRing.vim'
-  NeoBundle 'vim-scripts/Changed'
-  " ステータスライン
-  NeoBundle 'itchyny/lightline.vim'
-  " LESSハイライト
-  NeoBundle 'groenewege/vim-less'
-  " Gist
-  NeoBundle 'mattn/Gist-vim'
-  " 爆速カーソル移動
-  NeoBundle 'Lokaltog/vim-easymotion'
-  " NeoBundle 'Yggdroot/indentLine'
-  NeoBundle 'glidenote/memolist.vim'
-  call neobundle#end()
-
-  NeoBundleCheck
 endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
+" originalrepos on github
+NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/vimproc', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
+" colorscheme
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'vim-scripts/Zenburn'
+NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'vim-scripts/twilight'
+NeoBundle 'cocopon/iceberg.vim'
+" Unite
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/unite-outline'
+" カラースキームを手軽に変更
+NeoBundle 'ujihisa/unite-colorscheme'
+" NERDTree
+NeoBundle 'scrooloose/nerdtree'
+" Markdownプラグイン
+NeoBundle 'joker1007/vim-markdown-quote-syntax'
+NeoBundle 'rcmdnk/vim-markdown'
+" quickrun
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'tyru/open-browser.vim'
+" " Evervim
+" NeoBundle 'kakkyz81/evervim'
+" todo.txt
+NeoBundle 'freitass/todo.txt-vim'
+" コメントアウト機能
+NeoBundle 'tomtom/tcomment_vim.git'
+" 超絶補完
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'honza/vim-snippets'
+" 括弧の操作補完
+NeoBundle 'tpope/vim-surround'
+" howm
+NeoBundle 'fuenor/qfixhowm.git'
+" vim hacksをvimで読む
+NeoBundle 'choplin/unite-vim_hacks'
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'mattn/wwwrenderer-vim'
+NeoBundle 'thinca/vim-openbuf'
+" emmet
+NeoBundle 'mattn/emmet-vim'
+" Ruby & Rails
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'vim-scripts/dbext.vim'
+NeoBundle 'AndrewRadev/switch.vim'
+" text edit support
+NeoBundle 'vim-scripts/Align'
+NeoBundle 'vim-scripts/YankRing.vim'
+NeoBundle 'vim-scripts/Changed'
+" ステータスライン
+NeoBundle 'itchyny/lightline.vim'
+" LESSハイライト
+NeoBundle 'groenewege/vim-less'
+" Gist
+NeoBundle 'mattn/Gist-vim'
+" 爆速カーソル移動
+NeoBundle 'Lokaltog/vim-easymotion'
+" NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'glidenote/memolist.vim'
+" helpの日本語化
+NeoBundle 'vim-jp/vimdoc-ja'
+call neobundle#end()
+
+filetype indent plugin on     " required!
+
+NeoBundleCheck
 
 " %移動設定
 if !exists('loaded_matchit')
   runtime macros/matchit.vim
 endif
-
-filetype indent plugin on     " required!
 
 
 "---------------------------
@@ -227,8 +229,8 @@ set complete+=k " 補完に辞書ファイル追加
 " common
 nnoremap ,, :up<CR>
 nnoremap <C-h> :<C-u>help<Space>
-nnoremap <Space>l $
-nnoremap <Space>h ^
+nmap <Space>l$
+nmap <Space>h
 inoremap <ESC> <ESC>:<C-u>up<CR>
 nnoremap Y y$
 
@@ -463,7 +465,7 @@ let g:lightline = {
       \}
 
 function! MyCurrentDir()
-  return fnamemodify(getcwd(), ":p")
+  return fnamemodify(getcwd(), ":p:~")
 endfunction
 
 
