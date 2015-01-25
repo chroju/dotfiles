@@ -41,6 +41,7 @@ set ttimeout
 set timeoutlen=100
 set noundofile " .un~ファイルを生成しない
 set helplang=ja,en
+set nrformats= " 語頭0の数値も10進数として扱う
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd vimrc FileType text setlocal textwidth=0
 
@@ -86,7 +87,6 @@ NeoBundle 'rcmdnk/vim-markdown'
 " quickrun
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'tyru/open-browser.vim'
-" " Evervim
 " NeoBundle 'kakkyz81/evervim'
 " todo.txt
 NeoBundle 'freitass/todo.txt-vim'
@@ -130,6 +130,8 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'glidenote/memolist.vim'
 " helpの日本語化
 NeoBundle 'vim-jp/vimdoc-ja'
+" markを明示
+NeoBundle 'jacquesbh/vim-showmarks'
 call neobundle#end()
 
 filetype indent plugin on     " required!
@@ -228,9 +230,10 @@ set complete+=k " 補完に辞書ファイル追加
 "---------------------------
 " common
 nnoremap ,, :up<CR>
+nnoremap <Space>,, :w<Space>!sudo<Space>tee<Space>>/dev/null<Space>%
 nnoremap <C-h> :<C-u>help<Space>
-nmap <Space>l$
-nmap <Space>h
+nmap <Space>l $
+nmap <Space>h ^
 inoremap <ESC> <ESC>:<C-u>up<CR>
 nnoremap Y y$
 
