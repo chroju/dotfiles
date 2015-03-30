@@ -74,7 +74,13 @@ function(){
 });
 EOM
 nnoremap @ :togglepin<CR>
-
+" Evernote Clearly
+javascript <<EOM
+window.onload = function() {
+  require("chrome://readable-by-evernote/content/global.js");
+}
+EOM
+nnoremap e :js __readable_by_evernote.context_menu__call();<CR> 
 
 "============================
 " colorscheme
@@ -98,6 +104,7 @@ qmark f http://cloud.feedly.com/#latest
 qmark p http://getpocket.com/a/queue
 qmark B http://chroju.hatenablog.jp/
 qmark c https://www.google.com/calendar/
+qmark e https://www.evernote.com/Home.action
 
 
 "============================
