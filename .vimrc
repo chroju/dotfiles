@@ -21,19 +21,19 @@ augroup vimrc
   autocmd!
 augroup END
 
-set number              " 行数表示
-set notitle             " 変なタイトル表示しない
-set nobackup            " バックアップファイルを作成しない
-set noswapfile          " スワップファイルを作成しない
-set hidden              " 未保存バッファがあっても無視する
+set number " 行数表示
+set notitle " 変なタイトル表示しない
+set nobackup " バックアップファイルを作成しない
+set noswapfile " スワップファイルを作成しない
+set hidden " 未保存バッファがあっても無視する
 set clipboard+=unnamed,autoselect  " クリップボードをOSと連携
-set showcmd             " 入力中のコマンドを右下に表示
-set ruler               " 座標を右下に表示
-set scrolloff=3         " スクロール時の余白確保
-set textwidth=0         " 自動折り返しをしない
-set noerrorbells        " エラー時にビープ音を鳴らさない
-set vb t_vb=            " ビープ音をビジュアルベル（空文字）に置き換え
-set ambiwidth=double    " マルチバイト文字のズレを防ぐ
+set showcmd " 入力中のコマンドを右下に表示
+set ruler " 座標を右下に表示
+set scrolloff=3 " スクロール時の余白確保
+set textwidth=0 " 自動折り返しをしない
+set noerrorbells " エラー時にビープ音を鳴らさない
+set vb t_vb= " ビープ音をビジュアルベル（空文字）に置き換え
+set ambiwidth=double " マルチバイト文字のズレを防ぐ
 set laststatus=2
 " 以下3行、矢印キーによるアルファベット入力防止
 set notimeout
@@ -349,7 +349,7 @@ let howm_fileencoding = 'utf-8'
 let howm_fileformat   = 'unix'
 let QFixHowm_FileType = 'markdown'
 let QFixHowm_SaveTime = 2
-let QFixHowm_DiaryFile  = 'diary/%Y/%m/%Y-%m-%d-000000.howm'
+let QFixHowm_DiaryFile  = '%Y-%m-%d_weekly.txt'
 let QFixHowm_Title = "title:"
 let QFixHowm_Key ="g"
 let QFixHowm_KeyB = ","

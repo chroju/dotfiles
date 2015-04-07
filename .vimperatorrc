@@ -3,7 +3,6 @@
 "============================
 " General
 "============================
-
 " 入力欄に自動フォーカスしない
 set focuscontent
 " ビジュアルベルを表示しない
@@ -24,10 +23,10 @@ set yankencodedurl
 " タブ以外のツールバーを非表示
 set gui=none,tabs
 
+
 "============================
 " Key mapping
 "============================
-
 " google検索を手早くする
 nnoremap s :open<Space>google<Space>
 nnoremap ,s :tabopen<Space>google<Space>
@@ -82,6 +81,27 @@ window.onload = function() {
 EOM
 nnoremap e :js __readable_by_evernote.context_menu__call();<CR> 
 
+
+"============================
+" panorama (tab group)
+"============================
+" http://jagua.hatenablog.jp/entry/2012/12/08/001014
+" :panorama のサブコマンドを入力待ち
+nnoremap ,pc :<C-u>panorama<Space>
+" タブグループを移動
+nnoremap ,ps :<C-u>panorama switch<Space>
+" タブグループを新規作成
+nnoremap ,pa :<C-u>panorama add<Space>
+" タブグループリストを表示
+nnoremap ,pl :<C-u>panorama list<CR>
+" 現在のタブをタブグループに追加
+nnoremap ,pp :<C-u>panorama pushtab<Space>
+" 現在のタブグループにタブを追加
+nnoremap ,pu :<C-u>panorama pulltab<Space>
+" タブグループを削除
+nnoremap ,pR :<C-u>panorama remove<CR>
+
+
 "============================
 " colorscheme
 "============================
@@ -105,19 +125,21 @@ qmark p http://getpocket.com/a/queue
 qmark B http://chroju.hatenablog.jp/
 qmark c https://www.google.com/calendar/
 qmark e https://www.evernote.com/Home.action
+qmark w https://workflowy.com/
+qmark g https://github.com/chroju
+qmark G http://chroju.github.io/
 
 
 "============================
 " plugin
 "============================
-
 " plugin_loader
 let g:plugin_loader_roots = "~\vimperator\vimperator-plugins\ ~/.vimperator/vimperator-plugins/"
 let g:plugin_loader_plugins = "_libly,direct_bookmark,sbmcommentsviewer,caret-hint,appendAnchor,evernote-clearly-vimp,stella,feedSomeKeys_3,commandBookmarklet,copy"
 
 " Evernote Clearly
-nnoremap e :<C-u>js __readable_by_evernote.context.menu__call(buffer.URL)<CR>
-nnoremap E :<C-u>js __readable_by_evernote.context__launch(true)<CR>
+" nnoremap e :<C-u>js __readable_by_evernote.context.menu__call(buffer.URL)<CR>
+" nnoremap E :<C-u>js __readable_by_evernote.context__launch(true)<CR>
 
 " direct_bookmark
 let g:direct_sbm_use_services_by_tag = "h"
@@ -162,7 +184,6 @@ map ,my :copy<Space>markdown<CR>
 "============================
 " about:config
 "============================
-
 " IPv6
 set! network.dns.disableIPv6=true
 " pipeline関連設定
