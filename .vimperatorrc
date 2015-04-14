@@ -121,9 +121,11 @@ qmark m https://mail.google.com/
 qmark b http://b.hatena.ne.jp/chroju
 qmark t http://chroju.tumblr.com/
 qmark f http://cloud.feedly.com/#latest
+qmark F https://ja.foursquare.com/
 qmark p http://getpocket.com/a/queue
 qmark B http://chroju.hatenablog.jp/
-qmark c https://www.google.com/calendar/
+qmark c https://calendar.sunrise.am/
+qmark C https://www.google.com/calendar/
 qmark e https://www.evernote.com/Home.action
 qmark w https://workflowy.com/
 qmark g https://github.com/chroju
