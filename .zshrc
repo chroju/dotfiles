@@ -12,7 +12,9 @@ export SHELL=/usr/local/bin/zsh
 #   darwin*)
 #     alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 # esac
+alias vi='vim'
 alias ls='ls --color'
+alias ll='ls -la'
 alias grep='grep --color -n'
 alias -g G=' | grep --color -n'
 alias -g M=' | more'

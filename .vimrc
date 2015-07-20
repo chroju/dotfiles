@@ -132,6 +132,9 @@ NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'vim-jp/vimdoc-ja'
 " markを明示
 NeoBundle 'jacquesbh/vim-showmarks'
+" ruby
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'yuku-t/vim-ref-ri'
 call neobundle#end()
 
 filetype indent plugin on     " required!
@@ -232,8 +235,10 @@ set complete+=k " 補完に辞書ファイル追加
 nnoremap ,, :up<CR>
 nnoremap <Space>,, :w<Space>!sudo<Space>tee<Space>>/dev/null<Space>%
 nnoremap <C-h> :<C-u>help<Space>
-nmap <Space>l $
-nmap <Space>h ^
+nnoremap <Space>l $
+nnoremap <Space>h ^
+vnoremap <Space>l $
+vnoremap <Space>h ^
 inoremap <ESC> <ESC>:<C-u>up<CR>
 nnoremap Y y$
 
@@ -266,14 +271,6 @@ nnoremap bb :ls<CR>:buf
 
 " 編集中のファイルのディレクトリに移動
 nnoremap ,d :execute ":lcd" . expand("%:p:h")<CR>
-
-" GTD
-nnoremap [GTD] <Nop>
-nmap ,g [GTD]
-nnoremap <silent> [GTD]l :<C-u>tabnew<Space>~/Dropbox/todo.txt<CR>
-nnoremap <silent> [GTD]g :<C-u>tabnew<Space>~/Dropbox/notes/gtd/gtd.txt<CR>
-nnoremap <silent> [GTD]t :<C-u>tabnew<Space>~/Dropbox/notes/gtd/トリガーリスト.txt<CR>
-nnoremap <silent> [GTD]r :<C-u>tabnew<Space>~/Dropbox/notes/gtd/ルーチンタスクリスト.txt<CR>
 
 " plugins
 " NERDTreeToggleをF6に割り当て
@@ -341,20 +338,24 @@ if globpath(&rtp, 'plugin/unite.vim') != ''
   nnoremap sc :<C-u>Unite colorscheme<CR>
 endif
 
-""" QFixHowm
-let howm_dir      = '~/Dropbox/notes'
-let QFixHowm_RootDir  = '~/Dropbox/notes/'
-let howm_filename   = '%Y-%m-%d-%H%M%S.txt'
-let howm_fileencoding = 'utf-8'
-let howm_fileformat   = 'unix'
-let QFixHowm_FileType = 'markdown'
-let QFixHowm_SaveTime = 2
-let QFixHowm_DiaryFile  = '%Y-%m-%d_weekly.txt'
-let QFixHowm_Title = "title:"
-let QFixHowm_Key ="g"
-let QFixHowm_KeyB = ","
-" howmディレクトリをhdコマンドで変更
-command! -nargs=1 Hd let howm_dir = QFixHowm_RootDir.'/'.<q-args>|echo howm_dir
+""" memolist
+" memolist directory path
+let g:memolist_path = "~/Dropbox/notes"
+" suffix type (default markdown)
+let g:memolist_memo_suffix = "md"
+" date format (default %Y-%m-%d %H:%M)
+let g:memolist_memo_date = "%Y-%m-%d %H:%M"
+" tags prompt (default 0)
+let g:memolist_prompt_tags = 1
+" categories prompt (default 0)
+let g:memolist_prompt_categories = 1
+" use qfixgrep (default 0)
+let g:memolist_qfixgrep = 1
+" use unite (default 0)
+let g:memolist_unite = 1
+nnoremap ,mn  :MemoNew<CR>
+nnoremap ,ml  :MemoList<CR>
+nnoremap ,mg  :MemoGrep<Space>
 
 """ Rails.vim
 " :Rconfigでroutes.rb表示
