@@ -12,8 +12,6 @@ highlight Bell display:none
 set complete=sl
 " Hintモードでアルファベット使用
 set hintchars=hjklasdfgyuiopqwertnmzxcvb
-" Hintモードのフォント拡大
-hi Hint -append font-size:12pt;
 " ツールバーはアドオンとタブのみ表示
 set gui=addons,nobookmarks,nomenu,nonavigation,tas
 " commandモードでIMEオフ
@@ -22,6 +20,8 @@ style! -name=commandline-ime chrome://* #liberator-commandline-command input {im
 set yankencodedurl
 " タブ以外のツールバーを非表示
 set gui=none,tabs
+" ステータスバー表示設定
+set status=input,location,bookmark,history,tabcount,position,ssl
 
 
 "============================
@@ -30,6 +30,9 @@ set gui=none,tabs
 " google検索を手早くする
 nnoremap s :open<Space>google<Space>
 nnoremap ,s :tabopen<Space>google<Space>
+" I'm feeling lucky!
+nnoremap ,o :open<Space>lu<Space>
+nnoremap ,t :tabopen<Space>lu<Space>
 " OS分岐
 " dをブラウザ標準の「タブを閉じる」にマッピング
 " vimperatorrcのリロード
@@ -59,20 +62,7 @@ nnoremap <C-r> :restart<CR>
 " VisualモードでC-gで選択しているテキストでGoogle検索
 vmap <silent> <C-g> y<Esc><Esc>P
 " タブのピン止めを@でトグル
-" http://qiita.com/t3kot3ko/items/1b032940dbb79e88323e
-javascript <<EOM
-liberator.modules.commands.addUserCommand(["togglepin"], "add pin to current tab",
-function(){
-    var currentTab = gBrowser.mCurrentTab
-    if(currentTab.pinned){
-        gBrowser.unpinTab(currentTab)
-    }
-    else{
-        gBrowser.pinTab(currentTab)
-    }
-});
-EOM
-nnoremap @ :togglepin<CR>
+nnoremap @ :set apptab!<CR>
 " Evernote Clearly
 javascript <<EOM
 window.onload = function() {
@@ -120,6 +110,7 @@ hi ErrorMsg color:white; background-color: #ec6aa1;
 qmark m https://mail.google.com/
 qmark b http://b.hatena.ne.jp/chroju
 qmark t http://chroju.tumblr.com/
+qmark T https://twitter.com/
 qmark f http://cloud.feedly.com/#latest
 qmark F https://ja.foursquare.com/
 qmark p http://getpocket.com/a/queue
@@ -130,6 +121,9 @@ qmark e https://www.evernote.com/Home.action
 qmark w https://workflowy.com/
 qmark g https://github.com/chroju
 qmark G http://chroju.github.io/
+qmark q https://qiita.com/
+qmark 1 http://chroju.net/
+qmark 2 http://chroju.net/exhibi
 
 
 "============================
@@ -152,12 +146,17 @@ let g:direct_sbm_use_services_by_post = "h"
 map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<CR>
 
 " feedSomeKeys
-command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
-lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
-lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
-lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
+" command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+" lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
+" lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
+" lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
+" lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
+" lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
+
+ignorekeys add mail\.google\.com/mail -except keys :,d,t
+ignorekeys add feedly\.com -except keys :,d,t
+ignorekeys add www\.tumblr\.com -except keys :,d
+ignorekeys add www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+ -except keys :,d,t
 
 " copy.js
 javascript <<EOM
@@ -168,7 +167,6 @@ javascript <<EOM
     { label: 'title',          value: '%TITLE%', map: ',y' },
     { label: 'anchor',         value: '<a href="%URL%">%TITLE%</a>' },
     { label: 'selanchor',      value: '<a href="%URL%" title="%TITLE%">%SEL%</a>' },
-
     { label: 'amazon',   value: 'copy clean amazon url from current page',
       custom: function() {
         var m = content.document.location.pathname.match(/dp\/(\d+)/);
@@ -211,7 +209,7 @@ set! security.dialog_enable_delay=0
 
 
 "読み込み完了メッセージ
-echo "vimperatorrc loaded."
+echo "vimperatorrc loadeeeeeeed."
 
 " [EOF]
 

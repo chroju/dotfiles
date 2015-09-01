@@ -33,6 +33,7 @@ set scrolloff=3 " スクロール時の余白確保
 set textwidth=0 " 自動折り返しをしない
 set noerrorbells " エラー時にビープ音を鳴らさない
 set vb t_vb= " ビープ音をビジュアルベル（空文字）に置き換え
+set novisualbell "ビジュアルベルを表示しない
 set ambiwidth=double " マルチバイト文字のズレを防ぐ
 set laststatus=2
 " 以下3行、矢印キーによるアルファベット入力防止
@@ -100,7 +101,7 @@ NeoBundle 'honza/vim-snippets'
 " 括弧の操作補完
 NeoBundle 'tpope/vim-surround'
 " howm
-NeoBundle 'fuenor/qfixhowm.git'
+" NeoBundle 'fuenor/qfixhowm.git'
 " vim hacksをvimで読む
 NeoBundle 'choplin/unite-vim_hacks'
 NeoBundle 'mattn/webapi-vim'
@@ -331,24 +332,23 @@ nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
 "---------------------------
 " plugins
 "---------------------------
-""" unite colorscheme
+"## unite colorscheme
 let g:unite_enable_start_insert = 1
 let g:unite_enable_split_vertically = 1
 if globpath(&rtp, 'plugin/unite.vim') != ''
   nnoremap sc :<C-u>Unite colorscheme<CR>
 endif
 
-""" memolist
+
+"## memolist
 " memolist directory path
-let g:memolist_path = "~/Dropbox/notes"
+let g:memolist_path = "$HOME/Dropbox/notes"
+" use template
+let g:memolist_template_dir_path = "$HOME/.vim/templates/memolist.txt"
 " suffix type (default markdown)
 let g:memolist_memo_suffix = "md"
 " date format (default %Y-%m-%d %H:%M)
 let g:memolist_memo_date = "%Y-%m-%d %H:%M"
-" tags prompt (default 0)
-let g:memolist_prompt_tags = 1
-" categories prompt (default 0)
-let g:memolist_prompt_categories = 1
 " use qfixgrep (default 0)
 let g:memolist_qfixgrep = 1
 " use unite (default 0)
@@ -357,7 +357,8 @@ nnoremap ,mn  :MemoNew<CR>
 nnoremap ,ml  :MemoList<CR>
 nnoremap ,mg  :MemoGrep<Space>
 
-""" Rails.vim
+
+"## Rails.vim
 " :Rconfigでroutes.rb表示
 autocmd vimrc User Rails Rnavcommand config config   -glob=*.*  -suffix= -default=routes.rb
 " Alias
@@ -365,7 +366,8 @@ autocmd vimrc User Rails nmap :<C-u>Rcontroller :<C-u>Rc
 autocmd vimrc User Rails nmap :<C-u>Rmodel :<C-u>Rm
 autocmd vimrc User Rails nmap :<C-u>Rview :<C-u>Rv
 
-""" neocomplete
+
+"## neocomplete
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
@@ -425,7 +427,7 @@ autocmd vimrc FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
 
-""" NeoSnippet
+"## NeoSnippet
 " snippets
 let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets,~/.vim/mysnippets'
 
@@ -442,14 +444,14 @@ smap <expr><TAB> neosnippet#jumpable() ?
 \: "\<TAB>"
 
 
-""" emmet
+"## emmet
 " トリガーをC-yに変更
 let g:user_emmet_leader_key = '<C-y>'
 " insert, normalモードでのみ動作
 let g:user_emmet_mode = 'in'
 
 
-""" lightline
+"## lightline
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -473,7 +475,7 @@ function! MyCurrentDir()
 endfunction
 
 
-""" OpenBrowser
+"## OpenBrowser
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nnoremap gx <Plug>(openbrowser-smart-search)
 vnoremap gx <Plug>(openbrowser-smart-search)

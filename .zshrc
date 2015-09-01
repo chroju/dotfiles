@@ -1,11 +1,11 @@
 #Created by newuser for 5.0.6
 #
+# 環境変数 TODO: zshenvに移動
+export TERM=xterm-256color
+export PATH=$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
+export SHELL=/usr/local/bin/zsh
 # rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-# 環境変数
-export TERM=xterm-256color
-export PATH=$HOME/.rbenv/shims:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
-export SHELL=/usr/local/bin/zsh
 
 # alias
 # case ${OSTYPE} in
@@ -101,3 +101,8 @@ zstyle ':completion:*' list-colors "${LS_COLORS}"
 # ここではデフォルトのセットから / を抜いたものとする
 # こうすると、 Ctrl-W でカーソル前の1単語を削除したとき、 / までで削除が止まる
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+# history
+HISTFILE=$HOME/.zsh_history$
+HISTSIZE=200
+SAVEHIST=200
