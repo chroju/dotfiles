@@ -1,0 +1,29 @@
+[user]
+  name = chroju
+  email = chor.chroju@gmail.com
+
+[color]
+  status = auto
+  diff = auto
+  branch = auto
+  grep = auto
+
+[push]
+  default = tracking
+
+[core]
+  excludesfile = ~/.gitignore
+
+[alias]
+  s = status -s
+  ss = status
+  sh = show
+  a = add
+  aa = add .
+  cm = commit -m
+  ps = push
+  pl = pull
+  cb = checkout -b
+  cl = clone
+  br = branch
+
