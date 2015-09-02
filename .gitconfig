@@ -2,6 +2,9 @@
   name = chroju
   email = chor.chroju@gmail.com
 
+[github]
+  user = chroju
+
 [color]
   status = auto
   diff = auto
