@@ -12,4 +12,4 @@ PATH=(
 )
 
 # rbenv init
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+which rbenv > /dev/null && eval $(rbenv init - zsh)
