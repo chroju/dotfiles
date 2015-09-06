@@ -14,7 +14,7 @@ WORDCHARS='*?_-~&!#$%'
 # ====================
 
 alias vi='vim'
-alias ls='ls --color'
+alias ls='ls -G'
 alias ll='ls -la'
 alias grep='grep --color -E'
 alias sed='sed -r'
