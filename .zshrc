@@ -84,6 +84,7 @@ setopt glob_dots
 HISTFILE=$HOME/.zsh_history$
 HISTSIZE=200
 SAVEHIST=200
+HISTTIMEFORMAT="[%Y-%m-%D %H:%M:%S]"
 
 
 # ====================
@@ -92,12 +93,16 @@ SAVEHIST=200
 
 # プロンプトが表示されるたびにプロンプト文字列を評価、置換する
 setopt prompt_subst
+# gitの情報表示
+autoload -U vcs_info
+zstyle ':vcs_info:*' formats '[%b:%r]'
+zstyle ':vcs_info:*' actionformats '[%b:%r !%a!]'
+precmd () { vcs_info }
 # プロンプト
 PROMPT="
-%{$fg[yellow]%}%m%{${reset_color}%}
-%(?.%{$fg[white]%}.%{$fg[cyan]%})%(?!|-'%)!|-;%))%{${reset_color}%} "
-SPROMPT="%{$fg[magenta]%}%{$suggest%}|*'~'? < is it %B%r%b %{$fg[magenta]%}? [Yes!(y), No!(n),a,e]:${reset_color} "
-RPROMPT='%F{yellow}%~%f'
+%{$fg[yellow]%}%m%{${reset_color}%} at %{$fg[cyan]%}%d%{${reset_color}%} on %{$fg[green]%}${vcs_info_msg_0_}%{${reset_color}%}
+%(?.%{$fg[white]%}.%{$fg[cyan]%})%(?!:%)!:()%{${reset_color}%} "
+SPROMPT="%{$fg[magenta]%}%{$suggest%};%) < is it %B%r%b %{$fg[magenta]%}? [Yes!(y), No!(n),a,e]:${reset_color} "
 
 
 # ====================
