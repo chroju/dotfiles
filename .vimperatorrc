@@ -8,12 +8,10 @@ set focuscontent
 " ビジュアルベルを表示しない
 set visualbell
 highlight Bell display:none
-" :oなどでの補完候補をサーチエンジン、履歴に限定
-set complete=sl
+" :oなどでの補完候補をブックマーク、サジェストエンジン、サーチエンジンに限定
+set complete=ls
 " Hintモードでアルファベット使用
 set hintchars=hjklasdfgyuiopqwertnmzxcvb
-" ツールバーはアドオンとタブのみ表示
-set gui=addons,nobookmarks,nomenu,nonavigation,tas
 " commandモードでIMEオフ
 style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
 " URLのyankでencodeをオフにする
@@ -153,10 +151,10 @@ map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<CR>
 " lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
 " lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
 
-ignorekeys add mail\.google\.com/mail -except keys :,d,t
-ignorekeys add feedly\.com -except keys :,d,t
-ignorekeys add www\.tumblr\.com -except keys :,d
-ignorekeys add www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+ -except keys :,d,t
+ignorekeys add mail\\.google\\.com -except :,d,t
+ignorekeys add feedly\\.com -except :,d,t
+ignorekeys add www\\.tumblr\\.com -except :,d
+ignorekeys add www\\.pixiv\\.net/member_illus\\.php\?mode=manga&illust_id=[0-9]+ -except :,d,t
 
 " copy.js
 javascript <<EOM
@@ -209,7 +207,7 @@ set! security.dialog_enable_delay=0
 
 
 "読み込み完了メッセージ
-echo "vimperatorrc loadeeeeeeed."
+echo "vimperatorrc loaded."
 
 " [EOF]
 
