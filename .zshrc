@@ -18,13 +18,14 @@ alias ls='ls -G'
 alias ll='ls -la'
 alias grep='grep --color -E'
 alias sed='sed -r'
+alias history='history -i'
+alias g='git '
+alias qa='shutdown -h now'
 alias -g G=' | grep --color -E'
 alias -g M=' | more'
 alias -g H=' | head'
 alias -g T=' | tail'
 alias -g L=' | less'
-alias g='git '
-alias qa='shutdown -h now'
 
 
 # ====================
@@ -33,8 +34,10 @@ alias qa='shutdown -h now'
 
 # emacsライクなキーバインド
 bindkey -e
-# C-uをbash同様にキーバインド
-bindkey "^U" backward-kill-line
+# bash同様にキーバインド
+bindkey '^U' backward-kill-line
+bindkey '^]' vi-find-next-char
+bindkey '^[^]' vi-find-prev-char
 
 
 # ====================
@@ -65,6 +68,8 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 # historyにhistoryコマンド自体を記録しない
 setopt hist_no_store
+# historyをzshプロセス間で共有
+setopt share_history
 # 補完対象ファイルリストの末尾に識別マークを付ける
 setopt list_types
 # rm * する際に10秒待つ
@@ -82,27 +87,29 @@ setopt glob_dots
 # ====================
 
 HISTFILE=$HOME/.zsh_history$
-HISTSIZE=200
-SAVEHIST=200
-HISTTIMEFORMAT="[%Y-%m-%D %H:%M:%S]"
+HISTSIZE=500
+SAVEHIST=500
 
 
 # ====================
 #  prompt
 # ====================
-
+#
 # プロンプトが表示されるたびにプロンプト文字列を評価、置換する
 setopt prompt_subst
 # gitの情報表示
 autoload -U vcs_info
-zstyle ':vcs_info:*' formats '[%b:%r]'
-zstyle ':vcs_info:*' actionformats '[%b:%r !%a!]'
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' stagedstr '%F{green}[!]'
+zstyle ':vcs_info:*' unstagedstr '%F{yellow}[+]'
+zstyle ':vcs_info:*' formats 'on %F{green}%r:%b%f %c%u'
+zstyle ':vcs_info:*' actionformats  'on %F{green}%r:%b%f %c%u %F{red}<%a>%f'
 precmd () { vcs_info }
 # プロンプト
-PROMPT="
-%{$fg[yellow]%}%m%{${reset_color}%} at %{$fg[cyan]%}%d%{${reset_color}%} on %{$fg[green]%}${vcs_info_msg_0_}%{${reset_color}%}
-%(?.%{$fg[white]%}.%{$fg[cyan]%})%(?!:%)!:()%{${reset_color}%} "
-SPROMPT="%{$fg[magenta]%}%{$suggest%};%) < is it %B%r%b %{$fg[magenta]%}? [Yes!(y), No!(n),a,e]:${reset_color} "
+PROMPT='
+%{$fg[yellow]%}%m%{${reset_color}%} at %{$fg[cyan]%}%d%{${reset_color}%} ${vcs_info_msg_0_}
+%(?.%{$fg[white]%}.%{$fg[cyan]%})%(?!:%)!:()%{${reset_color}%} '
+SPROMPT="%{$fg[magenta]%}%{$suggest%};%) < is it %B%r%b %{$fg[magenta]%}? [Ya!(y), Nein!(n),a,e]:${reset_color} "
 
 
 # ====================
