@@ -18,15 +18,18 @@
   excludesfile = ~/.gitignore
 
 [alias]
-  s = status -s
-  ss = status
-  sh = show
-  a = add
+  a  = add
   aa = add .
-  cm = commit -m
-  ps = push
-  pl = pull
+  br = branch
+  bra = branch -a
   cb = checkout -b
   cl = clone
-  br = branch
+  cm = commit
+  cmm = commit -m
+  d  = diff --color
+  ps = push
+  pl = pull
+  s  = status -s
+  ss = status
+  sh = show
 
