@@ -109,7 +109,7 @@ precmd () { vcs_info }
 PROMPT='
 %{$fg[yellow]%}%m%{${reset_color}%} at %{$fg[cyan]%}%d%{${reset_color}%} ${vcs_info_msg_0_}
 %(?.%{$fg[white]%}.%{$fg[cyan]%})%(?!:%)!:()%{${reset_color}%} '
-SPROMPT="%{$fg[magenta]%}%{$suggest%};%) < is it %B%r%b %{$fg[magenta]%}? [Ya!(y), Nein!(n),a,e]:${reset_color} "
+SPROMPT="%{$fg[magenta]%}%{$suggest%};%) < Ist es %B%r%b %{$fg[magenta]%}? [Ja!(y), Nein!(n),a,e]:${reset_color} "
 
 
 # ====================
