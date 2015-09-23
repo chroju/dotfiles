@@ -21,9 +21,11 @@
   a  = add
   aa = add .
   br = branch
+  bra = branch -a
   cb = checkout -b
   cl = clone
-  cm = commit -m
+  cm = commit
+  cmm = commit -m
   d  = diff --color
   ps = push
   pl = pull

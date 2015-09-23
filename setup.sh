@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOT_FILES=(.vimrc .vimperatorrc .tmux.conf .zshrc)
+DOT_FILES=(.vimrc .vimperatorrc .tmux.conf .zshrc .zshenv .gitconfig .gitignore)
 dir=$(cd $(dirname $0);pwd)
 
 for file in ${DOT_FILES[@]}

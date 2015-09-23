@@ -240,7 +240,6 @@ nnoremap <Space>l $
 nnoremap <Space>h ^
 vnoremap <Space>l $
 vnoremap <Space>h ^
-inoremap <ESC> <ESC>:<C-u>up<CR>
 nnoremap Y y$
 
 " インクリメント＆デクリメント
