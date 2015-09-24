@@ -22,12 +22,15 @@
   aa = add .
   br = branch
   bra = branch -a
+  brd = branch -d
+  ch = checkout
   cb = checkout -b
   cl = clone
   cm = commit
   cmm = commit -m
   d  = diff --color
   ps = push
+  psm = push origin master
   pl = pull
   s  = status -s
   ss = status
