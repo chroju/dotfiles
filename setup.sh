@@ -6,7 +6,7 @@ dir=$(cd $(dirname $0);pwd)
 for file in ${DOT_FILES[@]}
 do
   if [ ! -a $HOME/$file ]; then
-    ln -s $dir/$file $HOME/$file
+    ln -sf $dir/$file $HOME/$file
     echo "$file : setup done!"
   fi
 done
