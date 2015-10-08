@@ -17,22 +17,38 @@
 [core]
   excludesfile = ~/.gitignore
 
+[diff]
+  renames = copies
+
 [alias]
   a  = add
-  aa = add .
+  aa = add --all
   br = branch
   bra = branch -a
   brd = branch -d
-  ch = checkout
-  cb = checkout -b
+  co = checkout
+  cob = checkout -b
+  coo = checkout --ours
+  cot = checkout --theirs
   cl = clone
+  clr = clone --recursive
   cm = commit
   cmm = commit -m
-  d  = diff --color
+  d  = diff
+  f  = fetch
+  lg = log
+  lga = log --graph --decorate --online
+  lgp = log -p
+  mg = merge
+  mgn = merge --no-ff
   ps = push
+  psd = push --delete origin
+  pso = push origin
   psm = push origin master
   pl = pull
   s  = status -s
+  sb = status -s --branch
   ss = status
   sh = show
+  sba = show-branch --all
 
