@@ -2,12 +2,12 @@
 " encoding
 "---------------------------
 " http://rbtnn.hateblo.jp/entry/2014/11/30/174749
-set encoding=UTF-8
-scriptencoding UTF-8
+set encoding=utf-8
+scriptencoding utf-8
 " 保存ファイルエンコード設定
-set fileencoding=UTF-8
+set fileencoding=utf-8
 " ファイルの文字コード自動判別設定
-set fileencodings=ucs-bom,iso-2022-jp,cp932,sjis,euc-jp,UTF-8
+set fileencodings=ucs-bom,utf-8,cp932,sjis,euc-jp,iso-2022-jp
 " 改行コード設定
 set fileformat=unix
 set fileformats=unix,dos,mac
@@ -43,6 +43,7 @@ set timeoutlen=100
 set noundofile " .un~ファイルを生成しない
 set helplang=ja,en
 set nrformats= " 語頭0の数値も10進数として扱う
+set foldlevel=99
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd vimrc FileType text setlocal textwidth=0
 
