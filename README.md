@@ -1,4 +1,8 @@
 dotfiles
 ========
 
-ドットファイル集
+setup
+
+```bash
+$ sh setup.sh
+```

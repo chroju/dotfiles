@@ -137,6 +137,10 @@ NeoBundle 'jacquesbh/vim-showmarks'
 " ruby
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'yuku-t/vim-ref-ri'
+" coffeescript
+NeoBundle 'kchmck/vim-coffee-script'
+" Serverspec
+NeoBundle 'glidenote/serverspec-snippets'
 call neobundle#end()
 
 filetype indent plugin on     " required!
@@ -480,3 +484,9 @@ let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nnoremap gx <Plug>(openbrowser-smart-search)
 vnoremap gx <Plug>(openbrowser-smart-search)
 
+
+"## for coffeescript
+" http://qiita.com/alpaca_taichou/items/fb442cfa78f91634cfaa
+au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+" 保存時にコンパイル
+autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
