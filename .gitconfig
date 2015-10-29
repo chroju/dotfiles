@@ -46,6 +46,7 @@
   pso = push origin
   psm = push origin master
   pl = pull
+  re = remote
   rsh = reset --hard
   s  = status -s
   sb = status -s --branch
