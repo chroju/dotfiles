@@ -489,4 +489,4 @@ vnoremap gx <Plug>(openbrowser-smart-search)
 " http://qiita.com/alpaca_taichou/items/fb442cfa78f91634cfaa
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 " 保存時にコンパイル
-autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
+" autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!

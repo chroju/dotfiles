@@ -15,7 +15,7 @@ WORDCHARS='*?_-~&!#$%'
 
 alias vi='vim'
 alias hi='history'
-alias ls='ls -G'
+alias ls='ls -G --color'
 alias ll='ls -la'
 alias grep='grep --color -E'
 alias sed='sed -r'
@@ -108,7 +108,7 @@ zstyle ':vcs_info:*' actionformats  'on %F{green}%r:%b%f %c%u %F{red}<%a>%f'
 precmd () { vcs_info }
 # プロンプト
 PROMPT='
-%{$fg[yellow]%}%m%{${reset_color}%} at %{$fg[cyan]%}%d%{${reset_color}%} ${vcs_info_msg_0_}
+%{$fg[green]%}%n%{${reset_color}%} in %{$fg[yellow]%}%m%{${reset_color}%} at %{$fg[cyan]%}%d%{${reset_color}%} ${vcs_info_msg_0_}
 %(?.%{$fg[white]%}.%{$fg[cyan]%})%(?!:%)!:()%{${reset_color}%} '
 SPROMPT="%{$fg[magenta]%}%{$suggest%};%) < Ist es %B%r%b %{$fg[magenta]%}? [Ja!(y), Nein!(n),a,e]:${reset_color} "
 

@@ -120,6 +120,7 @@ qmark w https://workflowy.com/
 qmark g https://github.com/chroju
 qmark G http://chroju.github.io/
 qmark q https://qiita.com/
+qmark s https://slack.com/
 qmark 1 http://chroju.net/
 qmark 2 http://chroju.net/exhibi
 
@@ -151,9 +152,9 @@ map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<CR>
 " lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
 " lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
 
-ignorekeys add mail\\.google\\.com -except :,d,t
-ignorekeys add feedly\\.com -except :,d,t
-ignorekeys add www\\.tumblr\\.com -except :,d
+ignorekeys add mail\\.google\\.com -except :,d,t,h,l
+ignorekeys add feedly\\.com -except :,d,t,h,l
+ignorekeys add www\\.tumblr\\.com -except :,d,h,l
 ignorekeys add www\\.pixiv\\.net/member_illus\\.php\?mode=manga&illust_id=[0-9]+ -except :,d,t
 
 " copy.js
