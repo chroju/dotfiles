@@ -15,3 +15,9 @@ path=(
 
 # rbenv init
 which rbenv > /dev/null && eval "$(rbenv init - zsh)"
+
+# aws cli
+completer=$(type aws_zsh_completer.sh | sed -e 's/^.*\sis\s(.*)$/\1/g')
+if [[ -n ${completer} ]]; then
+  source ${completer}
+fi

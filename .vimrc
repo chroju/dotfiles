@@ -141,6 +141,8 @@ NeoBundle 'yuku-t/vim-ref-ri'
 NeoBundle 'kchmck/vim-coffee-script'
 " Serverspec
 NeoBundle 'glidenote/serverspec-snippets'
+" gista
+NeoBundle 'lambdalisue/vim-gista'
 call neobundle#end()
 
 filetype indent plugin on     " required!

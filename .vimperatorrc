@@ -122,7 +122,7 @@ qmark G http://chroju.github.io/
 qmark q https://qiita.com/
 qmark s https://slack.com/
 qmark k https://booklog.jp/users/chroju
-qmark i https://circleci.com/gh/chroju
+qmark i https://circleci.com/
 qmark n https://news.google.co.jp/
 qmark l https://toggl.com
 qmark 1 http://chroju.net/
@@ -148,14 +148,7 @@ let g:direct_sbm_use_services_by_post = "h"
 " vのみではてブコメント表示
 map v :viewSBMComments<Space>-t<Space>h<Space>-f<Space>id,comment<CR>
 
-" feedSomeKeys
-" command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
-" lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
-" lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
-" lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
-" lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
-" lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
-
+" ignorekeys
 ignorekeys add mail\\.google\\.com -except :,d,t,<C-n>,<C-p>,h,l
 ignorekeys add feedly\\.com -except :,d,t,h,l,<C-n>,<C-p>
 ignorekeys add www\\.tumblr\\.com -except :,d,h,l,<C-n>,<C-p>
@@ -172,7 +165,7 @@ javascript <<EOM
     { label: 'selanchor',      value: '<a href="%URL%" title="%TITLE%">%SEL%</a>' },
     { label: 'amazon',   value: 'copy clean amazon url from current page',
       custom: function() {
-        var m = content.document.location.pathname.match(/dp\/(\d+)/);
+        var m = content.document.location.pathname.match(/^.*\/dp\/(\d+)/);
         return m ? ('http://amazon.jp/dp/' + m[1]) : null;
       }
     },
