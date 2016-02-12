@@ -359,6 +359,8 @@ let g:memolist_memo_date = "%Y-%m-%d %H:%M"
 let g:memolist_qfixgrep = 1
 " use unite (default 0)
 let g:memolist_unite = 1
+let g:memolist_unite_source = "file_rec"
+let g:memolist_unite_option = "-auto-preview -start-insert"
 nnoremap ,mn  :MemoNew<CR>
 nnoremap ,ml  :MemoList<CR>
 nnoremap ,mg  :MemoGrep<Space>
