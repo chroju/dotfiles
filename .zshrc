@@ -21,7 +21,6 @@ alias grep='grep --color -E'
 alias sed='sed -r'
 alias history='history -i'
 alias g='git '
-alias qa='shutdown -h now'
 alias -g G=' | grep --color -E'
 alias -g M=' | more'
 alias -g H=' | head'
@@ -139,5 +138,4 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
-
 
