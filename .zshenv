@@ -25,8 +25,3 @@ if [[ -e ${completer} ]]; then
   source ${completer}
 fi
 
-# ssh agent
-if which ssh-agent; then
-  eval `ssh-agent`
-  ssh-add
-fi

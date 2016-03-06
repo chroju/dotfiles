@@ -139,3 +139,13 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
+
+# ====================
+#  ssh-agent
+# ====================
+
+if which ssh-agent; then
+  eval `ssh-agent`
+  ssh-add
+fi
+
