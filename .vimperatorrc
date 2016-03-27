@@ -108,7 +108,7 @@ hi ErrorMsg color:white; background-color: #ec6aa1;
 qmark m https://mail.google.com/
 qmark b http://b.hatena.ne.jp/chroju
 qmark t http://chroju.tumblr.com/
-qmark T https://twitter.com/
+qmark T https://tweetdeck.twitter.com/
 qmark f http://cloud.feedly.com/#latest
 qmark F https://ja.foursquare.com/
 qmark p http://getpocket.com/a/queue
@@ -116,7 +116,6 @@ qmark B http://chroju.hatenablog.jp/
 qmark c https://calendar.sunrise.am/
 qmark C https://www.google.com/calendar/
 qmark e https://www.evernote.com/Home.action
-qmark w https://workflowy.com/
 qmark g https://github.com/chroju
 qmark G http://chroju.github.io/
 qmark q https://qiita.com/
@@ -124,7 +123,8 @@ qmark s https://slack.com/
 qmark k https://booklog.jp/users/chroju
 qmark i https://circleci.com/
 qmark n https://news.google.co.jp/
-qmark l https://toggl.com
+qmark l https://toggl.com/
+qmark r https://trello.com/
 qmark 1 http://chroju.net/
 qmark 2 http://chroju.net/exhibi
 

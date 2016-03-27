@@ -47,107 +47,63 @@ set foldlevel=99
 " デフォルト設定のtxtファイルのtextwidthを上書き
 autocmd vimrc FileType text setlocal textwidth=0
 
-"---------------------------
-" NeoBundle
-"---------------------------
-filetype off
 
-if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+"---------------------------
+" dein.vim
+"---------------------------
+
+" http://qiita.com/delphinus35/items/00ff2c0ba972c6e41542
+" プラグインのインストールディレクトリ
+let s:dein_dir = expand('~/.vim/bundle/')
+" dein.vimのインストールディレクトリ
+let s:dein_repo_dir = s:dein_dir . 'dein.vim'
+
+" dein.vimが存在しない場合はインストール
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone git@github.com:Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath+=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
-" originalrepos on github
-NeoBundle 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
-" colorscheme
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'vim-scripts/Zenburn'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'vim-scripts/twilight'
-NeoBundle 'cocopon/iceberg.vim'
-" Unite
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/unite-outline'
-" カラースキームを手軽に変更
-NeoBundle 'ujihisa/unite-colorscheme'
-" NERDTree
-NeoBundle 'scrooloose/nerdtree'
-" Markdownプラグイン
-NeoBundle 'joker1007/vim-markdown-quote-syntax'
-NeoBundle 'rcmdnk/vim-markdown'
-" quickrun
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'tyru/open-browser.vim'
-" NeoBundle 'kakkyz81/evervim'
-" todo.txt
-NeoBundle 'freitass/todo.txt-vim'
-" コメントアウト機能
-NeoBundle 'tomtom/tcomment_vim.git'
-" 超絶補完
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'honza/vim-snippets'
-" 括弧の操作補完
-NeoBundle 'tpope/vim-surround'
-" howm
-" NeoBundle 'fuenor/qfixhowm.git'
-" vim hacksをvimで読む
-NeoBundle 'choplin/unite-vim_hacks'
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'mattn/wwwrenderer-vim'
-NeoBundle 'thinca/vim-openbuf'
-" emmet
-NeoBundle 'mattn/emmet-vim'
-" Ruby & Rails
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-endwise'
-NeoBundle 'vim-scripts/dbext.vim'
-NeoBundle 'AndrewRadev/switch.vim'
-" text edit support
-NeoBundle 'vim-scripts/Align'
-NeoBundle 'vim-scripts/YankRing.vim'
-NeoBundle 'vim-scripts/Changed'
-" ステータスライン
-NeoBundle 'itchyny/lightline.vim'
-" LESSハイライト
-NeoBundle 'groenewege/vim-less'
-" Gist
-NeoBundle 'mattn/Gist-vim'
-" 爆速カーソル移動
-NeoBundle 'Lokaltog/vim-easymotion'
-" NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'glidenote/memolist.vim'
-" helpの日本語化
-NeoBundle 'vim-jp/vimdoc-ja'
-" markを明示
-NeoBundle 'jacquesbh/vim-showmarks'
-" ruby
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'yuku-t/vim-ref-ri'
-" coffeescript
-NeoBundle 'kchmck/vim-coffee-script'
-" Serverspec
-NeoBundle 'glidenote/serverspec-snippets'
-" gista
-NeoBundle 'lambdalisue/vim-gista'
-call neobundle#end()
+call dein#begin(s:dein_dir)
 
-filetype indent plugin on     " required!
+call dein#add('Shougo/dein.vim')
+call dein#add('altercation/vim-colors-solarized')
+call dein#add('Shougo/unite.vim')
+call dein#add('ujihisa/unite-colorscheme')
+call dein#add('cocopon/iceberg.vim')
+call dein#add('scrooloose/nerdtree')
+call dein#add('joker1007/vim-markdown-quote-syntax')
+call dein#add('thinca/vim-quickrun')
+call dein#add('tomtom/tcomment_vim.git')
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('tpope/vim-surround')
+call dein#add('choplin/unite-vim_hacks')
+call dein#add('mattn/emmet-vim')
+call dein#add('vim-ruby/vim-ruby')
+call dein#add('vim-scripts/Align')
+call dein#add('vim-scripts/YankRing.vim')
+call dein#add('vim-scripts/Changed')
+call dein#add('itchyny/lightline.vim')
+call dein#add('groenewege/vim-less')
+call dein#add('mattn/Gist-vim')
+call dein#add('Lokaltog/vim-easymotion')
+call dein#add('glidenote/memolist.vim')
+call dein#add('vim-jp/vimdoc-ja')
+call dein#add('jacquesbh/vim-showmarks')
+call dein#add('thinca/vim-ref')
+call dein#add('yuku-t/vim-ref-ri')
+call dein#add('kchmck/vim-coffee-script')
+call dein#add('glidenote/serverspec-snippets')
+call dein#add('lambdalisue/vim-gista')
 
-NeoBundleCheck
+call dein#end()
+call dein#save_state()
+
+if dein#check_install()
+  call dein#install()
+endif
 
 " %移動設定
 if !exists('loaded_matchit')
