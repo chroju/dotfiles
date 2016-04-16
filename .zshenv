@@ -2,7 +2,8 @@
 export TERM=xterm-256color
 export SHELL=zsh
 export EDITOR=vim
-export LANG=ja_JP.UTF-8
+export LANG=ja_JP.utf8
+export LC_ALL=ja_JP.utf8
 export GOPATH=$HOME/.go
 typeset -U path
 path=(
@@ -20,7 +21,7 @@ path=(
 which rbenv > /dev/null && eval "$(rbenv init - zsh)"
 
 # aws cli
-completer=$(type aws_zsh_completer.sh | sed -e 's/^.* is (.*)$/\1/g')
+completer=$(type aws_zsh_completer.sh | sed -e 's/^.* is \(.*\)$/\1/g')
 if [[ -e ${completer} ]]; then
   source ${completer}
 fi
