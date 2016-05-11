@@ -54,52 +54,54 @@ autocmd vimrc FileType text setlocal textwidth=0
 
 " http://qiita.com/delphinus35/items/00ff2c0ba972c6e41542
 " プラグインのインストールディレクトリ
-let s:dein_dir = expand('~/.vim/bundle/')
+let s:dein_dir = expand('~/.vim/bundle')
 " dein.vimのインストールディレクトリ
-let s:dein_repo_dir = s:dein_dir . 'dein.vim'
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 " dein.vimが存在しない場合はインストール
 if &runtimepath !~# '/dein.vim'
   if !isdirectory(s:dein_repo_dir)
-    execute '!git clone git@github.com:Shougo/dein.vim' s:dein_repo_dir
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
   endif
-  execute 'set runtimepath+=' . fnamemodify(s:dein_repo_dir, ':p')
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
-call dein#begin(s:dein_dir)
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
 
-call dein#add('Shougo/dein.vim')
-call dein#add('altercation/vim-colors-solarized')
-call dein#add('Shougo/unite.vim')
-call dein#add('ujihisa/unite-colorscheme')
-call dein#add('cocopon/iceberg.vim')
-call dein#add('scrooloose/nerdtree')
-call dein#add('joker1007/vim-markdown-quote-syntax')
-call dein#add('thinca/vim-quickrun')
-call dein#add('tomtom/tcomment_vim.git')
-call dein#add('Shougo/neocomplete.vim')
-call dein#add('tpope/vim-surround')
-call dein#add('choplin/unite-vim_hacks')
-call dein#add('mattn/emmet-vim')
-call dein#add('vim-ruby/vim-ruby')
-call dein#add('vim-scripts/Align')
-call dein#add('vim-scripts/YankRing.vim')
-call dein#add('vim-scripts/Changed')
-call dein#add('itchyny/lightline.vim')
-call dein#add('groenewege/vim-less')
-call dein#add('mattn/Gist-vim')
-call dein#add('Lokaltog/vim-easymotion')
-call dein#add('glidenote/memolist.vim')
-call dein#add('vim-jp/vimdoc-ja')
-call dein#add('jacquesbh/vim-showmarks')
-call dein#add('thinca/vim-ref')
-call dein#add('yuku-t/vim-ref-ri')
-call dein#add('kchmck/vim-coffee-script')
-call dein#add('glidenote/serverspec-snippets')
-call dein#add('lambdalisue/vim-gista')
+  call dein#add('Shougo/dein.vim')
+  call dein#add('altercation/vim-colors-solarized')
+  call dein#add('Shougo/unite.vim')
+  call dein#add('ujihisa/unite-colorscheme')
+  call dein#add('cocopon/iceberg.vim')
+  call dein#add('scrooloose/nerdtree')
+  call dein#add('joker1007/vim-markdown-quote-syntax')
+  call dein#add('thinca/vim-quickrun')
+  call dein#add('tomtom/tcomment_vim.git')
+  call dein#add('Shougo/neocomplete.vim')
+  call dein#add('tpope/vim-surround')
+  call dein#add('choplin/unite-vim_hacks')
+  call dein#add('mattn/emmet-vim')
+  call dein#add('vim-ruby/vim-ruby')
+  call dein#add('vim-scripts/Align')
+  call dein#add('vim-scripts/YankRing.vim')
+  call dein#add('vim-scripts/Changed')
+  call dein#add('itchyny/lightline.vim')
+  call dein#add('groenewege/vim-less')
+  call dein#add('mattn/Gist-vim')
+  call dein#add('Lokaltog/vim-easymotion')
+  call dein#add('glidenote/memolist.vim')
+  call dein#add('vim-jp/vimdoc-ja')
+  call dein#add('jacquesbh/vim-showmarks')
+  call dein#add('thinca/vim-ref')
+  call dein#add('yuku-t/vim-ref-ri')
+  call dein#add('kchmck/vim-coffee-script')
+  call dein#add('glidenote/serverspec-snippets')
+  call dein#add('lambdalisue/vim-gista')
 
-call dein#end()
-call dein#save_state()
+  call dein#end()
+  call dein#save_state()
+endif
 
 if dein#check_install()
   call dein#install()
