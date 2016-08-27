@@ -113,18 +113,16 @@ qmark f http://cloud.feedly.com/#latest
 qmark F https://ja.foursquare.com/
 qmark p http://getpocket.com/a/queue
 qmark B http://chroju.hatenablog.jp/
-qmark c https://calendar.sunrise.am/
 qmark C https://www.google.com/calendar/
-qmark e https://www.evernote.com/Home.action
 qmark g https://github.com/chroju
 qmark G http://chroju.github.io/
 qmark q https://qiita.com/
 qmark s https://slack.com/
 qmark k https://booklog.jp/users/chroju
 qmark i https://circleci.com/
-qmark n https://news.google.co.jp/
 qmark l https://toggl.com/
 qmark r https://trello.com/
+qmark d https://ja.todoist.com/
 qmark 1 http://chroju.net/
 qmark 2 http://chroju.net/exhibi
 
@@ -158,7 +156,7 @@ ignorekeys add www\\.pixiv\\.net/member_illus\\.php\?mode=manga&illust_id=[0-9]+
 javascript <<EOM
 (function () {
   liberator.globalVariables.copy_templates = [
-    { label: 'titleAndURL',    value: '%TITLE%\n%URL%' },
+    { label: 'titleAndURL',    value: '%TITLE% %URL%' },
     { label: 'markdown',       value: '[%TITLE%](%URL%)' },
     { label: 'title',          value: '%TITLE%', map: ',y' },
     { label: 'anchor',         value: '<a href="%URL%">%TITLE%</a>' },
