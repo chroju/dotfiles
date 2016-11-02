@@ -113,7 +113,7 @@ qmark f http://cloud.feedly.com/#latest
 qmark F https://ja.foursquare.com/
 qmark p http://getpocket.com/a/queue
 qmark B http://chroju.hatenablog.jp/
-qmark C https://www.google.com/calendar/
+qmark c https://calendar.kin.today/
 qmark g https://github.com/chroju
 qmark G http://chroju.github.io/
 qmark q https://qiita.com/
