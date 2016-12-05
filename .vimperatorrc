@@ -9,7 +9,7 @@ set focuscontent
 set visualbell
 highlight Bell display:none
 " :oなどでの補完候補をブックマーク、サジェストエンジン、サーチエンジンに限定
-set complete=ls
+set complete=sStb
 " Hintモードでアルファベット使用
 set hintchars=hjklasdfgyuiopqwertnmzxcvb
 " commandモードでIMEオフ
@@ -61,13 +61,6 @@ nnoremap <C-r> :restart<CR>
 vmap <silent> <C-g> y<Esc><Esc>P
 " タブのピン止めを@でトグル
 nnoremap @ :set apptab!<CR>
-" Evernote Clearly
-javascript <<EOM
-window.onload = function() {
-  require("chrome://readable-by-evernote/content/global.js");
-}
-EOM
-nnoremap e :js __readable_by_evernote.context_menu__call();<CR> 
 
 
 "============================
@@ -94,7 +87,7 @@ nnoremap ,pR :<C-u>panorama remove<CR>
 " colorscheme
 "============================
 " デフォルトのヒント派手すぎ＞＜
-hi Hint font-family: Arial; font-size: 21px; font-weight: bold; text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; color: #33cccc;
+hi Hint font-family: Arial; font-size: 18px; font-weight: bold; text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; color: #33cccc;
 hi HintElem color: gray; background-color: #a1e4e6;
 hi HintActive color: black; background-color: #ff8700;
 
@@ -121,10 +114,8 @@ qmark s https://slack.com/
 qmark k https://booklog.jp/users/chroju
 qmark i https://circleci.com/
 qmark l https://toggl.com/
-qmark r https://trello.com/
 qmark d https://ja.todoist.com/
 qmark 1 http://chroju.net/
-qmark 2 http://chroju.net/exhibi
 
 
 "============================
@@ -133,10 +124,6 @@ qmark 2 http://chroju.net/exhibi
 " plugin_loader
 let g:plugin_loader_roots = "~\vimperator\vimperator-plugins\ ~/.vimperator/vimperator-plugins/"
 let g:plugin_loader_plugins = "_libly,direct_bookmark,sbmcommentsviewer,caret-hint,appendAnchor,evernote-clearly-vimp,stella,feedSomeKeys_3,commandBookmarklet,copy"
-
-" Evernote Clearly
-" nnoremap e :<C-u>js __readable_by_evernote.context.menu__call(buffer.URL)<CR>
-" nnoremap E :<C-u>js __readable_by_evernote.context__launch(true)<CR>
 
 " direct_bookmark
 let g:direct_sbm_use_services_by_tag = "h"
