@@ -2,9 +2,9 @@
 export TERM=xterm-256color
 export SHELL=zsh
 export EDITOR=vim
-export LANG=ja_JP.utf8
-export LC_ALL=ja_JP.utf8
-export GOPATH=$HOME/.go
+export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
+
 typeset -U path
 path=(
   $HOME/.rbenv/bin(N-/)

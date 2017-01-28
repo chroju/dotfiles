@@ -16,41 +16,45 @@
 
 [core]
   excludesfile = ~/.gitignore
+  editor = vim
+
+[commit]
+  template = ~/.gitmessage
 
 [diff]
   renames = copies
 
 [alias]
+  # shorter commands
   a  = add
   aa = add --all
-  br = branch
-  bra = branch -a
-  brd = branch -d
-  co = checkout
-  cob = checkout -b
-  coo = checkout --ours
-  cot = checkout --theirs
-  cl = clone
-  clr = clone --recursive
   cm = commit
-  cmm = commit -m
   d  = diff
-  f  = fetch
-  lg = log
-  lga = log --graph --decorate --online
-  lgp = log -p
-  mg = merge
-  mgn = merge --no-ff
   ps = push
-  psd = push --delete origin
   pso = push origin
-  psm = push origin master
-  pl = pull
-  re = remote
-  rsh = reset --hard
   s  = status -s
   sb = status -s --branch
   ss = status
   sh = show
-  sba = show-branch --all
+
+  # branch
+  create-branch = checkout -b
+  delete-branch = branch -d
+  delete-push = push --delete
+  delete-stage = rm --cached
+
+  # undo
+  undo-merge = merge --abort
+  undo-stage = reset -q HEAD --
+  undo-all = !git reset -q --hard HEAD -- && git clean -d -f
+  overwrite-commit = commit --amend
+
+  # show all
+  branches = branch -a
+  tags = tag
+  stashes = stash list
+  remotes = remote -v
+
+  # rename commands
+  graph = log --graph --oneline --decorate --name-status
 
