@@ -6,14 +6,13 @@
 # 色指定有効化
 autoload -U colors; colors
 # 単語の一部として扱われる文字のセット
-WORDCHARS='*?_-~&!#$%'
+WORDCHARS='*_-'
 
 
 # ====================
 #  alias
 # ====================
 
-alias vi='vim'
 alias hi='history -i'
 alias lsg='ls -G --color'
 alias ll='ls -la'
@@ -68,6 +67,8 @@ setopt hist_ignore_space
 setopt hist_no_store
 # historyをzshプロセス間で共有
 setopt share_history
+# 補完リストを小さく表示
+setopt list_packed
 # 補完対象ファイルリストの末尾に識別マークを付ける
 setopt list_types
 # rm * する際に10秒待つ
@@ -78,6 +79,10 @@ setopt correct
 setopt no_beep
 # 先頭が.のファイルを*対象に含める
 setopt glob_dots
+# コマンドラインの引数で --prefix=/usr などの = 以降でも補完できる
+setopt magic_equal_subst
+# 対話式シェルでも先頭がシャープであればコメントにする
+setopt interactive_comments
 
 
 # ====================
@@ -142,10 +147,15 @@ bindkey "^n" history-beginning-search-forward-end
 #  ssh-agent
 # ====================
 
-if which ssh-agent; then
-  eval `ssh-agent`
-  ssh-add
-fi
+case "${OSTYPE}" in
+  linux*)
+    if which ssh-agent; then
+      eval `ssh-agent`
+      ssh-add
+    fi
+    ;;
+esac
 
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
