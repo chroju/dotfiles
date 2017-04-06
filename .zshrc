@@ -83,6 +83,8 @@ setopt glob_dots
 setopt magic_equal_subst
 # 対話式シェルでも先頭がシャープであればコメントにする
 setopt interactive_comments
+# /etc配下のzsh関連ファイルを実行しない
+setopt no_global_rcs
 
 
 # ====================
@@ -144,8 +146,10 @@ bindkey "^n" history-beginning-search-forward-end
 
 
 # ====================
-#  ssh-agent
+#  load some tools
 # ====================
+
+# ssh-agent
 
 case "${OSTYPE}" in
   linux*)
@@ -156,6 +160,12 @@ case "${OSTYPE}" in
     ;;
 esac
 
+# iterm2
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# aws-cli
+#
+completer=$(type aws_zsh_completer.sh | sed -e 's/^.* is \(.*\)$/\1/g')
+test -e ${completer} && source ${completer}
 
