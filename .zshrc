@@ -92,8 +92,8 @@ setopt no_global_rcs
 # ====================
 
 HISTFILE=$HOME/.zsh_history$
-HISTSIZE=500
-SAVEHIST=500
+HISTSIZE=100000
+SAVEHIST=100000
 
 
 # ====================

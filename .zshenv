@@ -1,9 +1,16 @@
-# env_var
+# ====================
+#  setting env vars
+# ====================
+
 export TERM=xterm-256color
 export SHELL=zsh
 export EDITOR=vim
 export LANG=ja_JP.UTF-8
-export LC_ALL=ja_JP.UTF-8
+
+
+# ====================
+#  setting PATH
+# ====================
 
 typeset -U path
 path=(
