@@ -4,7 +4,7 @@
 # ====================
 
 # 色指定有効化
-autoload -U colors; colors
+autoload -U colors && colors
 # 単語の一部として扱われる文字のセット
 WORDCHARS='*_-'
 
@@ -99,7 +99,7 @@ SAVEHIST=100000
 # ====================
 #  prompt
 # ====================
-#
+
 # プロンプトが表示されるたびにプロンプト文字列を評価、置換する
 setopt prompt_subst
 # gitの情報表示
@@ -122,12 +122,12 @@ SPROMPT="%{$fg[magenta]%}%{$suggest%};%) < Ist es %B%r%b %{$fg[magenta]%}? [Ja!(
 # ====================
 
 # 自動補完を有効にする
-autoload -U compinit; compinit
+autoload -U compinit && compinit
 
 # <Tab> でパス名の補完候補を表示したあと、
 # 続けて <Tab> を押すと候補からパス名を選択できるようになる
 # 候補を選ぶには <Tab> か Ctrl-N,B,F,P
-zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*:default' menu select=2
 # カレントディレクトリに候補がない場合のみ cdpath 上のディレクトリを候補に出す
 zstyle ':completion:*:cd:*' tag-order local-directories path-directories
 # 大文字、小文字を区別せず補完する
@@ -136,6 +136,14 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 # 補完をカラー化
 zstyle ':completion:*' list-colors "${LS_COLORS}"
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' completer _expand _complete _match _history _prefix
+## 補完候補をキャッシュする。
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path ~/.zshcache
+# 変数の添字を補完する
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+zstyle ':completion:*' format '%B%d%b'
 
 # 前方一致での履歴補完有効化
 autoload history-search-end
@@ -165,7 +173,7 @@ esac
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # aws-cli
-#
+
 completer=$(type aws_zsh_completer.sh | sed -e 's/^.* is \(.*\)$/\1/g')
 test -e ${completer} && source ${completer}
 
