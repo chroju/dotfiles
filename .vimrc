@@ -84,7 +84,6 @@ if dein#load_state(s:dein_dir)
   call dein#add('vim-ruby/vim-ruby')
   call dein#add('vim-scripts/Align')
   call dein#add('vim-scripts/YankRing.vim')
-  call dein#add('vim-scripts/Changed')
   call dein#add('itchyny/lightline.vim')
   call dein#add('groenewege/vim-less')
   call dein#add('glidenote/memolist.vim')
@@ -96,6 +95,7 @@ if dein#load_state(s:dein_dir)
   call dein#add('glidenote/serverspec-snippets')
   call dein#add('lambdalisue/vim-gista')
   call dein#add('davidhalter/jedi-vim')
+  call dein#add('nvie/vim-flake8')
 
   call dein#end()
   call dein#save_state()
@@ -382,8 +382,9 @@ inoremap <expr><C-e> pumvisible() ? neocomplete#cancel_popup() : "\<C-e>"
 autocmd vimrc FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd vimrc FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd vimrc FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd vimrc FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd vimrc FileType python setlocal omnifunc=jedi#completions
 autocmd vimrc FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd BufWritePost *.py call Flake8()
 
 " if !exists('g:neocomplete#force_omni_input_patterns')
 "   let g:neocomplete#force_omni_input_patterns = {}
