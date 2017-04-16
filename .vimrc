@@ -48,9 +48,174 @@ set foldlevel=99
 autocmd vimrc FileType text setlocal textwidth=0
 
 
+
+
+"---------------------------
+" Visual
+"---------------------------
+"カラースキーム設定
+colorscheme iceberg
+highlight Normal ctermbg=none
+syntax enable
+
+" 256色で使用する
+set t_Co=256
+
+" カーソルラインのハイライト
+set cursorline
+" カレントウィンドウのみに罫線を引く
+augroup vimrc
+  autocmd WinLeave * set nocursorline
+  autocmd WinEnter,BufRead * set cursorline
+augroup END
+highlight clear CursorLine
+highlight CursorLine ctermbg=17 guibg=black
+" カーソルライン設定ここまで
+
+" set spellによるスペルチェックに下線を引く
+highlight SpellBad cterm=underline ctermbg=0
+
+
+"---------------------------
+" Search
+"---------------------------
+set incsearch "インクリメンタルサーチを行う
+set hlsearch  "検索結果をハイライトする
+set ignorecase  "検索時に文字の大小を区別しない
+set smartcase "検索時に大文字を含んでいたら大小を区別する
+set wrapscan  "検索をファイルの先頭へループする
+
+"Escの2回押しでハイライト消去
+nnoremap <ESC><ESC>  :nohlsearch<CR>
+
+
+"---------------------------
+" input assist
+"---------------------------
+" オートインデント
+set autoindent
+" 不可視文字の表示
+set list
+set listchars=tab:^.,trail:-
+" 行頭、行末をすっ飛ばしてカーソル移動
+set whichwrap=b,s,h,l,<,>,[,]
+"閉じ括弧が入力されたとき、対応する括弧をmatchtime秒表示
+set showmatch
+set matchtime=3
+"新しい行を作ったときに高度な自動インデントを行う
+set smartindent
+"行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする。
+set expandtab
+set shiftwidth=2
+"ファイル内の <Tab> が対応する空白の数
+set tabstop=2
+"長い行も最後まで表示する
+set display=lastline
+" 括弧の補完
+inoremap ( ()<Left>
+inoremap " ""<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+inoremap ' ''<Left>
+inoremap < <><Left>
+
+
+"---------------------------
+" Complete
+"---------------------------
+set wildmenu "コマンド補完を強化
+set wildmode=list:full " リスト表示，最長マッチ
+set history=1000 " コマンド・検索パターンの履歴数
+set complete+=k " 補完に辞書ファイル追加
+
+
+"---------------------------
+" Key mapping
+"---------------------------
+" common
+nnoremap ,, :up<CR>
+nnoremap <Space>,, :w<Space>!sudo<Space>tee<Space>>/dev/null<Space>%
+nnoremap <C-h> :<C-u>help<Space>
+nnoremap <Space>l $
+nnoremap <Space>h ^
+vnoremap <Space>l $
+vnoremap <Space>h ^
+nnoremap Y y$
+
+" インクリメント＆デクリメント
+nnoremap + <C-a>
+nnoremap - <C-p>
+
+" タブ操作
+nnoremap tc :<C-u>tabnew<CR>
+nnoremap tx :<C-u>tabclose<CR>
+
+" 行移動
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+vnoremap j gj
+vnoremap k gk
+vnoremap gj j
+vnoremap gk k
+
+" buffer
+nnoremap bb :ls<CR>:buf
+
+" 編集中のファイルのディレクトリに移動
+nnoremap ,d :execute ":lcd" . expand("%:p:h")<CR>
+
+" plugins
+" NERDTreeToggleをF6に割り当て
+nnoremap <F6> :NERDTreeToggle<CR>
+" Unite
+nnoremap [Unite] <Nop>
+nmap ,u [Unite]
+nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
+nnoremap <silent> [Unite]r :<C-u>Unite file_mru<CR>
+nnoremap <silent> [Unite]c :<C-u>Unite colorscheme -auto-preview<CR>
+nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
+" switch.vim
+nnoremap ! :Switch<CR>
+
+" easy open vimrc
+if has("win64")
+  let vimrcbody = '$HOME/_vimrc'
+else
+  let vimrcbody = '$HOME/.vimrc'
+endif
+
+function! OpenFile(file)
+    let empty_buffer = 
+\        line('$') == 1 && strlen(getline('1')) == 0
+    if empty_buffer && !&modified
+        execute 'e ' . a:file
+    else
+        execute 'tabnew ' . a:file
+    endif
+endfunction
+
+command! OpenMyVimrc call OpenFile(vimrcbody)
+nnoremap <Space><Space> :<C-u>OpenMyVimrc<CR>
+
+" easy reload .vimrc
+function! SourceIfExists(file)
+    if filereadable(expand(a:file))
+        execute 'source ' . a:file
+    endif
+    echo 'Reloaded vimrc.'
+endfunction
+
+nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
+\ :source $MYVIMRC<CR>
+\ :call SourceIfExists('~/vimfiles/ftplugin/' . &filetype . '.vim')<CR>
+
+
+"---------------------------
+" plugins
 "---------------------------
 " dein.vim
-"---------------------------
 
 " http://qiita.com/delphinus35/items/00ff2c0ba972c6e41542
 " プラグインのインストールディレクトリ
@@ -109,191 +274,6 @@ endif
 if !exists('loaded_matchit')
   runtime macros/matchit.vim
 endif
-
-
-"---------------------------
-" Visual
-"---------------------------
-"カラースキーム設定
-colorscheme iceberg
-highlight Normal ctermbg=none
-syntax enable
-
-" 256色で使用する
-set t_Co=256
-
-" カーソルラインのハイライト
-set cursorline
-" カレントウィンドウのみに罫線を引く
-augroup cch
-  autocmd!
-  autocmd WinLeave * set nocursorline
-  autocmd WinEnter,BufRead * set cursorline
-augroup END
-highlight clear CursorLine
-highlight CursorLine ctermbg=17 guibg=black
-" カーソルライン設定ここまで
-
-" スペルチェックに下線を引く
-highlight SpellBad cterm=underline ctermbg=0
-
-
-"---------------------------
-" Search
-"---------------------------
-set incsearch "インクリメンタルサーチを行う
-set hlsearch  "検索結果をハイライトする
-set ignorecase  "検索時に文字の大小を区別しない
-set smartcase "検索時に大文字を含んでいたら大小を区別する
-set wrapscan  "検索をファイルの先頭へループする
-
-"Escの2回押しでハイライト消去
-nnoremap <ESC><ESC>  :nohlsearch<CR>
-
-
-"---------------------------
-" input assist
-"---------------------------
-" オートインデント
-set autoindent
-" 不可視文字の表示
-set list
-set listchars=tab:^.,trail:-,eol:$
-" 行頭、行末をすっ飛ばしてカーソル移動
-set whichwrap=b,s,h,l,<,>,[,]
-"閉じ括弧が入力されたとき、対応する括弧をmatchtime秒表示
-set showmatch
-set matchtime=3
-"新しい行を作ったときに高度な自動インデントを行う
-set smartindent
-"行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする。
-set expandtab
-set shiftwidth=2
-"ファイル内の <Tab> が対応する空白の数
-set tabstop=2
-"長い行も最後まで表示する
-set display=lastline
-" 括弧の補完
-inoremap () ()<Left>
-inoremap "" ""<Left>
-inoremap [] []<Left>
-inoremap {} {}<Left>
-inoremap '' ''<Left>
-inoremap <> <><Left>
-inoremap ** **<Left>
-
-
-"---------------------------
-" Complete
-"---------------------------
-set wildmenu "コマンド補完を強化
-set wildmode=list:full " リスト表示，最長マッチ
-set history=1000 " コマンド・検索パターンの履歴数
-set complete+=k " 補完に辞書ファイル追加
-
-
-"---------------------------
-" Key mapping
-"---------------------------
-" common
-nnoremap ,, :up<CR>
-nnoremap <Space>,, :w<Space>!sudo<Space>tee<Space>>/dev/null<Space>%
-nnoremap <C-h> :<C-u>help<Space>
-nnoremap <Space>l $
-nnoremap <Space>h ^
-vnoremap <Space>l $
-vnoremap <Space>h ^
-nnoremap Y y$
-
-" インクリメント＆デクリメント
-nnoremap + <C-a>
-nnoremap - <C-p>
-
-" タブ操作
-nnoremap tc :<C-u>tabnew<CR>
-nnoremap tx :<C-u>tabclose<CR>
-
-" 行移動
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
-vnoremap j gj
-vnoremap k gk
-vnoremap gj j
-vnoremap gk k
-
-" 入力効率化
-onoremap ) t)
-onoremap ( t(
-vnoremap ) t)
-vnoremap ( t(
-
-" buffer
-nnoremap bb :ls<CR>:buf
-
-" 編集中のファイルのディレクトリに移動
-nnoremap ,d :execute ":lcd" . expand("%:p:h")<CR>
-
-" plugins
-" NERDTreeToggleをF6に割り当て
-nnoremap <F6> :NERDTreeToggle<CR>
-" NeoBundle
-nnoremap [NeoBundle] <Nop>
-nmap ,n [NeoBundle]
-nnoremap <silent> [NeoBundle]i :<C-u>NeoBundleInstall<CR>
-nnoremap <silent> [NeoBundle]c :<C-u>NeoBundleClean<CR>
-nnoremap <silent> [NeoBundle]I :<C-u>NeoBundleInstall!<CR>
-nnoremap <silent> [NeoBundle]u :<C-u>NeoBundleUpdate<CR>
-" Unite
-nnoremap [Unite] <Nop>
-nmap ,u [Unite]
-nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
-nnoremap <silent> [Unite]r :<C-u>Unite file_mru<CR>
-nnoremap <silent> [Unite]c :<C-u>Unite colorscheme -auto-preview<CR>
-nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
-" 日付、現在日時の短縮入力
-inoremap <Leader>date <C-R>=strftime("%Y-%m-%d")<CR>
-inoremap <Leader>now <C-R>=strftime("%Y-%m-%d (%a) %H:%M")<CR>
-" switch.vim
-nnoremap ! :Switch<CR>
-
-" easy open vimrc
-if has("win64")
-  let vimrcbody = '$HOME/_vimrc'
-else
-  let vimrcbody = '$HOME/.vimrc'
-endif
-
-function! OpenFile(file)
-    let empty_buffer = 
-\        line('$') == 1 && strlen(getline('1')) == 0
-    if empty_buffer && !&modified
-        execute 'e ' . a:file
-    else
-        execute 'tabnew ' . a:file
-    endif
-endfunction
-
-command! OpenMyVimrc call OpenFile(vimrcbody)
-nnoremap <Space><Space> :<C-u>OpenMyVimrc<CR>
-
-" easy reload .vimrc
-function! SourceIfExists(file)
-    if filereadable(expand(a:file))
-        execute 'source ' . a:file
-    endif
-    echo 'Reloaded vimrc.'
-endfunction
-
-nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
-\ :source $MYVIMRC<CR>
-\ :call SourceIfExists('~/vimfiles/ftplugin/' . &filetype . '.vim')<CR>
-
-
-"---------------------------
-" plugins
-"---------------------------
 "## unite colorscheme
 let g:unite_enable_start_insert = 1
 let g:unite_enable_split_vertically = 1
@@ -320,15 +300,6 @@ let g:memolist_unite_option = "-auto-preview -start-insert"
 nnoremap ,mn  :MemoNew<CR>
 nnoremap ,ml  :MemoList<CR>
 nnoremap ,mg  :MemoGrep<Space>
-
-
-"## Rails.vim
-" :Rconfigでroutes.rb表示
-autocmd vimrc User Rails Rnavcommand config config   -glob=*.*  -suffix= -default=routes.rb
-" Alias
-autocmd vimrc User Rails nmap :<C-u>Rcontroller :<C-u>Rc
-autocmd vimrc User Rails nmap :<C-u>Rmodel :<C-u>Rm
-autocmd vimrc User Rails nmap :<C-u>Rview :<C-u>Rv
 
 
 "## neocomplete
@@ -409,13 +380,6 @@ smap <expr><TAB> neosnippet#jumpable() ?
 \: "\<TAB>"
 
 
-"## emmet
-" トリガーをC-yに変更
-let g:user_emmet_leader_key = '<C-y>'
-" insert, normalモードでのみ動作
-let g:user_emmet_mode = 'in'
-
-
 "## lightline
 let g:lightline = {
       \ 'colorscheme': 'wombat',
@@ -438,12 +402,6 @@ let g:lightline = {
 function! MyCurrentDir()
   return fnamemodify(getcwd(), ":p:~")
 endfunction
-
-
-"## OpenBrowser
-let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nnoremap gx <Plug>(openbrowser-smart-search)
-vnoremap gx <Plug>(openbrowser-smart-search)
 
 
 "## for coffeescript
