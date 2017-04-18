@@ -54,7 +54,6 @@ autocmd vimrc FileType text setlocal textwidth=0
 " Visual
 "---------------------------
 "カラースキーム設定
-colorscheme iceberg
 highlight Normal ctermbg=none
 syntax enable
 
@@ -183,7 +182,7 @@ nnoremap ! :Switch<CR>
 if has("win64")
   let vimrcbody = '$HOME/_vimrc'
 else
-  let vimrcbody = '$HOME/.vimrc'
+  let vimrcbody = '$HOME/.vim/vimrc'
 endif
 
 function! OpenFile(file)
@@ -234,40 +233,15 @@ endif
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
-  call dein#add('Shougo/dein.vim')
-  call dein#add('altercation/vim-colors-solarized')
-  call dein#add('Shougo/unite.vim')
-  call dein#add('ujihisa/unite-colorscheme')
-  call dein#add('cocopon/iceberg.vim')
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('joker1007/vim-markdown-quote-syntax')
-  call dein#add('thinca/vim-quickrun')
-  call dein#add('tomtom/tcomment_vim.git')
-  call dein#add('Shougo/neocomplete.vim')
-  call dein#add('tpope/vim-surround')
-  call dein#add('choplin/unite-vim_hacks')
-  call dein#add('vim-ruby/vim-ruby')
-  call dein#add('vim-scripts/Align')
-  call dein#add('vim-scripts/YankRing.vim')
-  call dein#add('itchyny/lightline.vim')
-  call dein#add('groenewege/vim-less')
-  call dein#add('glidenote/memolist.vim')
-  call dein#add('vim-jp/vimdoc-ja')
-  call dein#add('jacquesbh/vim-showmarks')
-  call dein#add('thinca/vim-ref')
-  call dein#add('yuku-t/vim-ref-ri')
-  call dein#add('kchmck/vim-coffee-script')
-  call dein#add('glidenote/serverspec-snippets')
-  call dein#add('lambdalisue/vim-gista')
-  call dein#add('davidhalter/jedi-vim')
-  call dein#add('nvie/vim-flake8')
+  call dein#load_toml('~/.vim/rc/dein.toml', {'lazy': 0})
+  call dein#load_toml('~/.vim/rc/deinlazy.toml', {'lazy' : 1})
 
   call dein#end()
   call dein#save_state()
 endif
 
 if dein#check_install()
-  call dein#install()
+  call dein#update()
 endif
 
 " %移動設定
@@ -409,3 +383,4 @@ endfunction
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 " 保存時にコンパイル
 " autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
+
