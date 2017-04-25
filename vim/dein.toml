@@ -194,4 +194,8 @@ repo = 'Shougo/context_filetype.vim'
 
 [[plugins]] # toml syntax
 repo = 'cespare/vim-toml'
-on_ft = 'toml'
+
+[[plugins]]
+repo = 'AndrewRadev/switch.vim'
+hook_add = 'nnoremap ! :Switch<CR>'
+

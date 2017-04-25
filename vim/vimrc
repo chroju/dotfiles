@@ -48,8 +48,6 @@ set foldlevel=99
 autocmd vimrc FileType text setlocal textwidth=0
 
 
-
-
 "---------------------------
 " Visual
 "---------------------------
@@ -165,18 +163,7 @@ nnoremap bb :ls<CR>:buf
 " 編集中のファイルのディレクトリに移動
 nnoremap ,d :execute ":lcd" . expand("%:p:h")<CR>
 
-" plugins
-" NERDTreeToggleをF6に割り当て
-nnoremap <F6> :NERDTreeToggle<CR>
-" Unite
-nnoremap [Unite] <Nop>
-nmap ,u [Unite]
-nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
-nnoremap <silent> [Unite]r :<C-u>Unite file_mru<CR>
-nnoremap <silent> [Unite]c :<C-u>Unite colorscheme -auto-preview<CR>
-nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
 " switch.vim
-nnoremap ! :Switch<CR>
 
 " easy open vimrc
 if has("win64")
@@ -209,6 +196,12 @@ endfunction
 nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR>
 \ :source $MYVIMRC<CR>
 \ :call SourceIfExists('~/vimfiles/ftplugin/' . &filetype . '.vim')<CR>
+
+
+" %移動設定
+if !exists('loaded_matchit')
+  runtime macros/matchit.vim
+endif
 
 
 "---------------------------
@@ -244,21 +237,4 @@ if dein#check_install()
   call dein#update()
 endif
 
-" %移動設定
-if !exists('loaded_matchit')
-  runtime macros/matchit.vim
-endif
-
-
-" if !exists('g:neocomplete#force_omni_input_patterns')
-"   let g:neocomplete#force_omni_input_patterns = {}
-" endif
-" let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-
-
-"## for coffeescript
-" http://qiita.com/alpaca_taichou/items/fb442cfa78f91634cfaa
-au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
-" 保存時にコンパイル
-" autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
 
