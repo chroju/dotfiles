@@ -199,3 +199,17 @@ repo = 'cespare/vim-toml'
 repo = 'AndrewRadev/switch.vim'
 hook_add = 'nnoremap ! :Switch<CR>'
 
+[[plugins]]
+repo = 'soramugi/auto-ctags.vim'
+hook_add = '''
+let g:auto_ctags = 1
+let g:auto_ctags_directory_list = ['.git']
+set tags+=.git/tags
+'''
+
+[[plugins]]
+repo = 'Yggdroot/indentLine'
+hook_add = '''
+let g:indentLine_setColors = 0
+let g:indentLine_char = '|'
+'''

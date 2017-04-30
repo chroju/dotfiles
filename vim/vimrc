@@ -121,10 +121,11 @@ inoremap < <><Left>
 " Complete
 "---------------------------
 set wildmenu "コマンド補完を強化
-set wildmode=list:longest " リスト表示，最長マッチ
+set wildmode=list:full "リスト表示，最長マッチ
 set history=1000 " コマンド・検索パターンの履歴数
 set dict=/usr/share/dict/words
 set complete+=k " 補完に辞書ファイル追加
+set completeopt-=preview
 
 
 "---------------------------
@@ -160,6 +161,10 @@ vnoremap gk k
 
 " buffer
 nnoremap bb :ls<CR>:buf
+
+" ctags
+" http://qiita.com/ykyk1218/items/ab1c89c4eb6a2f90333a
+nnoremap <C-[> :split<CR> :exe("tjump ".expand('<cword>'))<CR>
 
 " 編集中のファイルのディレクトリに移動
 nnoremap ,d :execute ":lcd" . expand("%:p:h")<CR>
