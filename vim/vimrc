@@ -121,8 +121,9 @@ inoremap < <><Left>
 " Complete
 "---------------------------
 set wildmenu "コマンド補完を強化
-set wildmode=list:full " リスト表示，最長マッチ
+set wildmode=list:longest " リスト表示，最長マッチ
 set history=1000 " コマンド・検索パターンの履歴数
+set dict=/usr/share/dict/words
 set complete+=k " 補完に辞書ファイル追加
 
 
@@ -162,8 +163,6 @@ nnoremap bb :ls<CR>:buf
 
 " 編集中のファイルのディレクトリに移動
 nnoremap ,d :execute ":lcd" . expand("%:p:h")<CR>
-
-" switch.vim
 
 " easy open vimrc
 if has("win64")
@@ -205,10 +204,8 @@ endif
 
 
 "---------------------------
-" plugins
+" plugins (dein.vim)
 "---------------------------
-" dein.vim
-
 " http://qiita.com/delphinus35/items/00ff2c0ba972c6e41542
 " プラグインのインストールディレクトリ
 let s:dein_dir = expand('~/.vim/bundle')
