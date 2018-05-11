@@ -6,6 +6,9 @@ repo = 'cocopon/iceberg.vim'
 hook_add = 'colorscheme iceberg'
 
 [[plugins]]
+repo = 'fatih/vim-go'
+
+[[plugins]]
 repo = 'cocopon/vaffle.vim'
 hook_add = '''
 let g:vaffle_show_hidden_files = 1
@@ -211,5 +214,7 @@ set tags+=.git/tags
 repo = 'Yggdroot/indentLine'
 hook_add = '''
 let g:indentLine_setColors = 0
-let g:indentLine_char = '|'
+let g:indentLine_char = '.'
+let g:indentLine_setColors = 0
+let g:indentLine_setConceal = 0
 '''
