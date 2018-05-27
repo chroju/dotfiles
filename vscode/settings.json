@@ -1,0 +1,46 @@
+{
+    "workbench.colorTheme": "Iceberg",
+    "editor.wordWrap": "on",
+    "editor.fontFamily": "'SourceHanCodeJP-Regular', Menlo, Monaco, 'Courier New', monospace",
+
+    "vim.cmdLineInitialColon": true,
+    "vim.easymotion": true,
+    "vim.statusBarColorControl": true,
+    "vim.visualstar": true,
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.statusBarColors" : {
+        "normal": ["#8ac6f2", "#444444"],
+        "insert": ["#95e454", "#444444"],
+        "visual": ["#f2c68a", "#444444"],
+        "visualline": ["#f2c68a", "#444444"],
+        "visualblock": ["#f2c68a", "#444444"],
+        "replace": ["#e5786d", "#444444"]
+    },
+    "vim.leader": "<space>",
+    "vim.otherModesKeyBindings": [
+        {
+            "before": ["leader", "h"],
+            "after": ["^"]
+        },
+        {
+            "before": ["leader", "l"],
+            "after": ["$"]
+        },
+        {
+            "before": ["j"],
+            "after": ["g", "j"]
+        },
+        {
+            "before": ["k"],
+            "after": ["g", "k"]
+        },
+    ],
+
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#8ac6f2",
+        "statusBar.noFolderBackground": "#8ac6f2",
+        "statusBar.debuggingBackground": "#8ac6f2",
+        "statusBar.foreground": "#444444"
+    }
+}
