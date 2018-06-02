@@ -1,20 +1,10 @@
 #!/bin/bash
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew bundle
+ansible-playbook playbook.yml -K
 
-DOT_FILES=(.vimrc .vimperatorrc .tmux.conf .zshrc .zshenv .gitconfig .gitignore)
-dir=$(cd $(dirname $0);pwd)
-
-for file in ${DOT_FILES[@]}
+# https://qiita.com/mottox2/items/581869563ce5f427b5f6
+cat ./files/vscode/extensions | while read line
 do
-  if [ ! -a $HOME/$file ]; then
-    ln -sf $dir/$file $HOME/$file
-    echo "$file : setup done!"
-  fi
+  code --install-extension $line
 done
-
-[ ! -d ~/.vim/bundle ] && mkdir -p ~/.vim/bundle && git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
-[ ! -d ~/.vimperator/vimperator-plugins ] && git clone git://github.com/vimpr/vimperator-plugins ~/.vimperator/vimperator-plugins
-if [ ! -d ~/.vimperator/plugin ]; then
-  mkdir ~/.vimperator/plugin
-  ln -s ~/.vimperator/vimperator-plugins/plugin_loader.js ~/.vimperator/plugin/plugin_loader.js
-  echo "plugin_loader.js : setup done!"
-fi

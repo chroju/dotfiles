@@ -1,0 +1,103 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    user_name: chroju
+
+  tasks:
+    - name: install packages from brewfile
+      shell: brew bundle
+
+    - name: user setting
+      user:
+        name: "{{ user_name }}"
+        shell: /usr/local/bin/zsh
+      become: yes
+
+    - name: make directories
+      file:
+        dest: "{{ item }}"
+        owner: "{{ user_name }}"
+        group: admin
+        state: directory
+      loop:
+        - "/Users/{{ user_name }}/.vim"
+        - "/Users/{{ user_name }}/.vim/rc"
+        - "/Users/{{ user_name }}/.zsh"
+
+    - name: make symlinks at HOME
+      file:
+        src: "{{ item }}"
+        dest: "$HOME/{{ item.split('/')[-1] }}"
+        owner: "{{ user_name }}"
+        state: link
+      with_fileglob:
+        - "files/HOME/.*"
+
+    - name: make symlinks for vim
+      file:
+        src: "{{ item }}"
+        dest: "$HOME/.vim/{{ item.split('/')[-1] }}"
+        owner: "{{ user_name }}"
+        state: link
+      with_fileglob:
+        - "files/vim/*"
+
+    - name: make symlinks for dein.vim
+      file:
+        src: "{{ item }}"
+        dest: "$HOME/.vim/rc/{{ item.split('/')[-1] }}"
+        owner: "{{ user_name }}"
+        state: link
+      with_fileglob:
+        - "files/vim/rc/*"
+
+    - name: make symlinks for vscode
+      file:
+        src: "{{ item }}"
+        dest: "/Users/{{ user_name }}/Library/Application\ Support/Code/User/{{ item.split('/')[-1] }}"
+        owner: "{{ user_name }}"
+        state: link
+      with_fileglob:
+        - "files/vscode/*.json"
+
+    - name: get git bash completion
+      get_url:
+        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+        dest: $HOME/.zsh/git-completion.bash
+        owner: "{{ user_name }}"
+        group: admin
+
+    - name: get git zsh completion
+      get_url:
+        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+        dest: $HOME/.zsh/_git
+        owner: "{{ user_name }}"
+        group: admin
+
+    # Python
+    - name: install virtualenv
+      pip:
+        name: virtualenv
+        executable: pip3
+      tags: python
+
+    - name: make virtualenv directory
+      file:
+        dest: $HOME/.virtualenv
+        owner: "{{ user_name }}"
+        state: directory
+      tags: python
+
+    # Go
+    - name: make GOPATH directories
+      file:
+        dest: "{{ item }}"
+        owner: "{{ user_name }}"
+        state: directory
+      loop:
+        - "/Users/{{ user_name }}/go"
+        - "/Users/{{ user_name }}/go/bin"
+        - "/Users/{{ user_name }}/go/pkg"
+        - "/Users/{{ user_name }}/go/src"
+      tags: go
