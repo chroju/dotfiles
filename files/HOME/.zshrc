@@ -174,6 +174,5 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # aws-cli
 
-completer=$(type aws_zsh_completer.sh | sed -e 's/^.* is \(.*\)$/\1/g')
-test -e ${completer} && source ${completer}
+source /usr/local/share/zsh/site-functions/aws_zsh_completer.sh
 
