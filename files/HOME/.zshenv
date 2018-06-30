@@ -20,6 +20,7 @@ path=(
   /usr/local/sbin(N-/)
   /usr/local/heroku/bin(N-/)
   /usr/local/go/bin(N-/)
+  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/(N-/)
   $GOPATH/bin(N-/)
   $path
 )
