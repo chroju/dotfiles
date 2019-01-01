@@ -22,6 +22,7 @@ brew "python"
 brew "ruby", link: true
 brew "terminal-notifier"
 brew "terraform"
+brew "tree"
 brew "vim", args: ["with-lua"]
 brew "wget"
 brew "youtube-dl"
