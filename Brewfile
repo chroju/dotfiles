@@ -22,7 +22,7 @@ brew "perl"
 brew "python"
 brew "ruby", link: true
 brew "terminal-notifier"
-brew "terraform"
+brew "tfenv"
 brew "tree"
 brew "vim"
 brew "wget"
