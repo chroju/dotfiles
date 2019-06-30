@@ -58,3 +58,5 @@
   # rename commands
   graph = log --graph --oneline --decorate --name-status
 
+[ghq]
+  root = ~/repos
