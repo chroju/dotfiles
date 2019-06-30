@@ -18,7 +18,7 @@
         "replace": ["#e5786d", "#444444"]
     },
     "vim.leader": "<space>",
-    "vim.otherModesKeyBindings": [
+    "vim.normalModeKeyBindings": [
         {
             "before": ["leader", "h"],
             "after": ["^"]
@@ -35,6 +35,14 @@
             "before": ["k"],
             "after": ["g", "k"]
         },
+        {
+            "before": ["g", "j"],
+            "after": ["j"]
+        },
+        {
+            "before": ["g", "k"],
+            "after": ["k"]
+        },
     ],
 
     "workbench.colorCustomizations": {
@@ -42,5 +50,38 @@
         "statusBar.noFolderBackground": "#8ac6f2",
         "statusBar.debuggingBackground": "#8ac6f2",
         "statusBar.foreground": "#444444"
-    }
+    },
+    "workbench.activityBar.visible": true,
+    "explorer.confirmDragAndDrop": false,
+    "git.autofetch": true,
+    "go.useLanguageServer": true,
+    "workbench.colorTheme": "Iceberg",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "files.autoSave": "afterDelay",
+
+    "latex-workshop.message.log.show": true,
+    "latex-workshop.message.badbox.show": true,
+    "latex-workshop.latex.autoBuild.run": "onFileChange",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "ptex2pdf",
+            "tools": [
+                "ptex2pdf"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "ptex2pdf",
+            "command": "ptex2pdf",
+            "args": [
+                "-l",
+                "-ot",
+                "-kanji=utf8 -synctex=1",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.view.pdf.viewer": "tab"
 }
