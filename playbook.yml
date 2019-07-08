@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   vars:
-    user_name: chroju
+    user_name: "jutaro.numata"
 
   tasks:
     - name: install packages from brewfile
@@ -89,15 +89,3 @@
         state: directory
       tags: python
 
-    # Go
-    - name: make GOPATH directories
-      file:
-        dest: "{{ item }}"
-        owner: "{{ user_name }}"
-        state: directory
-      loop:
-        - "/Users/{{ user_name }}/go"
-        - "/Users/{{ user_name }}/go/bin"
-        - "/Users/{{ user_name }}/go/pkg"
-        - "/Users/{{ user_name }}/go/src"
-      tags: go
