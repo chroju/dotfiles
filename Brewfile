@@ -33,6 +33,7 @@ brew "mackerelio/mackerel-agent/mackerel-agent"
 brew "mczachurski/wallpapper/wallpapper"
 brew "node"
 brew "osx-cross/avr/avr-gcc@7", link: true
+brew "packer"
 brew "perl"
 brew "protobuf"
 brew "px4/px4/gcc-arm-none-eabi"
