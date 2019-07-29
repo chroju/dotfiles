@@ -1,35 +1,38 @@
 ---
 - hosts: localhost
   connection: local
-  vars:
-    user_name: "jutaro.numata"
 
   tasks:
+    - name: register ansible runner name
+      shell: whoami
+      register: user_name
+
     - name: install packages from brewfile
       shell: brew bundle
+      ignore_errors: True
 
     - name: user setting
       user:
-        name: "{{ user_name }}"
+        name: "{{ user_name.stdout }}"
         shell: /usr/local/bin/zsh
       become: yes
 
     - name: make directories
       file:
         dest: "{{ item }}"
-        owner: "{{ user_name }}"
+        owner: "{{ user_name.stdout }}"
         group: admin
         state: directory
       loop:
-        - "/Users/{{ user_name }}/.vim"
-        - "/Users/{{ user_name }}/.vim/rc"
-        - "/Users/{{ user_name }}/.zsh"
+        - "/Users/{{ user_name.stdout }}/.vim"
+        - "/Users/{{ user_name.stdout }}/.vim/rc"
+        - "/Users/{{ user_name.stdout }}/.zsh"
 
     - name: make symlinks at HOME
       file:
         src: "{{ item }}"
         dest: "$HOME/{{ item.split('/')[-1] }}"
-        owner: "{{ user_name }}"
+        owner: "{{ user_name.stdout }}"
         state: link
       with_fileglob:
         - "files/HOME/.*"
@@ -38,7 +41,7 @@
       file:
         src: "{{ item }}"
         dest: "$HOME/.vim/{{ item.split('/')[-1] }}"
-        owner: "{{ user_name }}"
+        owner: "{{ user_name.stdout }}"
         state: link
       with_fileglob:
         - "files/vim/*"
@@ -47,7 +50,7 @@
       file:
         src: "{{ item }}"
         dest: "$HOME/.vim/rc/{{ item.split('/')[-1] }}"
-        owner: "{{ user_name }}"
+        owner: "{{ user_name.stdout }}"
         state: link
       with_fileglob:
         - "files/vim/rc/*"
@@ -55,8 +58,8 @@
     - name: make symlinks for vscode
       file:
         src: "{{ item }}"
-        dest: "/Users/{{ user_name }}/Library/Application\ Support/Code/User/{{ item.split('/')[-1] }}"
-        owner: "{{ user_name }}"
+        dest: "/Users/{{ user_name.stdout }}/Library/Application\ Support/Code/User/{{ item.split('/')[-1] }}"
+        owner: "{{ user_name.stdout }}"
         state: link
       with_fileglob:
         - "files/vscode/*.json"
@@ -65,14 +68,14 @@
       get_url:
         url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
         dest: $HOME/.zsh/git-completion.bash
-        owner: "{{ user_name }}"
+        owner: "{{ user_name.stdout }}"
         group: admin
 
     - name: get git zsh completion
       get_url:
         url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
         dest: $HOME/.zsh/_git
-        owner: "{{ user_name }}"
+        owner: "{{ user_name.stdout }}"
         group: admin
 
     # Python
@@ -85,7 +88,7 @@
     - name: make virtualenv directory
       file:
         dest: $HOME/.virtualenv
-        owner: "{{ user_name }}"
+        owner: "{{ user_name.stdout }}"
         state: directory
       tags: python
 
