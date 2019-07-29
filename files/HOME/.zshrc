@@ -169,10 +169,10 @@ case "${OSTYPE}" in
 esac
 
 # iterm2
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 # aws-cli
-
 source /usr/local/share/zsh/site-functions/aws_zsh_completer.sh
-
+# tmux
+test -z $TMUX && tmux new -s main
+# fzf
+test -f ~/.fzf.zsh && source ~/.fzf.zsh
