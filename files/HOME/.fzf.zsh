@@ -48,3 +48,13 @@ fcd() {
     pushd +$dir_no
   fi
 }
+
+ffcd() {
+  local depth dir
+  if [[ $1 -ne "" ]]; then
+    depth=$1
+  else
+    depth=1
+  fi
+  dir=$(find . -d $depth -type d | sort | fzf) && cd $dir
+}
