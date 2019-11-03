@@ -45,6 +45,8 @@ bindkey '^[^]' vi-find-prev-char
 setopt auto_cd
 # cd した先のディレクトリをディレクトリスタックに追加する
 setopt auto_pushd
+# pushd 実行時にディレクトリスタックの内容を出力しない
+setopt PUSHDSILENT
 # 曖昧補完
 setopt auto_list
 # 変数名補完

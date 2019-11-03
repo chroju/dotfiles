@@ -2,7 +2,7 @@
     "workbench.colorTheme": "Iceberg",
     "editor.minimap.enabled": false,
     "editor.wordWrap": "on",
-    "editor.fontFamily": "'SourceHanCodeJP-Regular', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "'Ricty Diminished Discord', Menlo, Monaco, 'Courier New', monospace",
 
     "vim.cmdLineInitialColon": true,
     "vim.easymotion": true,
@@ -44,18 +44,25 @@
             "after": ["k"]
         },
     ],
-
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["leader", ":"],
+            "commands": [
+                "workbench.action.showCommands",
+            ]
+        }
+    ],
     "workbench.colorCustomizations": {
         "statusBar.background": "#8ac6f2",
         "statusBar.noFolderBackground": "#8ac6f2",
         "statusBar.debuggingBackground": "#8ac6f2",
-        "statusBar.foreground": "#444444"
+        "statusBar.foreground": "#444444",
+        "sideBar.foreground": "#cccccc"
     },
     "workbench.activityBar.visible": true,
     "explorer.confirmDragAndDrop": false,
     "git.autofetch": true,
     "go.useLanguageServer": true,
-    "workbench.colorTheme": "Iceberg",
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "files.autoSave": "afterDelay",
@@ -90,7 +97,7 @@
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
-        },
+        }
     },
     "terminal.integrated.rendererType": "dom",
     "terraform.indexing": {
@@ -105,5 +112,10 @@
     "terraform.languageServer": {
         "enabled": true,
         "args": []
-    }
+    },
+    "editor.fontSize": 16,
+    "editor.formatOnSave": true,
+    "terminal.integrated.fontSize": 16,
+    "window.zoomLevel": 0,
+    "python.formatting.provider": "autopep8"
 }

@@ -42,3 +42,19 @@ ftm() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
+fcd() {
+  dir_no=$(dirs -v | fzf | cut -f 1)
+  if [[ $dir_no -ne "" ]]; then
+    pushd +$dir_no
+  fi
+}
+
+ffcd() {
+  local depth dir
+  if [[ $1 -ne "" ]]; then
+    depth=$1
+  else
+    depth=1
+  fi
+  dir=$(find . -d $depth -type d | sort | fzf) && cd $dir
+}
