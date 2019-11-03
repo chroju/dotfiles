@@ -1,0 +1,10 @@
+[aws]
+displayed_items = "all"
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
+
+[directory]
+trancation_length = 3
+truncate_to_repo = false

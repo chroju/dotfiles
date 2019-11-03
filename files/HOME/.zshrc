@@ -173,6 +173,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # aws-cli
 source /usr/local/share/zsh/site-functions/aws_zsh_completer.sh
 # tmux
-test -z $TMUX && tmux new -s main
+test -z $TMUX && tmux new -s main || tmux a -t main
 # fzf
 test -f ~/.fzf.zsh && source ~/.fzf.zsh
+# starship
+eval "$(starship init zsh)"

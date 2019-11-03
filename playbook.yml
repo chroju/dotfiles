@@ -27,6 +27,7 @@
         - "/Users/{{ user_name.stdout }}/.vim"
         - "/Users/{{ user_name.stdout }}/.vim/rc"
         - "/Users/{{ user_name.stdout }}/.zsh"
+        - "/Users/{{ user_name.stdout }}/.config"
 
     - name: make symlinks at HOME
       file:
@@ -63,6 +64,15 @@
         state: link
       with_fileglob:
         - "files/vscode/*.json"
+
+    - name: make symlinks for config
+      file:
+        src: "{{ item }}"
+        dest: "$HOME/.config/{{ item.split('/')[-1] }}"
+        owner: "{{ user_name.stdout }}"
+        state: link
+      with_fileglob:
+        - "files/config/*"
 
     - name: get git bash completion
       get_url:
