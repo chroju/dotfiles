@@ -18,6 +18,7 @@ alias lsg='ls -G --color'
 alias ll='ls -la'
 alias grepe='grep --color -E'
 alias g='git '
+alias tf='terraform'
 alias -g G=' | grep --color -E'
 alias -g M=' | more'
 alias -g H=' | head'
@@ -93,7 +94,7 @@ setopt no_global_rcs
 #  history
 # ====================
 
-HISTFILE=$HOME/.zsh_history$
+HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
@@ -174,9 +175,28 @@ esac
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # aws-cli
 source /usr/local/share/zsh/site-functions/aws_zsh_completer.sh
-# tmux
-test -z $TMUX && tmux new -s main || tmux a -t main
 # fzf
 test -f ~/.fzf.zsh && source ~/.fzf.zsh
+# tmux
+# https://qiita.com/ssh0/items/a9956a74bff8254a606a
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  :
+elif [[ ! -n $TMUX && $- == *l* ]]; then
+  # get the IDs
+  ID="`tmux list-sessions`"
+  if [[ -z "$ID" ]]; then
+    tmux new-session
+  fi
+  create_new_session="Create New Session"
+  ID="$ID\n${create_new_session}:"
+  ID="`echo $ID | $PERCOL | cut -d: -f1`"
+  if [[ "$ID" = "${create_new_session}" ]]; then
+    tmux new-session
+  elif [[ -n "$ID" ]]; then
+    tmux attach-session -t "$ID"
+  else
+    :  # Start terminal normally
+  fi
+fi
 # starship
 eval "$(starship init zsh)"

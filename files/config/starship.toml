@@ -8,3 +8,6 @@ style = "bold red"
 [directory]
 trancation_length = 3
 truncate_to_repo = false
+
+[git_branch]
+symbol = "[git] "
