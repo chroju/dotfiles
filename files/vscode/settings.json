@@ -2,51 +2,157 @@
     "workbench.colorTheme": "Iceberg",
     "editor.minimap.enabled": false,
     "editor.wordWrap": "on",
-    "editor.fontFamily": "'Ricty Diminished Discord', Menlo, Monaco, 'Courier New', monospace",
-
-    "vim.cmdLineInitialColon": true,
+    "files.insertFinalNewline": true,
+    "editor.fontFamily": "'Cica', 'Ricty Diminished Discord', Menlo, Monaco, 'Courier New', monospace",
     "vim.easymotion": true,
     "vim.visualstar": true,
     "vim.useSystemClipboard": true,
     "vim.hlsearch": true,
-    "vim.statusBarColors" : {
-        "normal": ["#8ac6f2", "#444444"],
-        "insert": ["#95e454", "#444444"],
-        "visual": ["#f2c68a", "#444444"],
-        "visualline": ["#f2c68a", "#444444"],
-        "visualblock": ["#f2c68a", "#444444"],
-        "replace": ["#e5786d", "#444444"]
+    "vim.statusBarColors": {
+        "normal": [
+            "#8ac6f2",
+            "#444444"
+        ],
+        "insert": [
+            "#95e454",
+            "#444444"
+        ],
+        "visual": [
+            "#f2c68a",
+            "#444444"
+        ],
+        "visualline": [
+            "#f2c68a",
+            "#444444"
+        ],
+        "visualblock": [
+            "#f2c68a",
+            "#444444"
+        ],
+        "replace": [
+            "#e5786d",
+            "#444444"
+        ]
     },
     "vim.leader": "<space>",
     "vim.normalModeKeyBindings": [
         {
-            "before": ["leader", "h"],
-            "after": ["^"]
+            "before": [
+                "leader",
+                "h"
+            ],
+            "after": [
+                "^"
+            ]
         },
         {
-            "before": ["leader", "l"],
-            "after": ["$"]
+            "before": [
+                "leader",
+                "l"
+            ],
+            "after": [
+                "$"
+            ]
         },
         {
-            "before": ["j"],
-            "after": ["g", "j"]
+            "before": [
+                "j"
+            ],
+            "after": [
+                "g",
+                "j"
+            ]
         },
         {
-            "before": ["k"],
-            "after": ["g", "k"]
+            "before": [
+                "k"
+            ],
+            "after": [
+                "g",
+                "k"
+            ]
         },
         {
-            "before": ["g", "j"],
-            "after": ["j"]
+            "before": [
+                "g",
+                "j"
+            ],
+            "after": [
+                "j"
+            ]
         },
         {
-            "before": ["g", "k"],
-            "after": ["k"]
+            "before": [
+                "g",
+                "k"
+            ],
+            "after": [
+                "k"
+            ]
+        },
+    ],
+    "vim.visualModeKeyBindings": [
+        {
+            "before": [
+                "leader",
+                "h"
+            ],
+            "after": [
+                "^"
+            ]
+        },
+        {
+            "before": [
+                "leader",
+                "l"
+            ],
+            "after": [
+                "$"
+            ]
+        },
+        {
+            "before": [
+                "j"
+            ],
+            "after": [
+                "g",
+                "j"
+            ]
+        },
+        {
+            "before": [
+                "k"
+            ],
+            "after": [
+                "g",
+                "k"
+            ]
+        },
+        {
+            "before": [
+                "g",
+                "j"
+            ],
+            "after": [
+                "j"
+            ]
+        },
+        {
+            "before": [
+                "g",
+                "k"
+            ],
+            "after": [
+                "k"
+            ]
         },
     ],
     "vim.normalModeKeyBindingsNonRecursive": [
         {
-            "before": ["leader", ":"],
+            "before": [
+                "leader",
+                ":"
+            ],
             "commands": [
                 "workbench.action.showCommands",
             ]
@@ -64,9 +170,8 @@
     "git.autofetch": true,
     "go.useLanguageServer": true,
     "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "files.autoSave": "afterDelay",
-
+    "files.autoSaveDelay": 10000,
     "latex-workshop.message.log.show": true,
     "latex-workshop.message.badbox.show": true,
     "latex-workshop.latex.autoBuild.run": "onFileChange",
@@ -117,5 +222,6 @@
     "editor.formatOnSave": true,
     "terminal.integrated.fontSize": 16,
     "window.zoomLevel": 0,
-    "python.formatting.provider": "autopep8"
+    "python.formatting.provider": "autopep8",
+    "aws.samcli.location": "/usr/local/bin/sam"
 }
