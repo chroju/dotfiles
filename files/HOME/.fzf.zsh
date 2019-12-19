@@ -58,3 +58,14 @@ ffcd() {
   fi
   dir=$(find . -d $depth -type d | sort | fzf) && cd $dir
 }
+
+tfdoc() {
+  if [[ $1 ]]; then
+    r=$(curl -sL "https://api.github.com/repos/terraform-providers/terraform-provider-${1}/contents/website/docs/r/" | jq -r ".[].name" | cut -d '.' -f 1 | fzf)
+    if [[ $r ]]; then
+      open https://www.terraform.io/docs/providers/${1}/r/${r}.html
+    fi
+  else
+    echo "ERROR: specify provider"
+  fi
+}
