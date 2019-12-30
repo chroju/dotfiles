@@ -69,3 +69,8 @@ tfdoc() {
     echo "ERROR: specify provider"
   fi
 }
+
+adoc() {
+  local module
+  module=$(ansible-doc -l | awk '{print $1}' | fzf-tmux +m) && open "https://docs.ansible.com/ansible/latest/modules/${module}_module.html"
+}
