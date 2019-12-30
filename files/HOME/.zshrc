@@ -200,3 +200,6 @@ elif [[ ! -n $TMUX && $- == *l* ]]; then
 fi
 # starship
 eval "$(starship init zsh)"
+# direnv
+eval "$(direnv hook zsh)"
+
