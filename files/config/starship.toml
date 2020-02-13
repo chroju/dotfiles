@@ -1,13 +1,54 @@
+prompt_order = [
+    "username",
+    "hostname",
+    "directory",
+    "git_branch",
+    "git_commit",
+    "git_state",
+    "git_status",
+    "hg_branch",
+    "package",
+    "dotnet",
+    "elm",
+    "golang",
+    "haskell",
+    "java",
+    "nodejs",
+    "php",
+    "python",
+    "ruby",
+    "rust",
+    "terraform",
+    "nix_shell",
+    "conda",
+    "memory_usage",
+    "aws",
+    "kubernetes",
+    "env_var",
+    "crystal",
+    "cmd_duration",
+    "line_break",
+    "jobs",
+    "battery",
+    "time",
+    "character",
+]
+
 [aws]
 displayed_items = "all"
+
+[kubernetes]
+disabled = false
+symbol = "🐳 "
 
 [[battery.display]]
 threshold = 20
 style = "bold red"
 
 [directory]
-trancation_length = 3
-truncate_to_repo = false
+# trancation_length = 5
+truncate_to_repo = true
 
 [git_branch]
-symbol = "[git] "
+symbol = "🐈 "
+
