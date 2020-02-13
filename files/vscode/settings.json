@@ -204,6 +204,9 @@
             "source.organizeImports": true
         }
     },
+    "[terraform]": {
+        "editor.formatOnSave": true
+    },
     "terminal.integrated.rendererType": "dom",
     "terraform.indexing": {
         "enabled": false,
