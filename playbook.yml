@@ -16,6 +16,28 @@
         name: "{{ user_name.stdout }}"
         shell: /usr/local/bin/zsh
       become: yes
+      ignore_errors: True
+
+    # for VSCodeVim
+    # https://github.com/VSCodeVim/Vim#mac
+    - name: set up macos defaults
+      osx_defaults:
+        domain: "{{ item.domain }}"
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+        state: "{{ item.state }}"
+      loop:
+      - domain: com.microsoft.VSCode
+        key: ApplePressAndHoldEnabled
+        type: bool
+        value: false
+        state: present
+      - domain: com.microsoft.VSCodeInsiders
+        key: ApplePressAndHoldEnabled
+        type: bool
+        value: false
+        state: present
 
     - name: make directories
       file:
