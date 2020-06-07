@@ -158,6 +158,24 @@ bindkey "^n" history-beginning-search-forward-end
 
 
 # ====================
+#  functions
+# ====================
+
+gcr () {
+  if [[ $# != 1 ]]; then
+    echo "ERROR"
+  else
+    local REPO=$1
+    local REPO_PATH="$(ghq root)/github.com/chroju/${REPO}"
+    mkdir $REPO_PATH
+    cd $REPO_PATH
+    git init
+    hub create
+  fi
+}
+
+
+# ====================
 #  load some tools
 # ====================
 
@@ -181,7 +199,7 @@ test -f ~/.fzf.zsh && source ~/.fzf.zsh
 # tmux
 # https://qiita.com/ssh0/items/a9956a74bff8254a606a
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  :
+  echo ""
 elif [[ ! -n $TMUX && $- == *l* ]]; then
   # get the IDs
   ID="`tmux list-sessions`"
