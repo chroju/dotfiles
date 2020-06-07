@@ -7,9 +7,9 @@
       shell: whoami
       register: user_name
 
-    - name: install packages from brewfile
-      shell: brew bundle
-      ignore_errors: True
+    # - name: install packages from brewfile
+    #   shell: brew bundle
+    #   ignore_errors: True
 
     - name: user setting
       user:
@@ -50,6 +50,8 @@
         - "/Users/{{ user_name.stdout }}/.vim/rc"
         - "/Users/{{ user_name.stdout }}/.zsh"
         - "/Users/{{ user_name.stdout }}/.config"
+        - "/Users/{{ user_name.stdout }}/.gittemplates"
+        - "/Users/{{ user_name.stdout }}/.gittemplates/hooks"
 
     - name: make symlinks at HOME
       file:
@@ -59,6 +61,15 @@
         state: link
       with_fileglob:
         - "files/HOME/.*"
+
+    - name: make symlinks for gittemplates
+      file:
+        src: "{{ item }}"
+        dest: "$HOME/.gittemplates/hooks/{{ item.split('/')[-1] }}"
+        owner: "{{ user_name.stdout }}"
+        state: link
+      with_fileglob:
+        - "files/HOME/.gittemplates/hooks/*"
 
     - name: make symlinks for vim
       file:

@@ -11,6 +11,9 @@
   branch = auto
   grep = auto
 
+[init]
+  templatedir = ~/.gittemplates
+
 [push]
   default = tracking
 
