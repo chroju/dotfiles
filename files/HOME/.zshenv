@@ -3,10 +3,11 @@
 # ====================
 
 export TERM=xterm-256color
-export SHELL=zsh
+export SHELL=/bin/zsh
 export EDITOR=vim
 export LANG=ja_JP.UTF-8
 export GOPATH=$HOME/repos
+export AWS_DEFAULT_REGION=ap-northeast-1
 
 
 # ====================
