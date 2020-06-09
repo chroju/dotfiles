@@ -174,6 +174,10 @@ gcr () {
   fi
 }
 
+notice () {
+  terminal-notifier -message $1 -title 'Terminal notifier'
+}
+
 
 # ====================
 #  load some tools
