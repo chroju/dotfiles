@@ -174,6 +174,11 @@ gcr () {
   fi
 }
 
+gpr () {
+  git push -u origin $(git symbolic-ref --short HEAD)
+  gh pr create -w
+}
+
 notice () {
   terminal-notifier -message $1 -title 'Terminal notifier'
 }
