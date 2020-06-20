@@ -174,6 +174,15 @@ gcr () {
   fi
 }
 
+gpr () {
+  git push -u origin $(git symbolic-ref --short HEAD)
+  gh pr create -w
+}
+
+notice () {
+  terminal-notifier -message $1 -title 'Terminal notifier'
+}
+
 
 # ====================
 #  load some tools
@@ -223,5 +232,5 @@ eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 # gh
 eval "$(gh completion --shell zsh)"
-
-
+# asdf
+source $(brew --prefix asdf)/asdf.sh
