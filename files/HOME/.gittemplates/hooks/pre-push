@@ -1,5 +1,5 @@
-# https://thinca.hatenablog.com/entry/20150306/1425639218
 #!/bin/bash
+# https://thinca.hatenablog.com/entry/20150306/1425639218
 
 while read local_ref local_sha1 remote_ref remote_sha1
 do

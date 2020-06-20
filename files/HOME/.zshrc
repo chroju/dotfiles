@@ -230,6 +230,7 @@ fi
 eval "$(starship init zsh)"
 # direnv
 eval "$(direnv hook zsh)"
+# gh
+eval "$(gh completion --shell zsh)"
 # asdf
 source $(brew --prefix asdf)/asdf.sh
-
