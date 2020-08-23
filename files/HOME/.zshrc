@@ -22,6 +22,7 @@ alias g='git '
 alias t='terraform'
 alias ti='terraform init'
 alias tp='terraform plan'
+alias ta='terraform apply'
 
 alias k='kubectl'
 alias -g G=' | grep --color -E'
