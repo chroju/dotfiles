@@ -18,8 +18,12 @@ alias lsg='ls -G --color'
 alias ll='ls -la'
 alias grepe='grep --color -E'
 alias g='git '
+
 alias t='terraform'
+alias ti='terraform init'
 alias tp='terraform plan'
+alias ta='terraform apply'
+
 alias k='kubectl'
 alias -g G=' | grep --color -E'
 alias -g M=' | more'
