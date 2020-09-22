@@ -8,9 +8,11 @@ The setting files for my development PC.
 Work with homebrew and Ansible. Install necessary packages, make symlinks of dotfiles, and set up some environments for development.
 
 ```bash
+$ mkdir -p ~/repos/src/github/com/chroju
+$ cd ~/repos/src/github/com/chroju
 $ git clone https://github.com/chroju/dotfiles
 $ cd dotfiles
-$ sh setup.sh
+$ ansible-playbook playbook.yml -K
 ```
 
 ## Author
