@@ -13,7 +13,7 @@
         name: "{{ user_name.stdout }}"
         shell: /usr/local/bin/zsh
       become: yes
-      ignore_errors: True
+      failed_when: False
       tags:
       - initial
 
@@ -40,9 +40,23 @@
       tags:
       - initial
 
+    - name: check homebrew installed
+      shell: type brew
+      register: installed_homebrew
+      failed_when: False
+      tags:
+      - initial
+
+    - name: install homebrew
+      shell: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      register: installed_homebrew
+      when: installed_homebrew == False
+      tags:
+      - initial
+
     - name: install packages from brewfile
       shell: brew bundle
-      ignore_errors: True
+      failed_when: False
       tags:
       - initial
 
