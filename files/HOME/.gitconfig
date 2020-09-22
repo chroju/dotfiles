@@ -13,9 +13,10 @@
 
 [init]
   templatedir = ~/.gittemplates
+  defaultBranch = main
 
 [push]
-  default = tracking
+  default = simple
 
 [core]
   excludesfile = ~/.gitignore
