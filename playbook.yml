@@ -6,6 +6,8 @@
     - name: register ansible runner name
       shell: whoami
       register: user_name
+      tags:
+      - always
 
     # initial tasks #############################################
     - name: user setting
