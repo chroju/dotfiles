@@ -7,16 +7,15 @@
       shell: whoami
       register: user_name
 
-    # - name: install packages from brewfile
-    #   shell: brew bundle
-    #   ignore_errors: True
-
+    # initial tasks #############################################
     - name: user setting
       user:
         name: "{{ user_name.stdout }}"
         shell: /usr/local/bin/zsh
       become: yes
       ignore_errors: True
+      tags:
+      - initial
 
     # for VSCodeVim
     # https://github.com/VSCodeVim/Vim#mac
@@ -38,6 +37,14 @@
         type: bool
         value: false
         state: present
+      tags:
+      - initial
+
+    - name: install packages from brewfile
+      shell: brew bundle
+      ignore_errors: True
+      tags:
+      - initial
 
     - name: make directories
       file:
@@ -52,7 +59,29 @@
         - "/Users/{{ user_name.stdout }}/.config"
         - "/Users/{{ user_name.stdout }}/.gittemplates"
         - "/Users/{{ user_name.stdout }}/.gittemplates/hooks"
+      tags:
+      - initial
 
+    - name: get git bash completion
+      get_url:
+        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+        dest: $HOME/.zsh/git-completion.bash
+        owner: "{{ user_name.stdout }}"
+        group: admin
+      tags:
+      - initial
+
+    - name: get git zsh completion
+      get_url:
+        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+        dest: $HOME/.zsh/_git
+        owner: "{{ user_name.stdout }}"
+        group: admin
+      tags:
+      - initial
+
+
+    # symlinks ##################################################
     - name: make symlinks at HOME
       file:
         src: "{{ item }}"
@@ -61,6 +90,8 @@
         state: link
       with_fileglob:
         - "files/HOME/.*"
+      tags:
+      - symlinks
 
     - name: make symlinks for gittemplates
       file:
@@ -68,8 +99,11 @@
         dest: "$HOME/.gittemplates/hooks/{{ item.split('/')[-1] }}"
         owner: "{{ user_name.stdout }}"
         state: link
+        force: yes
       with_fileglob:
         - "files/HOME/.gittemplates/hooks/*"
+      tags:
+      - symlinks
 
     - name: make symlinks for vim
       file:
@@ -77,8 +111,11 @@
         dest: "$HOME/.vim/{{ item.split('/')[-1] }}"
         owner: "{{ user_name.stdout }}"
         state: link
+        force: yes
       with_fileglob:
         - "files/vim/*"
+      tags:
+      - symlinks
 
     - name: make symlinks for dein.vim
       file:
@@ -86,17 +123,11 @@
         dest: "$HOME/.vim/rc/{{ item.split('/')[-1] }}"
         owner: "{{ user_name.stdout }}"
         state: link
+        force: yes
       with_fileglob:
         - "files/vim/rc/*"
-
-    - name: make symlinks for vscode
-      file:
-        src: "{{ item }}"
-        dest: "/Users/{{ user_name.stdout }}/Library/Application\ Support/Code/User/{{ item.split('/')[-1] }}"
-        owner: "{{ user_name.stdout }}"
-        state: link
-      with_fileglob:
-        - "files/vscode/*.json"
+      tags:
+      - symlinks
 
     - name: make symlinks for config
       file:
@@ -104,34 +135,37 @@
         dest: "$HOME/.config/{{ item.split('/')[-1] }}"
         owner: "{{ user_name.stdout }}"
         state: link
+        force: yes
       with_fileglob:
         - "files/config/*"
+      tags:
+      - symlinks
 
-    - name: get git bash completion
-      get_url:
-        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-        dest: $HOME/.zsh/git-completion.bash
+    - name: make symlinks for /usr/local/bin
+      file:
+        src: "{{ item }}"
+        dest: "/usr/local/bin/{{ item.split('/')[-1] }}"
         owner: "{{ user_name.stdout }}"
-        group: admin
+        state: link
+        force: yes
+      with_fileglob:
+        - "files/bin/*"
+      tags:
+      - symlinks
 
-    - name: get git zsh completion
-      get_url:
-        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
-        dest: $HOME/.zsh/_git
-        owner: "{{ user_name.stdout }}"
-        group: admin
-
-    # Python
+    # Python ####################################################
     - name: install virtualenv
       pip:
         name: virtualenv
         executable: pip3
-      tags: python
+      tags:
+      - python
 
     - name: make virtualenv directory
       file:
         dest: $HOME/.virtualenv
         owner: "{{ user_name.stdout }}"
         state: directory
-      tags: python
+      tags:
+      - python
 
