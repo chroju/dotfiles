@@ -1,6 +1,7 @@
 [user]
   name = chroju
   email = chroju@users.noreply.github.com
+	signingkey = B2901C02871B6CD5
 
 [github]
   user = chroju
@@ -21,12 +22,17 @@
 [core]
   excludesfile = ~/.gitignore
   editor = vim
+  attributesfile = ~/.gitattributes
 
 [commit]
   template = ~/.gitmessage
 
 [diff]
   renames = copies
+
+[diff "ansible-vault"]
+  textconv = ansible-vault view
+  cachetextconv = true
 
 [alias]
   # shorter commands
@@ -65,6 +71,5 @@
 [ghq]
   root = ~/repos/src
 
-[diff "ansible-vault"]
-  textconv = ansible-vault view
-  cachetextconv = true
+[gpg]
+	program = /usr/local/bin/gpg
