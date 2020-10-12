@@ -8,6 +8,7 @@ export EDITOR=vim
 export LANG=ja_JP.UTF-8
 export GOPATH=$HOME/repos
 export AWS_DEFAULT_REGION=ap-northeast-1
+export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_password
 
 
 # ====================

@@ -180,14 +180,17 @@ gcr () {
 }
 
 gpr () {
-  git push -u origin $(git symbolic-ref --short HEAD)
-  gh pr create -w
+  if [[ $(git symbolic-ref --short HEAD) == 'master' ]]; then
+    echo "This is master branch !!!!"
+  else
+    git push -u origin $(git symbolic-ref --short HEAD)
+    gh pr create -w
+  fi
 }
 
 notice () {
   terminal-notifier -message $1 -title 'Terminal notifier'
 }
-
 
 # ====================
 #  load some tools
