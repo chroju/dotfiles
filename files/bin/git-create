@@ -2,8 +2,8 @@
 if [[ $# != 1 ]]; then
   echo "ERROR"
 else
-  local REPO=$1
-  local REPO_PATH="$(ghq root)/github.com/chroju/${REPO}"
+  REPO=$1
+  REPO_PATH="$(ghq root)/github.com/chroju/${REPO}"
   mkdir $REPO_PATH
   cd $REPO_PATH
   git init
