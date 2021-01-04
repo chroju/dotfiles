@@ -1,6 +1,7 @@
 [user]
   name = chroju
   email = chroju@users.noreply.github.com
+	signingkey = B2901C02871B6CD5
 
 [github]
   user = chroju
