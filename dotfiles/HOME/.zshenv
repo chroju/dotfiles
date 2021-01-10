@@ -1,3 +1,5 @@
+setopt no_global_rcs
+
 # ====================
 #  setting env vars
 # ====================
@@ -17,6 +19,7 @@ export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_password
 
 typeset -U path
 path=(
+  /opt/homebrew/bin(N-/)
   $HOME/.rbenv/bin(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
   /usr/local/bin(N-/)
