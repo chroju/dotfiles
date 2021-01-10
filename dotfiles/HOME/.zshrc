@@ -31,6 +31,8 @@ alias -g H=' | head'
 alias -g T=' | tail'
 alias -g L=' | less'
 
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
+
 
 # ====================
 #  key binds
