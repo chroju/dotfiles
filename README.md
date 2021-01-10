@@ -5,16 +5,16 @@ The setting files for my development PC.
 
 ## Usage
 
-Work with homebrew and Ansible. Install necessary packages, make symlinks of dotfiles, and set up some environments for development.
+Work with bash and `setup_*.sh` scripts.
 
 ```bash
 $ mkdir -p ~/repos/src/github/com/chroju
 $ cd ~/repos/src/github/com/chroju
 $ git clone https://github.com/chroju/dotfiles
 $ cd dotfiles
-$ ansible-playbook playbook.yml -K
+$ bash *.sh
 ```
 
 ## Author
 
-chroju <http://chroju.net>
+chroju <https://chroju.dev>
