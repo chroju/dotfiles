@@ -12,7 +12,11 @@ fi
 
 # Key bindings
 # ------------
-source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+if [ $(uname -m) = 'arm64' ]; then
+  source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+else
+  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+fi
 
 # customize
 
