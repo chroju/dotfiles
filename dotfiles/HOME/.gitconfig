@@ -1,7 +1,7 @@
 [user]
   name = chroju
   email = chroju@users.noreply.github.com
-	signingkey = B2901C02871B6CD5
+	signingkey = 9B0DF1D4ECDDD26E
 
 [github]
   user = chroju
@@ -26,6 +26,7 @@
 
 [commit]
   template = ~/.gitmessage
+  gpgsign = true
 
 [diff]
   renames = copies
@@ -73,3 +74,6 @@
 
 [gpg]
 	program = /usr/local/bin/gpg
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
