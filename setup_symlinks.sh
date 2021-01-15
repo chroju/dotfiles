@@ -8,14 +8,15 @@ fi
 
 function make_symlinks() {
     for f in $(ls -A $1); do
-        src=$1/$f
+	      src=$1/$f
         dst=$2/$f
         if [ -f $src ]; then
             if [ -e $dst ] && [ "$3" = '-f' ]; then
                 echo "### WARN: overwrite $dst ###"
                 ln -fs $PWD/$src $dst
             elif [ ! -e $dst ]; then
-                echo "make symlink $dst ..."
+                echo "make symlink $dst => $src ..."
+                ln -fs $PWD/$src $dst
             fi
         elif [ -d $src ]; then
             if [ ! -e $dst ]; then
