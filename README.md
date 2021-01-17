@@ -15,6 +15,3 @@ $ cd dotfiles
 $ bash *.sh
 ```
 
-## Author
-
-chroju <https://chroju.dev>
