@@ -1,54 +1,51 @@
 format = """\
-    $username\
-    $hostname\
-    $directory\
-    $git_branch\
-    $git_commit\
-    $git_state\
-    $git_status\
-    $hg_branch\
-    $package\
-    $dotnet\
-    $elm\
-    $golang\
-    $haskell\
-    $java\
-    $nodejs\
-    $php\
-    $python\
-    $ruby\
-    $rust\
-    $terraform\
-    $nix_shell\
-    $conda\
-    $memory_usage\
-    $aws\
-    $kubernetes\
-    $env_var\
-    $crystal\
-    $cmd_duration\
-    $line_break\
-    $jobs\
-    $battery\
-    $time\
-    $character\
-"""
+$username\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$golang\
+$package\
+$kubernetes\
+${custom.tf}\
+$java\
+$nodejs\
+$python\
+$ruby\
+$cmd_duration\
+$line_break\
+$jobs\
+$battery\
+$time\
+$character"""
 
 [aws]
 displayed_items = "all"
+disabled = true
 
 [kubernetes]
 disabled = false
 symbol = "🐳 "
+format = "[$symbol$context]($style) "
 
 [[battery.display]]
 threshold = 20
 style = "bold red"
 
 [directory]
-truncation_length = 10
-truncate_to_repo = false
+truncation_length = 0
+truncate_to_repo = true
+format = "[$path]($style)[$read_only]($read_only_style) "
+truncation_symbol = ".../"
 
-[git_branch]
-symbol = "🐈 "
+[terraform]
+disabled = true
 
+[custom.tf]
+command = "terraform version | head -n 1 | awk '{print $2}'"
+symbol = "🗻 "
+files = ["*.tf"]
+format = "[$symbol$output]($style) "
+when = "test -e .terraform"
+style = "bright-purple"
