@@ -1,5 +1,7 @@
 #!/bin/bash
 
+xcode-select --install || echo "xcode-select --install is alredy done."
+
 arch=$(uname -m)
 
 case $arch in
@@ -26,7 +28,7 @@ case $arch in
   if (type "/usr/local/bin/brew" > /dev/null 2>&1); then
     echo "brew already installed."
   else
-    arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     /usr/local/bin/brew bundle --file=./Brewfiles/intel/Brewfile
   fi
   ;;
