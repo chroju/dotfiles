@@ -20,6 +20,7 @@ export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_password
 typeset -U path
 path=(
   /opt/homebrew/bin(N-/)
+  /opt/homebrew/sbin(N-/)
   $HOME/.rbenv/bin(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
   /usr/local/bin(N-/)
