@@ -239,7 +239,7 @@ fi
 # starship
 eval "$(starship init zsh)"
 # direnv
-eval "$(direnv hook zsh)"
+# eval "$(direnv hook zsh)"
 # gh
 eval "$(gh completion --shell zsh)"
 # asdf
