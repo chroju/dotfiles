@@ -17,11 +17,12 @@
   defaultBranch = main
 
 [push]
-  default = simple
+  default = current
 
 [core]
   excludesfile = ~/.gitignore
   editor = vim
+  pager = delta
   attributesfile = ~/.gitattributes
 
 [commit]
@@ -68,6 +69,7 @@
 
   # rename commands
   graph = log --graph --oneline --decorate --name-status
+  logs =  log --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s %C(red)%d %C(cyan)[%an]' --date=short
 
 [ghq]
   root = ~/repos/src
