@@ -11,4 +11,4 @@ aliases:
     watches: api /users/chroju/subscriptions --paginate --jq .[].full_name
     gitignore: api /gitignore/templates/$1 --jq .source
     unwatch: api -X DELETE /repos/$1/subscription
-    search: api -X GET search/repositories -f q="$1" --template "{{range .items}}{{.full_name}} ⭐ {{.stargazers_count | color \"yellow\"}} ({{.description}}){{\"\\n\"}}{{end}}"
+    search: api -X GET search/repositories -f q="$1" --template "{{range .items}}{{.full_name}} ⭐ {{.stargazers_count | color \"yellow\"}} {{.description | color \"cyan\"}} {{.html_url | color \"white+d\"}}{{\"\\n\"}}{{end}}"
