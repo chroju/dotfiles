@@ -19,6 +19,12 @@
 [push]
   default = current
 
+[pull]
+  ff = only
+
+[merge]
+  ff = false
+
 [core]
   excludesfile = ~/.gitignore
   editor = vim
