@@ -12,3 +12,6 @@ aliases:
     gitignore: api /gitignore/templates/$1 --jq .source
     unwatch: api -X DELETE /repos/$1/subscription
     search: api -X GET search/repositories -f q="$1" --template "{{range .items}}{{.full_name}} ⭐ {{.stargazers_count | color \"yellow\"}} {{.description | color \"cyan\"}} {{.html_url | color \"white+d\"}}{{\"\\n\"}}{{end}}"
+    apply: pr comment --body "atlantis apply"
+    myissue: api issues --template  "{{range .}}{{ printf \"%s%s%v\" .repository.full_name \"#\" .number | color \"green\"}} {{.title}} {{.url | color \"white+d\"}}{{\"\\n\"}}{{end}}"
+    mypr: api -X GET search/issues -f q='is:pr is:open review-requested:chroju' --template "{{ range .items }}{{ .created_at }} {{ .title | color \"green\" }} ({{ .user.login }}) {{ .html_url | color \"white+d\" }} {{\"\\n\"}}{{ end }}"
