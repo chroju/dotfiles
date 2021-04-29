@@ -24,6 +24,16 @@ $character"""
 displayed_items = "all"
 disabled = true
 
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+conflicted = "[CONFLICTED](yellow)"
+ahead = " ${count}⇡"
+diverged = " ⇕${ahead_count}⇡${behind_count}⇣"
+behind = " ${count}⇣"
+untracked = "${count}?"
+stashed = '\($count stashed\)'
+staged = ' [$count++](green)'
+
 [kubernetes]
 disabled = false
 symbol = "🐳 "
