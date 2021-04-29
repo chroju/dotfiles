@@ -15,3 +15,8 @@ aliases:
     apply: pr comment --body "atlantis apply"
     myissue: api issues --template  "{{range .}}{{ printf \"%s%s%v\" .repository.full_name \"#\" .number | color \"green\"}} {{.title}} {{.url | color \"white+d\"}}{{\"\\n\"}}{{end}}"
     mypr: api -X GET search/issues -f q='is:pr is:open review-requested:chroju' --template "{{ range .items }}{{ .created_at }} {{ .title | color \"green\" }} ({{ .user.login }}) {{ .html_url | color \"white+d\" }} {{\"\\n\"}}{{ end }}"
+    fzf-issues: '!gh issue list -R $1 | fzf-tmux --layout=reverse --preview "gh issue view -R $1 {+1}" | cut -f 1 | pbcopy'
+    fzf-myissues: '!gh issue list -a @me -R $1 | fzf-tmux --layout=reverse --preview "gh issue view -R $1 {+1}" | cut -f 1 | pbcopy'
+    fzf-pr-co: '!gh pr list | fzf-tmux --preview "gh pr view {+1}" | cut -f 1 | xargs gh pr checkout'
+    fzf-pr: '!gh pr list | fzf-tmux --preview "gh pr view {+1}" | cut -f 1 | pbcopy'
+    fzf-pr-view: '!gh pr list | fzf-tmux --preview "gh pr view {+1}" | cut -f 1 | xargs gh pr view -c'
