@@ -2,6 +2,7 @@ format = """\
 $username\
 $directory\
 $git_branch\
+${custom.git_change}\
 $git_commit\
 $git_state\
 $git_status\
@@ -24,15 +25,21 @@ $character"""
 displayed_items = "all"
 disabled = true
 
+[custom.git_change]
+command = "echo '*'"
+when = "git-change"
+style = "bold purple"
+shell = "zsh"
+format = "[$symbol($output) ]($style)"
+
 [git_status]
-format = '([\[$all_status$ahead_behind\]]($style) )'
-conflicted = "[CONFLICTED](yellow)"
+format = '([$conflicted$stashed$staged$ahead_behind]($style) )'
+conflicted = "[${count}CONFLICTED](bold yellow)"
 ahead = " ${count}⇡"
 diverged = " ⇕${ahead_count}⇡${behind_count}⇣"
 behind = " ${count}⇣"
-untracked = "${count}?"
-stashed = '\($count stashed\)'
-staged = ' [$count++](green)'
+stashed = '[${count}stashed](bold yellow)'
+staged = '[$count++](green)'
 
 [kubernetes]
 disabled = false
