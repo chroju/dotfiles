@@ -20,3 +20,4 @@ aliases:
     fzf-pr-co: '!gh pr list | fzf-tmux --preview "gh pr view {+1}" | cut -f 1 | xargs gh pr checkout'
     fzf-pr: '!gh pr list | fzf-tmux --preview "gh pr view {+1}" | cut -f 1 | pbcopy'
     fzf-pr-view: '!gh pr list | fzf-tmux --preview "gh pr view {+1}" | cut -f 1 | xargs gh pr view -c'
+    latest: '!gh release list -R $1 | head -n 1'
