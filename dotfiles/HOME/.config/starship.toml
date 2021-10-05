@@ -44,7 +44,7 @@ staged = '[$count++](green)'
 [kubernetes]
 disabled = false
 symbol = "🐳 "
-format = "[$symbol$context]($style) "
+format = "[$symbol$context / $namespace]($style) "
 
 [[battery.display]]
 threshold = 20
