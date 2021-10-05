@@ -89,3 +89,6 @@
 
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+
+[includeIf "gitdir:~/repos/src/github.com/globis-org/**"]
+  path = ~/.gitconfig.work
