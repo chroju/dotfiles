@@ -5,6 +5,7 @@
 
 # 色指定有効化
 autoload -U colors && colors
+autoload -U add-zsh-hook
 # 単語の一部として扱われる文字のセット
 WORDCHARS='*_-'
 
@@ -255,3 +256,17 @@ source $(brew --prefix asdf)/asdf.sh
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
+
+# tfswitch
+load-tfswitch() {
+  local tfswitchrc_path=".tfswitchrc"
+
+  if [[ -n $(find . -maxdepth 1 -name '*.tf' -print -quit) ]]; then
+    tfswitch
+  fi
+}
+add-zsh-hook chpwd load-tfswitch
+load-tfswitch
+
+HIST_FORMAT="'%Y-%m-%d %T' `$(echo -e '\t')`"
+alias history="fc -t ${HIST_FORMAT} -il"
