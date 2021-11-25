@@ -1,0 +1,6 @@
+#!/bin/bash
+commit_hash=$(git log --color=always --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s %C(red)%d %C(cyan)[%an]' --date=short | fzf --ansi | awk '{print $1}')
+if [[ ${#commit_hash} -ne 0 ]]; then
+  echo $commit_hash | pbcopy
+  echo $commit_hash
+fi
