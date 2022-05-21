@@ -1,4 +1,5 @@
-
+# Fig pre block. Keep at the top of this file.
+. "$HOME/.fig/shell/zshrc.pre.zsh"
 # ====================
 #  common
 # ====================
@@ -32,7 +33,10 @@ alias -g H=' | head'
 alias -g T=' | tail'
 alias -g L=' | less'
 
-alias ibrew='arch -x86_64 /usr/local/bin/brew'
+if [[ $(uname -m) == 'arm64' ]]; then
+  alias ibrew='arch -x86_64 /usr/local/bin/brew'
+  alias brew='arch -arm64 /opt/homebrew/bin/brew'
+fi
 
 
 # ====================
@@ -222,27 +226,6 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 source /usr/local/share/zsh/site-functions/aws_zsh_completer.sh
 # fzf
 test -f ~/.fzf.zsh && source ~/.fzf.zsh
-# tmux
-# https://qiita.com/ssh0/items/a9956a74bff8254a606a
-if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  echo ""
-elif [[ ! -n $TMUX && $- == *l* ]]; then
-  # get the IDs
-  ID="`tmux list-sessions`"
-  if [[ -z "$ID" ]]; then
-    tmux new-session
-  fi
-  create_new_session="Create New Session"
-  ID="$ID\n${create_new_session}:"
-  ID="`echo $ID | $PERCOL | cut -d: -f1`"
-  if [[ "$ID" = "${create_new_session}" ]]; then
-    tmux new-session
-  elif [[ -n "$ID" ]]; then
-    tmux attach-session -t "$ID"
-  else
-    :  # Start terminal normally
-  fi
-fi
 # starship
 eval "$(starship init zsh)"
 # direnv
@@ -270,3 +253,10 @@ load-tfswitch
 
 HIST_FORMAT="'%Y-%m-%d %T' `$(echo -e '\t')`"
 alias history="fc -t ${HIST_FORMAT} -il"
+
+function zshaddhistory() {
+	echo "${1%%$'\n'}⋮${PWD}   " >> ~/.zsh_history_ext
+}
+
+# Fig post block. Keep at the bottom of this file.
+. "$HOME/.fig/shell/zshrc.post.zsh"
