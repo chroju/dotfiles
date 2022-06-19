@@ -30,6 +30,7 @@
   editor = vim
   pager = delta
   attributesfile = ~/.gitattributes
+  quotepath = false
 
 [commit]
   template = ~/.gitmessage
