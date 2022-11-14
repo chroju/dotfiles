@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "update terraform ..."
+tfupdate terraform -r .
+echo "update terraform-provider-aws ..."
+tfupdate provider -r aws .
+echo "update terraform-provider-kubernetes ..."
+tfupdate provider -r kubernetes .
+echo "update terraform-provider-helm ..."
+tfupdate provider -r helm .
+echo "update terraform-provider-tls ..."
+tfupdate provider -r tls .
+echo "update terraform-provider-http ..."
+tfupdate provider -r http .
+echo "update terraform-provider-sops ..."
+tfupdate provider -r sops -v $(tfupdate release latest carlpett/terraform-provider-sops) .
+echo "update terraform-provider-datadog ..."
+tfupdate provider -r datadog -v $(tfupdate release latest datadog/terraform-provider-datadog) .
+echo "update terraform-aws-modules/terraform-aws-iam ..."
+tfupdate module terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc -v $(tfupdate release latest terraform-aws-modules/terraform-aws-iam) .
+echo "Done!"
