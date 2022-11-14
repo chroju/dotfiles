@@ -37,8 +37,8 @@
   gpgsign = true
 
 [delta]
-    features = side-by-side line-numbers decorations
-    whitespace-error-style = 22 reverse
+  features = side-by-side line-numbers decorations
+  whitespace-error-style = 22 reverse
 
 [diff]
   renames = copies
@@ -88,8 +88,8 @@
 [gpg]
 	program = /usr/local/bin/gpg
 
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+# [url "ssh://git@github.com/"]
+# 	insteadOf = https://github.com/
 
 [includeIf "gitdir:~/repos/src/github.com/globis-org/**"]
   path = ~/.gitconfig.work
