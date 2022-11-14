@@ -2,8 +2,8 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'cocopon/iceberg.vim'
-hook_add = 'colorscheme iceberg'
+repo = 'arcticicestudio/nord-vim'
+hook_add = 'colorscheme nord'
 
 [[plugins]]
 repo = 'fatih/vim-go'
