@@ -20,13 +20,13 @@ fi
 
 # customize
 
-alias fzf='fzf-tmux --layout=reverse -r 20%'
-export FZF_TMUX=1
+# alias fzf='fzf-tmux --layout=reverse -r 20%'
+# export FZF_TMUX=1
 export FZF_DEFAULT_OPTS='--layout=reverse'
 
 fghq() {
   local dir
-  dir=$(ghq list > /dev/null | fzf-tmux --reverse +m) &&
+  dir=$(ghq list > /dev/null | fzf +m) &&
     cd $(ghq root)/$dir
 }
 
@@ -34,7 +34,7 @@ fgitbr() {
   local branches branch
   branches=$(git branch --all | grep -v HEAD) &&
   branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+           fzf -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
@@ -44,6 +44,11 @@ ftm() {
     tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
   fi
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+fd() {
+  local dir
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m ) && cd "$dir"
 }
 
 fcd() {
@@ -76,5 +81,18 @@ tfdoc() {
 
 adoc() {
   local module
-  module=$(ansible-doc -l | awk '{print $1}' | fzf-tmux +m) && open "https://docs.ansible.com/ansible/latest/modules/${module}_module.html"
+  module=$(ansible-doc -l | awk '{print $1}' | fzf +m) && open "https://docs.ansible.com/ansible/latest/modules/${module}_module.html"
+}
+
+_fzf_complete_aws-vault() {
+  _fzf_complete --reverse -- "$@" < <(aws configure list-profiles)
+}
+
+_fzf_complete_doge() {
+  _fzf_complete --multi --reverse --prompt="doge> " -- "$@" < <(
+    echo very
+    echo wow
+    echo such
+    echo doge
+  )
 }
