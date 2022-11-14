@@ -9,7 +9,6 @@ $git_status\
 $golang\
 $package\
 $kubernetes\
-${custom.tf}\
 $java\
 $nodejs\
 $python\
@@ -19,6 +18,7 @@ $line_break\
 $jobs\
 $battery\
 $time\
+${custom.vault}\
 $character"""
 
 [aws]
@@ -59,10 +59,8 @@ truncation_symbol = ".../"
 [terraform]
 disabled = true
 
-[custom.tf]
-command = "terraform version | head -n 1 | awk '{print $2}'"
-symbol = "🗻 "
-files = ["*.tf"]
-format = "[$symbol$output]($style) "
-when = "test -e .terraform"
-style = "bright-purple"
+[custom.vault]
+command = "echo $AWS_VAULT"
+style = "bold red"
+when = "test $AWS_VAULT"
+format = "[$output]($style) "
