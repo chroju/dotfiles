@@ -38,6 +38,7 @@ function changeStatus {
 function breakMode {
     curl -s -XPOST "${VAR_PIXELA_WEBHOOK_URL}" > /dev/null
     changeStatus "2" "Break Mode" "Glass"
+    shortcuts run 'Send to Workflowy'
 }
 
 function workMode {
