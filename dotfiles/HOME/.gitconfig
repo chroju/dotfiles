@@ -83,7 +83,7 @@
   logs =  log --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s %C(red)%d %C(cyan)[%an]' --date=short
 
 [ghq]
-  root = ~/repos/src
+  root = ~/dev/src
 
 [gpg]
 	program = /usr/local/bin/gpg
@@ -91,7 +91,7 @@
 # [url "ssh://git@github.com/"]
 # 	insteadOf = https://github.com/
 
-[includeIf "gitdir:~/repos/src/github.com/globis-org/**"]
+[includeIf "gitdir:~/dev/src/github.com/globis-org/**"]
   path = ~/.gitconfig.work
 
 [credential "https://github.com"]
