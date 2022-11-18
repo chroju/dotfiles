@@ -1,5 +1,4 @@
-dotfiles
-========
+# dotfiles
 
 The setting files for my development PC.
 
@@ -8,8 +7,8 @@ The setting files for my development PC.
 Work with bash and `setup_*.sh` scripts.
 
 ```bash
-$ mkdir -p ~/repos/src/github/com/chroju
-$ cd ~/repos/src/github/com/chroju
+$ mkdir -p ~/dev/src/github/com/chroju
+$ cd ~/dev/src/github/com/chroju
 $ git clone https://github.com/chroju/dotfiles
 $ cd dotfiles
 
@@ -18,4 +17,3 @@ $ sudo ./setup_default.sh
 $ ./setup_symlinks.sh
 $ ./setup_homebrew.sh
 ```
-
