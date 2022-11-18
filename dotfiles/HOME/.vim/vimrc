@@ -215,7 +215,7 @@ endif
 " プラグインのインストールディレクトリ
 let s:dein_dir = expand('~/.vim/bundle')
 " dein.vimのインストールディレクトリ
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+let s:dein_repo_dir = s:dein_dir . '/dev/github.com/Shougo/dein.vim'
 
 " dein.vimが存在しない場合はインストール
 if &runtimepath !~# '/dein.vim'
