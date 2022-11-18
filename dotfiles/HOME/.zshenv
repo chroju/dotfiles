@@ -8,7 +8,7 @@ export TERM=xterm-256color
 export SHELL=/bin/zsh
 export EDITOR=vim
 export LANG=ja_JP.UTF-8
-export GOPATH=$HOME/repos
+export GOPATH=$HOME/dev
 export AWS_DEFAULT_REGION=ap-northeast-1
 export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_password
 
@@ -21,7 +21,6 @@ typeset -U path
 path=(
   /opt/homebrew/bin(N-/)
   /opt/homebrew/sbin(N-/)
-  $HOME/.rbenv/bin(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
   /usr/local/bin(N-/)
   /usr/local/sbin(N-/)
@@ -32,7 +31,3 @@ path=(
   $GOPATH/bin(N-/)
   $path
 )
-
-# rbenv init
-which rbenv > /dev/null && eval "$(rbenv init - zsh)"
-
