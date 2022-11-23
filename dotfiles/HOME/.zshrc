@@ -233,7 +233,7 @@ eval "$(starship init zsh)"
 # gh
 eval "$(gh completion --shell zsh)"
 # asdf
-source $(brew --prefix asdf)/asdf.sh
+source $(brew --prefix asdf)/libexec/asdf.sh
 
 # gpg
 export GPG_TTY="$(tty)"
