@@ -1,11 +1,12 @@
 #!/bin/bash
-if [[ $# != 1 ]]; then
+if [[ $# != 2 ]]; then
   echo "ERROR"
 else
   REPO=$1
+  OPT=$2
   REPO_PATH="$(ghq root)/github.com/chroju/${REPO}"
   mkdir $REPO_PATH
   cd $REPO_PATH
   git init
-  gh repo create ${REPO}
+  gh repo create ${REPO} --${OPT}
 fi
