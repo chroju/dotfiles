@@ -1,12 +1,17 @@
 #!/bin/bash
 # https://thinca.hatenablog.com/entry/20150306/1425639218
+ESC=$(printf '\033')
+
+if [[ $PWD =~ 'chroju' ]]; then
+  exit 0
+fi
 
 while read local_ref local_sha1 remote_ref remote_sha1
 do
   default_branch=$(git symbolic-ref --short refs/remotes/origin/HEAD | cut -f 2 -d '/')
   echo $default_branch
   if [[ "${remote_ref##refs/heads/}" = "$default_branch" ]]; then
-    echo -e "\e[31mDo not push to default branch!!!\e[m"
+    echo "${ESC}[31mDo not push to default branch!!!${ESC}[m"
     exit 1
   fi
 done
