@@ -27,7 +27,8 @@ path=(
   /usr/local/heroku/bin(N-/)
   /usr/local/go/bin(N-/)
   /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/(N-/)
-  /usr/local/texlive/2019/bin/x86_64-darwin/(N-/)
+  /usr/local/texlive/2021/bin/universal-darwin/(N-/)
+  /Library/TeX/texbin/(N-/)
   $GOPATH/bin(N-/)
   $path
 )
