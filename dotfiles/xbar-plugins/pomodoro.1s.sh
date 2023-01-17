@@ -7,8 +7,7 @@
 # <xbar.desc>Pomodoro Timer that uses Pomodoro Technique™</xbar.desc>
 # <xbar.image>http://i.imgur.com/T0zFY89.png</xbar.image>
 # <xbar.var>string(VAR_PIXELA_WEBHOOK_URL=""): Pixela webhook URL to record pomodoro.</xbar.var>
-# <xbar.var>string(VAR_WORKFLOWY_WEBHOOK_URL=""): Workflowy webhook URL to record pomodoro.</xbar.var>
-# <xbar.var>string(VAR_WORKFLOWY_BEARER_TOKEN=""): Workflowy webhook Bearer token</xbar.var>
+# <xbar.var>string(VAR_POMODORO_RECORD_IFTTT_URL=""): IFTTT URL to record pomodoro.</xbar.var>
 
 WORK_TIME=25
 BREAK_TIME=5
@@ -35,12 +34,13 @@ TASK=$(echo "$DATA" | cut -d "|" -f3)
 
 function changeStatus {
     echo "$CURRENT_TIME|$1|$4" > "$SAVE_LOCATION";
+
     osascript -e "display notification \"$2\" with title \"$TOMATO Pomodoro\" sound name \"$3\"" &> /dev/null
 }
 
 function breakMode {
     curl -s -XPOST "${VAR_PIXELA_WEBHOOK_URL}" > /dev/null
-    curl -s -XPOST "${VAR_WORKFLOWY_WEBHOOK_URL}" -H 'Content-Type:application/json' -H "Authorization:Bearer $VAR_WORKFLOWY_BEARER_TOKEN" -d "{\"text\":\"$TASK\"}" > /dev/null
+    curl -s -XPOST "${VAR_POMODORO_RECORD_IFTTT_URL}" -d "{\"value1\":\"#pomo🍅 $TASK\"}" -H 'Content-Type:application/json' > /dev/null &
     changeStatus "2" "Break Mode" "Glass"
     open -a Workflowy
 }
