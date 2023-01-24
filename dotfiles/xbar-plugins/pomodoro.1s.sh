@@ -7,6 +7,7 @@
 # <xbar.desc>Pomodoro Timer that uses Pomodoro Technique™</xbar.desc>
 # <xbar.image>http://i.imgur.com/T0zFY89.png</xbar.image>
 # <xbar.var>string(VAR_PIXELA_WEBHOOK_URL=""): Pixela webhook URL to record pomodoro.</xbar.var>
+# <xbar.var>string(VAR_PIXELA_TOKEN=""): Pixela API token.</xbar.var>
 # <xbar.var>string(VAR_POMODORO_RECORD_IFTTT_URL=""): IFTTT URL to record pomodoro.</xbar.var>
 
 WORK_TIME=25
@@ -19,6 +20,7 @@ WORK_TIME_IN_SECONDS=$((WORK_TIME * 60))
 BREAK_TIME_IN_SECONDS=$((BREAK_TIME * 60))
 
 CURRENT_TIME=$(date +%s)
+TODAY=$(date +%Y%m%d)
 
 if [ -f "$SAVE_LOCATION" ];
 then
@@ -111,10 +113,13 @@ case "$STATUS" in
   ;;
 esac
 
+POMO=$(curl -s -XGET https://pixe.la/v1/users/chroju/graphs/pomodoro/${TODAY}  -H 'Content-Type:application/json'  -H "X-USER-TOKEN:${VAR_PIXELA_TOKEN}" | cut -d '"' -f 4)
+
 echo "---";
 echo "👔 Work | bash=\"$0\" param1=work terminal=false"
 echo "☕ Break | bash=\"$0\" param1=break terminal=false"
 echo "🔌 Disable | bash=\"$0\" param1=disable terminal=false"
 echo "---";
+echo "Todays pomodoro : ${POMO}";
 echo "show pixela | bash=\"$0\" param1=pixela terminal=false"
 
