@@ -41,6 +41,7 @@ function changeStatus {
 }
 
 function breakMode {
+    open raycast://confetti
     curl -s -XPOST "${VAR_PIXELA_WEBHOOK_URL}" > /dev/null
     curl -s -XPOST "${VAR_POMODORO_RECORD_IFTTT_URL}" -d "{\"value1\":\"#pomo🍅 $TASK\"}" -H 'Content-Type:application/json' > /dev/null &
     changeStatus "2" "Break Mode" "Glass"
