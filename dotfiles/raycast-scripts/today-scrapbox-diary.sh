@@ -12,6 +12,6 @@
 # @raycast.author chroju
 # @raycast.authorURL https://github.com/chroju
 
-datestr=$(date +%Y年%m月%d日（%a）)
+datestr=$(date +%Y年%-m月%-d日（%a）)
 open "https://scrapbox.io/chrolog/${datestr}"
 
