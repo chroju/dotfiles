@@ -24,6 +24,13 @@
 
 [merge]
   ff = false
+  conflictstyle = zdiff3
+
+[rebase]
+  autostash = true
+
+[help]
+  autocorrect = prompt
 
 [core]
   excludesfile = ~/.gitignore
@@ -35,6 +42,7 @@
 [commit]
   template = ~/.gitmessage
   gpgsign = true
+  verbose = true
 
 [delta]
   features = side-by-side line-numbers decorations
@@ -42,6 +50,7 @@
 
 [diff]
   renames = copies
+  algorithm = histogram
 
 [diff "ansible-vault"]
   textconv = ansible-vault view
