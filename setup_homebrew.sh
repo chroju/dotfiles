@@ -2,12 +2,6 @@
 
 xcode-select --install || echo "xcode-select --install is alredy done."
 
-if (type "/usr/local/bin/brew" > /dev/null 2>&1); then
-  echo "brew (for Rosetta) already installed."
-else
-  arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-fi
-
 # install brew for arm
 if (type "/opt/homebrew/bin/brew" > /dev/null 2>&1); then
   echo "brew (for arm) already installed."
