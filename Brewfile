@@ -1,3 +1,4 @@
+tap "homebrew/cask-fonts"
 brew "asciinema"
 brew "asdf"
 brew "autoconf"
