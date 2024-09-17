@@ -168,6 +168,10 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
+# Edit long commands in $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^x' edit-command-line
 
 # ====================
 #  functions
@@ -260,3 +264,7 @@ function zshaddhistory() {
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/chroju/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
