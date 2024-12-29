@@ -1,0 +1,13 @@
+# vim: set filetype=hcl:
+theme = nord
+font-family = "Moralerspace Argon"
+font-size = 14
+cursor-style = block
+# https://github.com/ghostty-org/ghostty/issues/3402#issuecomment-2563705231
+shell-integration-features = no-cursor
+
+keybind = global:alt+a=toggle_quick_terminal
+keybind = ctrl+b=new_split:right
+keybind = ctrl+v>l=goto_split:right
+keybind = ctrl+v>h=goto_split:left
+
