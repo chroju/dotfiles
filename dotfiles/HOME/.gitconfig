@@ -33,7 +33,6 @@
   autocorrect = prompt
 
 [core]
-  excludesfile = ~/.gitignore
   editor = vim
   pager = delta
   attributesfile = ~/.gitattributes
