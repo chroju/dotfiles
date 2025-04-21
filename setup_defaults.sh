@@ -16,3 +16,5 @@ defaults write com.apple.dock minimize-to-application 1
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 defaults write com.microsoft.VSCodeInsiders ApplePressAndHoldEnabled -bool false
 
+# https://romly.com/blog/app_switcher_for_all_displays/
+defaults write com.apple.Dock appswitcher-all-displays -bool true
