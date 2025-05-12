@@ -1,0 +1,16 @@
+bind h tabprev
+bind l tabnext
+bind j scrollline 5
+bind k scrollline -5
+
+bind ,m clipboard yankmd
+
+bind / fillcmdline find
+bind ? fillcmdline find --reverse
+bind n findnext --search-from-view
+bind N findnext --search-from-view --reverse
+bind ,<Space> nohlsearch
+
+set hintstyles.bg none
+set hintstyles.fg none
+set hintstyles.outline none
