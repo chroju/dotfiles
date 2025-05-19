@@ -1,16 +1,102 @@
+" vim: set filetype=vim
+
+""""""""
+" General Settings
+""""""""
+
+set newtab about:blank
+set scrollduration 100
+set hintstyles.bg none
+set hintstyles.fg none
+set hintstyles.outline none
+set hintfiltermode vimperator
+set visualenterauto false
+set theme dark
+set allowautofocus false
+set modeindicator false
+set tabclosepinned false
+set hintuppercase false
+
+" Search engines
+set searchurls.duckduckgo https://duckduckgo.com/?q=
+set searchurls.d duckduckgo
+set searchurls.google https://www.google.com/search?q=
+set searchurls.g google
+set searchengine duckduckgo
+
+
+""""""""
+" Aliases
+""""""""
+
+alias tabcloseallbykeyword jsb -p browser.tabs.query({}).then(tabs => tabs.forEach( t => { if(t.url.includes(JS_ARG)) browser.tabs.remove(t.id) }))
+alias shortenamazonurl composite js "https://amazon.co.jp/dp/" + document.body.querySelector("input[name^='ASIN']").value | open
+alias getcurrenttitleandurl js document.title + " " + document.location.href
+alias getscrapboxstilelink js "[" + document.title.replace(/[\\[\\]]/g, "\\\\$&").replace(/\\\\$/, "") + " " + document.location.href + "]"
+alias translate js let googleTranslateCallback = document.createElement('script'); googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }"; document.body.insertBefore(googleTranslateCallback, document.body.firstChild); let googleTranslateScript = document.createElement('script'); googleTranslateScript.charset="UTF-8"; googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl="; document.body.insertBefore(googleTranslateScript, document.body.firstChild);
+
+
+""""""""
+" Binds
+""""""""
+
+bind @ pin
 bind h tabprev
 bind l tabnext
 bind j scrollline 5
 bind k scrollline -5
-
-bind ,m clipboard yankmd
-
 bind / fillcmdline find
 bind ? fillcmdline find --reverse
 bind n findnext --search-from-view
 bind N findnext --search-from-view --reverse
 bind ,<Space> nohlsearch
+bind F hint -t
+bind gi focusinput -N
+bind <C-h> tabmove -1
+bind <C-l> tabmove +1
 
-set hintstyles.bg none
-set hintstyles.fg none
-set hintstyles.outline none
+"" yank
+bind ,m clipboard yankmd
+bind ,u composite getcurrenttitleandurl | yank; getclip | fillcmdline_tmp 5000 # 
+bind ,s composite getscrapboxstilelink | yank; getclip | fillcmdline_tmp 5000 # 
+
+"" Behaves like readline
+bind --mode=ex <C-a> text.beginning_of_line
+bind --mode=input <C-a> text.beginning_of_line
+bind --mode=insert <C-a> text.beginning_of_line
+
+bind --mode=ex <C-e> text.end_of_line
+bind --mode=input <C-w> text.end_of_line
+bind --mode=insert <C-w> text.end_of_line
+
+bind --mode=ex <C-w> text.backward_kill_word
+bind --mode=input <C-w> text.backward_kill_word
+bind --mode=insert <C-w> text.backward_kill_word
+
+bind --mode=ex <C-u> text.backward_kill_line
+bind --mode=input <C-u> text.backward_kill_line
+bind --mode=insert <C-u> text.backward_kill_line
+
+
+""""""""
+" for Specific URLs
+""""""""
+
+blacklistadd mail.google.com
+seturl ^https://yahoo.co.jp visualenterauto false
+seturl ^https://scrapbox.io superignore true
+seturl ^https://gemini.google.com superignore true
+
+
+
+""""""""
+" misc
+""""""""
+
+" about:config
+setpref browser.tabs.insertAfterCurrent true
+
+" show completion message
+fillcmdline_tmp 3000 # tridactylrc is loaded successfully.
+
+
