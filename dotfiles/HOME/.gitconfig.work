@@ -1,3 +1,8 @@
 [commit]
   template = ~/.gitmessage.work
 
+[user]
+  email = jutaro.numata@globis.com
+  signingkey = 4E7AFCE81C8EC33C
+
+
