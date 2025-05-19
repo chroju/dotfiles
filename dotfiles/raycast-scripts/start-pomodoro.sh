@@ -13,5 +13,5 @@
 # @raycast.author chroju
 # @raycast.authorURL https://github.com/chroju
 
-'/Users/chroju/Library/Application Support/xbar/plugins/pomodoro.1s.sh' work $1
+"$HOME/Library/Application Support/xbar/plugins/pomodoro.1s.sh" work $1
 

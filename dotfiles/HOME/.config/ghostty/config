@@ -5,6 +5,8 @@ font-size = 14
 cursor-style = block
 # https://github.com/ghostty-org/ghostty/issues/3402#issuecomment-2563705231
 shell-integration-features = no-cursor
+quick-terminal-position = "left"
+quick-terminal-auto-hide = true
 
 keybind = global:alt+a=toggle_quick_terminal
 keybind = ctrl+b=new_split:right

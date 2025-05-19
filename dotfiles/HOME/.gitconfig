@@ -55,6 +55,10 @@
   textconv = ansible-vault view
   cachetextconv = true
 
+[diff "ansible-app-vault"]
+  textconv = ansible-vault view --vault-password-file ~/.app_vault_password
+  cachetextconv = true
+
 [alias]
   # shorter commands
   a  = add
@@ -109,3 +113,9 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
+[scalar]
+	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp
+	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp/src
+[maintenance]
+	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp
+	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp/src

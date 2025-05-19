@@ -9,9 +9,8 @@ fi
 while read local_ref local_sha1 remote_ref remote_sha1
 do
   default_branch=$(git symbolic-ref --short refs/remotes/origin/HEAD | cut -f 2 -d '/')
-  echo $default_branch
   if [[ "${remote_ref##refs/heads/}" = "$default_branch" ]]; then
     echo "${ESC}[31mDo not push to default branch!!!${ESC}[m"
-    exit 1
+    # exit 1
   fi
 done
