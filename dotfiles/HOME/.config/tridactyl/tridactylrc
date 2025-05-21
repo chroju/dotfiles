@@ -54,6 +54,7 @@ bind F hint -t
 bind gi focusinput -N
 bind <C-h> tabmove -1
 bind <C-l> tabmove +1
+bind d composite tabprev; tabclose #
 
 "" yank
 bind ,m clipboard yankmd
