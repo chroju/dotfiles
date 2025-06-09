@@ -1,13 +1,12 @@
 " vim: set filetype=vim
 
-" 起動時はsuperignoreを解除
+" 設定をすべて一旦解除
+sanitise tridactyllocal
 set superignore false
 
 """"""""
 " General Settings
 """"""""
-
-set superignore false
 
 set newtab about:blank
 set scrollduration 100
@@ -41,6 +40,7 @@ alias getcurrenttitleandurl js document.title + " " + document.location.href
 alias getscrapboxstilelink js "[" + document.title.replace(/[\\[\\]]/g, "\\\\$&").replace(/\\\\$/, "") + " " + document.location.href + "]"
 alias translate js let googleTranslateCallback = document.createElement('script'); googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }"; document.body.insertBefore(googleTranslateCallback, document.body.firstChild); let googleTranslateScript = document.createElement('script'); googleTranslateScript.charset="UTF-8"; googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl="; document.body.insertBefore(googleTranslateScript, document.body.firstChild);
 alias sidebarcurrent composite get_current_url | sidebaropen
+alias sidebargemini sidebaropen https://gemini.google.com
 
 
 """"""""
@@ -87,6 +87,16 @@ bind --mode=insert <C-u> text.backward_kill_line
 
 "" sidebar
 bind --mode=browser <C-s> sidebartoggle
+bind --mode=browser <C-g> jsua browser.sidebarAction.open(); tri.excmds.sidebaropen("https://gemini.google.com/")
+bind --mode=browser <C-w> jsua browser.sidebarAction.open(); tri.excmds.sidebaropen("https://workflowy.com/")
+
+
+""""""""
+" Quick mark
+""""""""
+
+quickmark g https://github.com/chroju
+
 
 
 """"""""
@@ -95,8 +105,11 @@ bind --mode=browser <C-s> sidebartoggle
 
 blacklistadd mail.google.com
 seturl ^https://yahoo.co.jp visualenterauto false
-seturl ^https://scrapbox.io superignore true
+seturl ^https://scrapbox.io/chroju superignore true
+seturl ^https://scrapbox.io/chrolog superignore true
+seturl ^https://scrapbox.io/chhh superignore true
 seturl ^https://gemini.google.com superignore true
+seturl console.aws.amazon.com superignore true
 
 
 
@@ -110,5 +123,8 @@ setpref browser.tabs.insertAfterCurrent true
 " show completion message
 sleep 2000
 fillcmdline_tmp 3000 # tridactylrc is loaded successfully.
+
+" load local tridactylrc
+source ~/.config/tridactyl/tridactylrc.local
 
 
