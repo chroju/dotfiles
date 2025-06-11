@@ -1,4 +1,4 @@
-" vim: set filetype=vim
+" vim:set filetype=vim:
 
 " 設定をすべて一旦解除
 sanitise tridactyllocal
