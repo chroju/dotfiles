@@ -1,30 +1,58 @@
 :root {
+    /* Polar Night */
+    --nord-polar-night-0: #2e3440; /* 背景 */
+    --nord-polar-night-1: #3b4252; /* 入力エリア、カード、パネルなど */
+    --nord-polar-night-2: #434c5e; /* hover */
+    --nord-polar-night-3: #4c566a; /* コメント、補助テキストなど */
+  
+    /* Snow Storm */
+    --nord-snow-storm-0: #d8dee9; /* 基本テキスト色 */
+    --nord-snow-storm-1: #e5e9f0; /* 少し強調したい文字色 */
+    --nord-snow-storm-2: #eceff4; /* 特に目立たせたい文字色 */
+  
+    /* Frost */
+    --nord-frost-0: #8fbcbb;
+    --nord-frost-1: #88c0d0;
+    --nord-frost-2: #81a1c1; /* 関数名などへのアクセント */
+    --nord-frost-3: #5e81ac; /* 操作を促す重要な要素に */
+  
+    /* Aurora */
+    --nord-aurora-red: #bf616a; /* error, danger */
+    --nord-aurora-orange: #d08770; /* warn */
+    --nord-aurora-yellow: #ebcb8b; /* attention */
+    --nord-aurora-green: #a3be8c; /* siuccess, added */
+    --nord-aurora-purple: #b48ead; /* special */
+
     --tridactyl-font-family: "San Francisco", sans-serif;
-    --tridactyl-bg: #2e3440;
-    --tridactyl-fg: #eceff4;
+    --tridactyl-font-family: "Moralerspace Argon", "San Francisco";
+    --tridactyl-bg: var(--nord-polar-night-0);
+    --tridactyl-fg: var(--nord-snow-storm-0);
 
     --tridactyl-status-font-size: 12px;
-    --tridactyl-status-font-family: "Fira Code", "San Francisco";
+    --tridactyl-status-font-family: "Moralerspace Argon", "San Francisco";
     --tridactyl-status-font-bg: var(--tridactyl-cmdl-bg);
     --tridactyl-status-border: 2px solid black;
     --tridactyl-status-border-radius: 4px;
 
     --tridactyl-header-font-size: 16px;
 
-    --tridactyl-of-fg: #eceff4;
-    --tridactyl-of-bg: #434c5e;
+    --tridactyl-of-bg: var(--nord-polar-night-2);
+    --tridactyl-of-fg: var(--nord-snow-storm-1);
 
-    --tridactyl-hintspan-fg: #eceff4;
-    --tridactyl-hintspan-bg: #d08770;
+    --tridactyl-hintspan-fg: var(--nord-polar-night-0);
+    --tridactyl-hintspan-bg: var(--nord-aurora-yellow);
+    --tridactyl-hintspan-border-color: var(--nord-aurora-orange);
+    --tridactyl-hintspan-border-width: 1px;
 
-    --tridactyl-hint-active-fg: #d8dee9;
-    --tridactyl-hint-active-bg: #d08770;
-    --tridactyl-hint-active-outline: 1px solid #000;
+    --tridactyl-hint-active-fg: var(--nord-polar-night-0);
+    --tridactyl-hint-active-bg: var(--nord-aurora-red);
+    --tridactyl-hint-active-outline: 1px solid var(--nord-aurora-orange);
 
     --tridactyl-hint-bg: rgba(13, 31, 54, 0.25);
-    --tridactyl-hint-outline: 1px solid var(--tridactyl-hintspan-bg);
+    --tridactyl-hint-outline: 1px solid var(--nord-aurora-orange);
 
     --tridactyl-cmdl-font-size: 1.5rem;
+    --tridactyl-cmdl-font-family: "Moralerspace Argon", "San Francisco";
     --tridactyl-cmplt-option-height: 1.9em;
 
     --tridactyl-border-radius: 4px;
@@ -37,16 +65,18 @@
 }
 
 :root.TridactylOwnNamespace a {
-    color: #d8dee9;
+    color: var(--nord-frost-0);
 }
 
 :root.TridactylOwnNamespace code {
-    background-color: #2a333c;
+    background-color: var(--nord-polar-night-0);
     padding: 3px 7px;
 }
 
 :root #command-line-holder {
     order: 1;
+    border: 0.8px solid var(--nord-snow-storm-0);
+    border-radius: var(--tridactyl-border-radius) !important;
 }
 
 :root #command-line-holder,
@@ -59,8 +89,10 @@
 }
 
 :root #tridactyl-input {
-    width: 96%;
-    padding: 1rem;
+    width: 98%;
+    margin: 0.3rem;
+    padding: 0.7rem;
+    /* background: var(--nord-polar-night-1); */
 }
 
 :root #completions table {
@@ -73,6 +105,8 @@
 :root #completions > div {
     max-height: calc(20 * var(--tridactyl-cmplt-option-height));
     min-height: calc(10 * var(--tridactyl-cmplt-option-height));
+    border: 0.8px solid var(--nord-snow-storm-0);
+    border-radius: var(--tridactyl-border-radius) !important;
 }
 
 :root #completions {
@@ -118,8 +152,9 @@
     left: 10% !important;
     z-index: 2147483647 !important;
     width: 80% !important;
-    filter: drop-shadow(0px 0px 6px #4C566A) !important;
+    filter: drop-shadow(0px 0px 6px var(--nord-polar-night-1)) !important;
     color-scheme: only light; /* Prevent Firefox from adding a white background on dark-mode sites */
+    opacity: 0.95;
 }
 
 :root .TridactylStatusIndicator {
@@ -129,3 +164,4 @@
     font-weight: 200 !important;
     padding: 5px !important;
 }
+
