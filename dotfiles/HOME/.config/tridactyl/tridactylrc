@@ -121,6 +121,7 @@ colourscheme nord
 
 " about:config
 setpref browser.tabs.insertAfterCurrent true
+setpref browser.urlbar.trimURLs false
 
 " show completion message
 sleep 2000
