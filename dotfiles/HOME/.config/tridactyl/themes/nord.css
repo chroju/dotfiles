@@ -75,7 +75,7 @@
 
 :root #command-line-holder {
     order: 1;
-    border: 0.8px solid var(--nord-snow-storm-0);
+    border: 0.8px solid var(--nord-polar-night-3);
     border-radius: var(--tridactyl-border-radius) !important;
 }
 
@@ -105,7 +105,7 @@
 :root #completions > div {
     max-height: calc(20 * var(--tridactyl-cmplt-option-height));
     min-height: calc(10 * var(--tridactyl-cmplt-option-height));
-    border: 0.8px solid var(--nord-snow-storm-0);
+    border: 0.8px solid var(--nord-polar-night-3);
     border-radius: var(--tridactyl-border-radius) !important;
 }
 
