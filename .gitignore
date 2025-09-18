@@ -1,3 +1,6 @@
 .DS_Store
 *~
 playbook.retry
+
+# claude
+.claude/settings.local.json
