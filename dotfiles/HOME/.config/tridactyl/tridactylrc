@@ -110,6 +110,8 @@ seturl ^https://scrapbox.io/chrolog superignore true
 seturl ^https://scrapbox.io/chhh superignore true
 seturl ^https://gemini.google.com superignore true
 seturl console.aws.amazon.com superignore true
+seturl ^https://mail.notion.so/ superignore true
+seturl ^https://www.notion.so/ superignore true
 
 
 
