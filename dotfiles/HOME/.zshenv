@@ -11,6 +11,7 @@ export LANG=ja_JP.UTF-8
 export GOPATH=$HOME/dev
 export AWS_DEFAULT_REGION=ap-northeast-1
 export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_password
+export SSH_AUTH_SOCK=$HOME/.bitwarden-ssh-agent.sock
 
 
 # ====================

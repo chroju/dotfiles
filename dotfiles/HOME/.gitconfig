@@ -1,7 +1,7 @@
 [user]
   name = chroju
   email = chroju@users.noreply.github.com
-  signingkey = 2447EC9F
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPzvYJ8N3SJpqp/SZZ8IvKVC+KVoUfO2IWvrebguscRq
 
 [github]
   user = chroju
@@ -98,7 +98,7 @@
   root = ~/dev/src
 
 [gpg]
-	program = /opt/homebrew/bin/gpg
+  format = ssh
 
 # [url "ssh://git@github.com/"]
 # 	insteadOf = https://github.com/
