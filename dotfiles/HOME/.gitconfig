@@ -114,8 +114,8 @@
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [scalar]
-	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp
-	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp/src
+	repo = $HOME/dev/src/github.com/globis-org/hodai-2c-lp
+	repo = $HOME/dev/src/github.com/globis-org/hodai-2c-lp/src
 [maintenance]
-	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp
-	repo = \$HOME/dev/src/github.com/globis-org/hodai-2c-lp/src
+	repo = $HOME/dev/src/github.com/globis-org/hodai-2c-lp
+	repo = $HOME/dev/src/github.com/globis-org/hodai-2c-lp/src
