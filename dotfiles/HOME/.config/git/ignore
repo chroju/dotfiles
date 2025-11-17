@@ -1,3 +1,5 @@
 .DS_Store
 # my own local files
 .tmp.*
+
+**/.claude/settings.local.json
