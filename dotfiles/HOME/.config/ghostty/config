@@ -14,3 +14,4 @@ keybind = ctrl+b=new_split:right
 keybind = ctrl+v>l=goto_split:right
 keybind = ctrl+v>h=goto_split:left
 
+keybind = shift+enter=text:\x1b\r
