@@ -92,24 +92,5 @@
       "Read(**/build/**)",
       "Read(**/*.log)"
     ]
-  },
-  "mcpServers": {
-    "awslabs.terraform-mcp-server": {
-      "command": "container",
-      "args": [
-        "run",
-        "--rm",
-        "--interactive",
-        "--env",
-        "FASTMCP_LOG_LEVEL=ERROR",
-        "awslabs/terraform-mcp-server:latest"
-      ],
-      "env": {},
-      "disabled": false,
-      "autoApprove": []
-    }
-  },
-  "feedbackSurveyState": {
-    "lastShownTime": 1754047042001
   }
 }
