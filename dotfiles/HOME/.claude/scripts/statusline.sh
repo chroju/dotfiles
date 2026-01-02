@@ -9,10 +9,15 @@ jq -r '
     then ($cwd | split("/") | .[-2:] | join("/"))
     else ($cwd | sub("^" + env.HOME; "~"))
   end) as $display_dir |
-  (.context_window.total_input_tokens + .context_window.total_output_tokens) as $total |
-  (.context_window.context_window_size) as $max |
-  (($total * 100 / $max) | floor) as $pct |
-  "\u001b[90m" + $display_dir + " | context: " + ($pct | tostring) + "% | +" +
+  (.context_window.current_usage) as $usage |
+  (if $usage != null then
+    (($usage.input_tokens // 0) + ($usage.output_tokens // 0) + ($usage.cache_creation_input_tokens // 0) + ($usage.cache_read_input_tokens // 0)) as $current |
+    (.context_window.context_window_size) as $max |
+    (($current * 100 / $max) | floor | tostring) + "%"
+  else
+    "N/A"
+  end) as $context_pct |
+  "\u001b[90m" + $display_dir + " | context: " + $context_pct + " | +" +
   (.cost.total_lines_added | tostring) + "/-" +
   (.cost.total_lines_removed | tostring) + " | " +
   .model.id + " | v" + .version + "\u001b[0m"
