@@ -81,6 +81,16 @@ allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git branch:*), Bash(gi
 - Co-authored-by: Name <email>
 - Signed-off-by: Name <email>（DCOの場合）
 
+**必須フッター:**
+
+すべてのコミットメッセージの末尾に以下を含める:
+
+```
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
 ### 5) 例
 
 良い例:
