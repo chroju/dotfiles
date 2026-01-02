@@ -236,8 +236,6 @@ eval "$(starship init zsh)"
 # eval "$(direnv hook zsh)"
 # gh
 eval "$(gh completion --shell zsh)"
-# asdf
-source $(brew --prefix asdf)/libexec/asdf.sh
 
 # tfswitch
 load-tfswitch() {
@@ -267,4 +265,5 @@ function zshaddhistory() {
 # CodeWhisperer post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
 
-. "$HOME/.local/bin/env"
+# mise
+eval "$(mise activate zsh)"

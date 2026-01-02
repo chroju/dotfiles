@@ -37,6 +37,7 @@ brew "libyaml"
 brew "mas-cli/tap/mas"
 brew "mczachurski/wallpapper/wallpapper"
 brew "minamijoyo/tfupdate/tfupdate"
+brew "mise"
 brew "osx-cross/avr/avr-gcc@7", link: true
 brew "pinentry-mac"
 brew "sleepwatcher", restart_service: :changed
