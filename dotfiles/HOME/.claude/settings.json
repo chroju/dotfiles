@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -message '✅ Done' -appIcon 'https://cdn-1.webcatalog.io/catalog/claude/claude-icon-filled-256.webp?v=1751848377746' -title 'Claude Code'"
+            "command": "osascript -e 'display notification \"✅ Done\" with title \"Claude Code\"'"
           }
         ]
       }
@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -message '🔥 Action Required' -appIcon 'https://cdn-1.webcatalog.io/catalog/claude/claude-icon-filled-256.webp?v=1751848377746' -title 'Claude Code'"
+            "command": "osascript -e 'display notification \"🔥 Action Required\" with title \"Claude Code\"'"
           }
         ]
       }
