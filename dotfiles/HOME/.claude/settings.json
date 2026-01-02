@@ -49,14 +49,15 @@
         "command": "~/.claude/scripts/statusline.sh"
     },
     "alwaysThinkingEnabled": false,
-    "defaultMode": "plan",
     "permissions": {
+        "defaultMode": "plan",
         "allow": [
             "Read",
             "Glob",
             "Grep",
             "WebFetch",
             "WebSearch",
+            "Bash(ls:*)",
             "Bash(git diff:*)",
             "Bash(git log:*)",
             "Bash(git status:*)",
