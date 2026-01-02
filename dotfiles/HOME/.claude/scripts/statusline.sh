@@ -17,8 +17,6 @@ jq -r '
   else
     "N/A"
   end) as $context_pct |
-  "\u001b[90m" + $display_dir + " | context: " + $context_pct + " | +" +
-  (.cost.total_lines_added | tostring) + "/-" +
-  (.cost.total_lines_removed | tostring) + " | " +
+  "\u001b[90m" + $display_dir + " | context: " + $context_pct + " | " +
   .model.id + " | v" + .version + "\u001b[0m"
 '
