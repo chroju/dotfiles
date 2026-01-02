@@ -1,66 +1,114 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-    "hooks": {
-      "PostToolUse": [
+  "hooks": {
+    "PostToolUse": [
       {
         "matcher": "Write",
         "hooks": [
-        {
-          "type": "command",
-          "command": "FILE_PATH=$(jq -r '.tool_input.file_path') && [ -n \"$(tail -c1 \"$FILE_PATH\")\" ] && echo >> \"$FILE_PATH\""
-        }
+          {
+            "type": "command",
+            "command": "FILE_PATH=$(jq -r '.tool_input.file_path') && [ -n \"$(tail -c1 \"$FILE_PATH\")\" ] && echo >> \"$FILE_PATH\""
+          }
         ]
       },
       {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
-        {
-          "type": "command",
-          "command": "jq -r '.tool_input.file_path' | xargs -I {} sed -i '' 's/[[:space:]]*$//' '{}'"
-        }
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs -I {} sed -i '' 's/[[:space:]]*$//' '{}'"
+          }
         ]
       }
-      ],
-      "Stop": [
+    ],
+    "Stop": [
       {
         "matcher": "",
         "hooks": [
-        {
-          "type": "command",
-          "command": "terminal-notifier -message '✅ Done' -appIcon 'https://cdn-1.webcatalog.io/catalog/claude/claude-icon-filled-256.webp?v=1751848377746' -title 'Claude Code'"
-        }
+          {
+            "type": "command",
+            "command": "terminal-notifier -message '✅ Done' -appIcon 'https://cdn-1.webcatalog.io/catalog/claude/claude-icon-filled-256.webp?v=1751848377746' -title 'Claude Code'"
+          }
         ]
       }
-      ],
-      "Notification": [
+    ],
+    "Notification": [
       {
         "matcher": "",
         "hooks": [
-        {
-          "type": "command",
-          "command": "terminal-notifier -message '🔥 Action Required' -appIcon 'https://cdn-1.webcatalog.io/catalog/claude/claude-icon-filled-256.webp?v=1751848377746' -title 'Claude Code'"
-        }
+          {
+            "type": "command",
+            "command": "terminal-notifier -message '🔥 Action Required' -appIcon 'https://cdn-1.webcatalog.io/catalog/claude/claude-icon-filled-256.webp?v=1751848377746' -title 'Claude Code'"
+          }
         ]
       }
-      ]
-    },
-    "mcpServers": {
-      "awslabs.terraform-mcp-server": {
-        "command": "container",
-        "args": [
-          "run",
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "printf \"\\033[32m$(whoami)\\033[0m in \\033[33m$(hostname -s)\\033[0m at \\033[36m$(pwd)\\033[0m$(git rev-parse --is-inside-work-tree >/dev/null 2>&1 && printf \" on \\033[32m$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)\\033[0m\")\""
+  },
+  "alwaysThinkingEnabled": false,
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh repo view:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(rm -rf:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh issue create:*)",
+      "Bash(gh repo create:*)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(**/.aws/credentials)",
+      "Read(**/.ssh/id_*)",
+      "Read(**/.gnupg/**)",
+      "Read(**/node_modules/**)",
+      "Read(**/.terraform/**)",
+      "Read(**/__pycache__/**)",
+      "Read(**/venv/**)",
+      "Read(**/.venv/**)",
+      "Read(**/dist/**)",
+      "Read(**/build/**)",
+      "Read(**/*.log)"
+    ]
+  },
+  "mcpServers": {
+    "awslabs.terraform-mcp-server": {
+      "command": "container",
+      "args": [
+        "run",
         "--rm",
         "--interactive",
         "--env",
         "FASTMCP_LOG_LEVEL=ERROR",
         "awslabs/terraform-mcp-server:latest"
-        ],
-        "env": {},
-        "disabled": false,
-        "autoApprove": []
-      }
-    },
-    "feedbackSurveyState": {
-      "lastShownTime": 1754047042001
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": []
     }
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754047042001
+  }
 }
