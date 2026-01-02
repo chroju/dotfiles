@@ -236,13 +236,6 @@ eval "$(starship init zsh)"
 # eval "$(direnv hook zsh)"
 # gh
 eval "$(gh completion --shell zsh)"
-# asdf
-source $(brew --prefix asdf)/libexec/asdf.sh
-
-# gpg
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
 
 # tfswitch
 load-tfswitch() {
@@ -267,14 +260,10 @@ function zshaddhistory() {
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="$HOME/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
-
 [[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
 
 # CodeWhisperer post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
 
-. "$HOME/.local/bin/env"
+# mise
+eval "$(mise activate zsh)"

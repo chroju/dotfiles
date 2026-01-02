@@ -9,8 +9,21 @@ quick-terminal-position = "top"
 quick-terminal-autohide = true
 quick-terminal-size = 300px,80%
 
+# key binds
 keybind = global:alt+a=toggle_quick_terminal
-keybind = ctrl+b=new_split:right
+keybind = super+k=toggle_command_palette
+keybind = shift+enter=text:\x1b\r
+keybind = super+shift+k=reload_config
+
+# split pane
+unfocused-split-opacity = 0.4
+
+keybind = ctrl+s>l=new_split:right
+keybind = ctrl+s>j=new_split:down
+
 keybind = ctrl+v>l=goto_split:right
 keybind = ctrl+v>h=goto_split:left
+keybind = ctrl+v>k=goto_split:up
+keybind = ctrl+v>j=goto_split:down
+split-divider-color = "#666"
 
