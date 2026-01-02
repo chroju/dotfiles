@@ -27,7 +27,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "DIR=$(basename \"$PWD\") && osascript -e \"display notification \\\"✅ Done\\\" with title \\\"cc: $DIR\\\"\""
+                        "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"✅ Done\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
                     }
                 ]
             }
@@ -38,7 +38,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "DIR=$(basename \"$PWD\") && osascript -e \"display notification \\\"🔥 Action Required\\\" with title \\\"cc: $DIR\\\"\""
+                        "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"🔥 Action Required\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
                     }
                 ]
             }
@@ -49,14 +49,15 @@
         "command": "~/.claude/scripts/statusline.sh"
     },
     "alwaysThinkingEnabled": false,
-    "defaultMode": "plan",
     "permissions": {
+        "defaultMode": "plan",
         "allow": [
             "Read",
             "Glob",
             "Grep",
             "WebFetch",
             "WebSearch",
+            "Bash(ls:*)",
             "Bash(git diff:*)",
             "Bash(git log:*)",
             "Bash(git status:*)",

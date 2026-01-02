@@ -112,6 +112,7 @@ seturl ^https://gemini.google.com superignore true
 seturl console.aws.amazon.com superignore true
 seturl ^https://mail.notion.so/ superignore true
 seturl ^https://www.notion.so/ superignore true
+seturl ^https://ap-northeast-1.console superignore true
 
 
 
