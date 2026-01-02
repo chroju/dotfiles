@@ -239,11 +239,6 @@ eval "$(gh completion --shell zsh)"
 # asdf
 source $(brew --prefix asdf)/libexec/asdf.sh
 
-# gpg
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
-
 # tfswitch
 load-tfswitch() {
   local tfswitchrc_path=".tfswitchrc"
