@@ -46,7 +46,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "printf \"\\033[32m$(whoami)\\033[0m in \\033[33m$(hostname -s)\\033[0m at \\033[36m$(pwd)\\033[0m$(git rev-parse --is-inside-work-tree >/dev/null 2>&1 && printf \" on \\033[32m$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)\\033[0m\")\""
+    "command": "~/.claude/scripts/statusline.sh"
   },
   "alwaysThinkingEnabled": false,
   "defaultMode": "plan",
