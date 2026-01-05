@@ -1,8 +1,19 @@
 #!/bin/bash
 # Claude Code statusLine script
-# Displays: directory | context usage % | lines added/removed
+# Displays: directory (branch) | context usage % | model | version
 
-jq -r '
+# ブランチ情報を取得
+BRANCH=""
+PREFIX=""
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  BRANCH=$(git branch --show-current 2>/dev/null || echo "")
+  # worktree内かチェック
+  if [[ "$PWD" == *"/.local/worktrees/"* ]]; then
+    PREFIX="//"
+  fi
+fi
+
+jq -r --arg branch "$BRANCH" --arg prefix "$PREFIX" '
   .cwd as $cwd |
   .workspace.project_dir as $proj |
   (if ($cwd | startswith($proj))
@@ -17,6 +28,7 @@ jq -r '
   else
     "N/A"
   end) as $context_pct |
-  "\u001b[90m" + $display_dir + " | context: " + $context_pct + " | " +
+  (if $branch != "" then " (" + $prefix + $branch + ")" else "" end) as $branch_info |
+  "\u001b[90m" + $display_dir + $branch_info + " | context: " + $context_pct + " | " +
   .model.id + " | v" + .version + "\u001b[0m"
 '

@@ -1,6 +1,6 @@
 # vim: set filetype=hcl:
 theme = nord
-font-family = "Moralerspace Argon"
+font-family = "Maple Mono CN"
 font-size = 14
 cursor-style = block
 # https://github.com/ghostty-org/ghostty/issues/3402#issuecomment-2563705231

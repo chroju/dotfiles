@@ -4,3 +4,6 @@ playbook.retry
 
 # claude
 .claude/settings.local.json
+
+# worktrees
+.local/
