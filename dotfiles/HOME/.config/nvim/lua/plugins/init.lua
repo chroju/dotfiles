@@ -17,6 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require('lazy').setup({
   -- Load plugin configurations
+  { import = 'plugins.ai' },
   { import = 'plugins.ui' },
   { import = 'plugins.editor' },
   { import = 'plugins.lsp' },

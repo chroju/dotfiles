@@ -22,10 +22,10 @@ opt.wrapscan = true
 
 -- UI
 opt.cursorline = true
+opt.fillchars = { vert = " " }
 opt.scrolloff = 3
 opt.visualbell = true
 opt.errorbells = false
-opt.ambiwidth = 'double'
 opt.showmatch = true
 opt.matchtime = 1
 
