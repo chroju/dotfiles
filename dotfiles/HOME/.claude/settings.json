@@ -58,11 +58,14 @@
             "WebFetch",
             "WebSearch",
             "Bash(ls:*)",
+            "Bash(find:*)",
+            "Bash(tree:*)",
             "Bash(git diff:*)",
             "Bash(git log:*)",
             "Bash(git status:*)",
             "Bash(git show:*)",
             "Bash(git branch:*)",
+            "Bash(git worktree list:*)",
             "Bash(gh pr list:*)",
             "Bash(gh pr view:*)",
             "Bash(gh issue list:*)",
@@ -96,5 +99,8 @@
             "Read(**/build/**)",
             "Read(**/*.log)"
         ]
+    },
+    "env": {
+        "ENABLE_TOOL_SEARCH": "true"
     }
 }
