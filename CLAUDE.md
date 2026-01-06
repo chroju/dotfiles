@@ -85,7 +85,7 @@ Zsh configuration includes:
   - `gpr` - Push branch and create PR with gh
   - `git-root` - cd to git repository root
   - `notice` - Terminal notifications
-- tfswitch auto-loads on directory change when `.tf` files present
+- tenv auto-installs Terraform versions on command execution via TENV_AUTO_INSTALL=true
 
 ### Version Management
 
