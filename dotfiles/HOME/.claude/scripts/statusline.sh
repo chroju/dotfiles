@@ -29,6 +29,6 @@ jq -r --arg branch "$BRANCH" --arg prefix "$PREFIX" '
     "N/A"
   end) as $context_pct |
   (if $branch != "" then " (" + $prefix + $branch + ")" else "" end) as $branch_info |
-  "\u001b[90m" + $display_dir + $branch_info + " | context: " + $context_pct + " | " +
+  "\u001b[37m" + $display_dir + $branch_info + " | context: " + $context_pct + " | " +
   .model.id + " | v" + .version + "\u001b[0m"
 '
