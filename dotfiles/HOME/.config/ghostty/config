@@ -16,7 +16,7 @@ keybind = shift+enter=text:\x1b\r
 keybind = super+shift+k=reload_config
 
 # split pane
-unfocused-split-opacity = 0.4
+unfocused-split-fill = "#3b4252"
 
 keybind = ctrl+s>l=new_split:right
 keybind = ctrl+s>j=new_split:down
