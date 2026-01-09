@@ -16,14 +16,14 @@ keybind = shift+enter=text:\x1b\r
 keybind = super+shift+k=reload_config
 
 # split pane
-unfocused-split-fill = "#3b4252"
+unfocused-split-fill = "#434c5e"
 
 keybind = ctrl+s>l=new_split:right
 keybind = ctrl+s>j=new_split:down
 
-keybind = ctrl+v>l=goto_split:right
-keybind = ctrl+v>h=goto_split:left
-keybind = ctrl+v>k=goto_split:up
-keybind = ctrl+v>j=goto_split:down
-split-divider-color = "#666"
+keybind = ctrl+b>l=goto_split:right
+keybind = ctrl+b>h=goto_split:left
+keybind = ctrl+b>k=goto_split:up
+keybind = ctrl+b>j=goto_split:down
+split-divider-color = "#4c566a"
 
