@@ -31,17 +31,6 @@
                     }
                 ]
             }
-        ],
-        "Notification": [
-            {
-                "matcher": "",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"🔥 Action Required\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
-                    }
-                ]
-            }
         ]
     },
     "statusLine": {
