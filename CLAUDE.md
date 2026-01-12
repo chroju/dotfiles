@@ -44,7 +44,6 @@ brew bundle dump --file=./Brewfile     # Update Brewfile with current packages
   - `tfallupdate` - Terraform update utility
 
 - `dotfiles/raycast-scripts/` - Raycast extension scripts
-- `dotfiles/xbar-plugins/` - xbar plugin scripts (GitHub, Pomodoro)
 - `Brewfile` - Homebrew package definitions
 
 ### Symlink System
@@ -52,7 +51,6 @@ brew bundle dump --file=./Brewfile     # Update Brewfile with current packages
 The `setup_symlinks.sh` script recursively creates symlinks:
 - Files in `dotfiles/HOME/` → `$HOME/`
 - Files in `dotfiles/bin/` → `/usr/local/bin/`
-- Files in `dotfiles/xbar-plugins/` → `~/Library/Application Support/xbar/plugins/`
 
 ### Git Configuration
 
