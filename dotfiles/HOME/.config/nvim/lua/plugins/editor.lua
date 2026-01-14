@@ -13,6 +13,7 @@ return {
 
       telescope.setup({
         defaults = {
+          file_ignore_patterns = { ".git/[^h]" };
           mappings = {
             i = {
               ['<C-j>'] = actions.move_selection_next,
@@ -20,11 +21,18 @@ return {
             },
           },
         },
+        pickers = {
+          find_files = {
+            hidden = true;
+          }
+        }
       })
 
       -- Keymaps
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', 'bb', builtin.buffers, { desc = 'Telescope buffers' })
+      vim.keymap.set('n', '<leader>bb', builtin.buffers, { desc = 'Telescope buffers' })
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
     end,
   },
 
