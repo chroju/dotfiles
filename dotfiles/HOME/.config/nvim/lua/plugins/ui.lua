@@ -21,6 +21,9 @@ return {
       vim.api.nvim_set_hl(0, 'NvimTreeOpenedFolderName', { link = 'Directory' })
       vim.api.nvim_set_hl(0, 'NvimTreeEmptyFolderName', { link = 'Directory' })
       vim.api.nvim_set_hl(0, 'NvimTreeRootFolder', { link = 'Directory' })
+
+      -- 文字列の色を見やすくする (frost cyan)
+      vim.api.nvim_set_hl(0, 'String', { fg = '#88C0D0' })
     end,
   },
 
