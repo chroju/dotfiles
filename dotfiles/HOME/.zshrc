@@ -256,3 +256,6 @@ function zshaddhistory() {
 
 # mise
 eval "$(mise activate zsh)"
+
+# Added by Antigravity
+export PATH="/Users/chroju/.antigravity/antigravity/bin:$PATH"
