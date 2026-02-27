@@ -26,7 +26,9 @@
       "Bash(gh pr view:*)",
       "Bash(gh issue list:*)",
       "Bash(gh issue view:*)",
-      "Bash(gh repo view:*)"
+      "Bash(gh repo view:*)",
+      "Bash(gcalcli:*)",
+      "Bash(date:*)"
     ],
     "deny": [
       "Bash(sudo:*)",
@@ -58,16 +60,6 @@
     "defaultMode": "plan"
   },
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/scripts/check-version.sh"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Write",
@@ -95,6 +87,11 @@
           {
             "type": "command",
             "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"✅ Done\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
+          },
+          {
+            "type": "agent",
+            "prompt": "トランスクリプトファイルを読み、このセッションで行った作業のサマリーを1-3行で生成してください。そして今日のデイリーノート（Obsidian vault）の ## memo セクション末尾に時刻付きで追記してください。形式: `- **HH:MM** - [Claude] サマリー内容`。Vaultルートは /Users/jutaro.numata/dev/src/github.com/chroju/obsidian/chroju、デイリーノートのパスは Logs/YYYY-NQ/YYYY-MM-DD.md（四半期: 1-3月→1Q, 4-6月→2Q, 7-9月→3Q, 10-12月→4Q）。デイリーノートが存在しない場合は何もしない。stop_hook_activeがtrueの場合も何もしない。",
+            "timeout": 60
           }
         ]
       }
@@ -102,7 +99,8 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "~/.claude/scripts/statusline.sh"
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0
   },
   "alwaysThinkingEnabled": false
 }
