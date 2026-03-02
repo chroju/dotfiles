@@ -1,0 +1,110 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "adf5e0ef-0b50-44c0-9714-06dc524630b1",
+        "type": "custom-text",
+        "color": "brightBlue",
+        "customText": "../"
+      },
+      {
+        "id": "1",
+        "type": "git-root-dir",
+        "color": "brightBlue"
+      },
+      {
+        "id": "2",
+        "type": "separator"
+      },
+      {
+        "id": "5",
+        "type": "git-branch",
+        "color": "brightMagenta",
+        "rawValue": false
+      },
+      {
+        "id": "888ebb8e-0402-4e9a-9c51-1a5c4a6542ac",
+        "type": "separator"
+      },
+      {
+        "id": "8427cd04-0369-4dcb-b642-a7a97883b575",
+        "type": "git-worktree",
+        "color": "cyan"
+      },
+      {
+        "id": "4",
+        "type": "separator"
+      },
+      {
+        "id": "7",
+        "type": "git-changes",
+        "color": "white"
+      },
+      {
+        "id": "6",
+        "type": "separator"
+      },
+      {
+        "id": "e9d6fd5c-e260-48ab-91ee-4fd7b54b6c97",
+        "type": "model",
+        "color": "white",
+        "rawValue": true
+      },
+      {
+        "id": "29320aa6-968e-4d5a-a1c5-cff29bd272af",
+        "type": "separator"
+      },
+      {
+        "id": "4c6204e0-250e-49f1-8922-e54f290103a6",
+        "type": "version",
+        "rawValue": false
+      }
+    ],
+    [
+      {
+        "id": "0dfdd0da-5808-4a4a-b707-7322d1371b4d",
+        "type": "context-percentage",
+        "color": "ansi256:247"
+      },
+      {
+        "id": "9d6296fa-2500-4bcc-aeee-bd690d177796",
+        "type": "separator"
+      },
+      {
+        "id": "9d569595-0832-4e43-addc-9980c8c82995",
+        "type": "block-timer",
+        "color": "ansi256:247",
+        "rawValue": false
+      },
+      {
+        "id": "13d5d413-dc0b-44ee-b4b8-1b8f0e8f7fac",
+        "type": "separator"
+      },
+      {
+        "id": "e1fa6ef7-1050-4a29-8189-87997f78faf0",
+        "type": "custom-command",
+        "commandPath": "npx -y ccusage@latest statusline | awk '{print $9}'",
+        "timeout": 5000,
+        "color": "ansi256:247"
+      }
+    ]
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 2,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false
+  }
+}
