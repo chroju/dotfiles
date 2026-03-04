@@ -3,7 +3,31 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.62 -->
+<!-- claude-code-version: 2.1.66 -->
+
+## 2.1.66
+
+4バージョン分の更新（2.1.63〜2.1.66）。
+
+### 主要な新機能
+
+- **`/simplify` スラッシュコマンド追加**: 変更されたコードの再利用性、品質、効率をレビューし修正
+- **`/batch` スラッシュコマンド追加**: バッチ処理向けコマンド
+- **HTTP hooks**: `type: "http"` でURLにJSON POSTし、JSONレスポンスを受け取る新しいhookタイプ
+- **Worktree間で設定・auto memoryを共有**: worktree間の設定同期
+- **`ENABLE_CLAUDEAI_MCP_SERVERS=false` 環境変数**: claude.ai側のMCPサーバー（Notion, Figma等）の暗黙的な有効化を無効化
+- `/model` コマンドで現在のアクティブモデルを表示
+- `/copy` に「Always copy full response」オプション追加
+- `/clear` でキャッシュされたスキルがリセットされない問題を修正
+- 多数のメモリリーク修正（長時間セッションの安定性向上）
+- VSCode: セッションのリネーム・削除アクション追加
+- スプリアスなエラーログの削減（2.1.66）
+
+### 設定への影響
+
+- `settings.json`: `env` に `"ENABLE_CLAUDEAI_MCP_SERVERS": "false"` を追加。claude.ai側で設定したMCPサーバーが暗黙的に利用可能になるのを防ぐ
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.62
 
