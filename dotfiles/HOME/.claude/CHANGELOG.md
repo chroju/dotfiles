@@ -3,7 +3,67 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.66 -->
+<!-- claude-code-version: 2.1.72 -->
+
+## 2.1.72
+
+### 主要な新機能
+
+- **`/copy` に `w` キー追加**: フォーカス中の選択をファイルに直接書き出し（SSH環境で有用）
+- **`/plan` に説明引数追加**: `/plan fix the auth bug` のようにプランモード開始と同時に指示可能
+- **`ExitWorktree` ツール追加**: `EnterWorktree` セッションから離脱可能に
+- **`CLAUDE_CODE_DISABLE_CRON` 環境変数**: cronジョブの即時停止
+- **bash自動承認リスト拡張**: `lsof`, `pgrep`, `tput`, `ss`, `fd`, `fdfind` 追加
+- **Agent ツールに `model` パラメータ復活**: エージェント呼び出し時のモデル指定
+- **effort レベル簡素化**: low/medium/high（maxを削除）、新シンボル（○ ◐ ●）、`/effort auto` でデフォルトリセット
+- **CLAUDE.md HTMLコメント非表示化**: auto-inject時に `<!-- ... -->` が非表示に（Readツールでは表示）
+
+### 主なバグ修正
+
+- 並列ツール呼び出しで Read/WebFetch/Glob 失敗時に兄弟をキャンセルしなくなった（Bashエラーのみカスケード）
+- `/clear` がバックグラウンドタスクを kill しなくなった
+- ワイルドカード権限ルールが heredoc・改行を含むコマンドにもマッチするよう修正
+- プロンプトキャッシュ無効化修正（SDK `query()` で入力トークンコスト最大12倍削減）
+
+### 設定への影響
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
+
+## 2.1.71
+
+5バージョン分の更新（2.1.67〜2.1.71）。
+
+### 主要な新機能
+
+- **`/loop` コマンド**: 定期実行（例: `/loop 5m check the deploy`）
+- **cron スケジューリングツール**: セッション内での定期プロンプト実行
+- **`/claude-api` スキル**: Claude API / Anthropic SDK でのアプリ構築支援
+- **`/reload-plugins` コマンド**: プラグイン変更を再起動なしに反映
+- **`voice:pushToTalk` キーバインド**: 音声モードのキー設定変更対応
+- **`includeGitInstructions` 設定**: ビルトインの commit/PR ワークフロー指示を除去可能
+- **`sandbox.enableWeakerNetworkIsolation` 設定**: macOS で `gh` 等がカスタムプロキシ経由で TLS 検証可能に
+- **Opus 4.6 デフォルトeffort変更**: Max/Team で medium effort がデフォルトに
+- **VSCode spark icon**: セッション一覧、プラン表示、MCP管理ダイアログ
+
+### 新しいHookイベント
+
+- `InstructionsLoaded`: CLAUDE.md やルールファイル読み込み時に発火
+
+### 主なバグ修正
+
+- stdin フリーズ修正
+- heredoc コミットメッセージの false-positive permission prompt 修正
+- クリップボードの非ASCII文字化け修正
+- 大量メモリリーク修正（複数バージョンにわたる）
+- `/fork` のプランファイル共有問題修正
+
+### 設定への影響
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.66
 
