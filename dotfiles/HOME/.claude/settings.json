@@ -98,5 +98,6 @@
     "command": "npx -y ccstatusline@latest",
     "padding": 0
   },
-  "alwaysThinkingEnabled": false
+  "alwaysThinkingEnabled": false,
+  "plansDirectory": "./.local/claude/plans"
 }
