@@ -3,7 +3,61 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.72 -->
+<!-- claude-code-version: 2.1.74 -->
+
+## 2.1.74
+
+### 主要な新機能
+
+- **`/context` コマンド強化**: コンテキスト重いツール、メモリ肥大化、容量警告に最適化提案
+- **`autoMemoryDirectory` 設定追加**: auto-memoryの保存先ディレクトリをカスタム指定可能
+- **`SessionEnd` hooks タイムアウト設定**: `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` 環境変数で制御可能に（従来は1.5s固定）
+- **`--plugin-dir` の優先順位変更**: ローカル開発コピーがマーケットプレイスプラグインより優先
+
+### 主なバグ修正
+
+- ストリーミングAPIレスポンスバッファのメモリリーク修正（RSS無限増加）
+- managed policy `ask` ルールが user `allow` やskill `allowed-tools` でバイパスされる問題修正
+- Agent frontmatter の `model:` フィールドでフルモデルID（`claude-opus-4-5`等）が無視される問題修正
+- MCP OAuth認証のハング・リフレッシュ問題修正
+- macOSネイティブバイナリの音声モードマイク権限修正
+
+### 設定への影響
+
+- `settings.json`: 変更なし（`autoMemoryDirectory` はデフォルトで問題なし、`SessionEnd` タイムアウトも現在の軽量hookでは不要）
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
+
+## 2.1.73
+
+### 主要な新機能
+
+- **`modelOverrides` 設定追加**: モデルピッカーのエントリをカスタムプロバイダーのモデルIDにマッピング（Bedrock ARN等）
+- **SSL証明書エラー時のガイダンス追加**: 企業プロキシ環境での `NODE_EXTRA_CA_CERTS` 設定案内
+
+### 改善
+
+- Up arrow でプロンプト復元+会話巻き戻しが一括動作に
+- IDE検出速度向上、クリップボード画像貼り付けパフォーマンス改善（macOS）
+- `/effort` がレスポンス中にも動作可能に
+- Bedrock/Vertex/Foundry デフォルトモデルが Opus 4.6 に
+
+### 主なバグ修正
+
+- 複雑なbashコマンドの権限プロンプトで100% CPUループ・フリーズ
+- 大量のskillファイル変更時のデッドロック
+- サブエージェントの `model: opus/sonnet/haiku` がBedrock/Vertex/Foundryで旧バージョンにダウングレードされる問題
+- `/loop` がBedrock/Vertex/Foundry・テレメトリ無効時に使えない問題
+
+### 非推奨
+
+- `/output-style` コマンド廃止 → `/config` に統合
+
+### 設定への影響
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.72
 
