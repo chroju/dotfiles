@@ -13,7 +13,6 @@
   grep = auto
 
 [init]
-  templatedir = ~/.gittemplates
   defaultBranch = main
 
 [push]
@@ -37,6 +36,7 @@
   pager = delta
   attributesfile = ~/.gitattributes
   quotepath = false
+  hooksPath = ~/.githooks
 
 [commit]
   template = ~/.gitmessage
@@ -107,11 +107,11 @@
   path = ~/.gitconfig.work
 
 [credential "https://github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
 
 [credential "https://gist.github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [scalar]
 	repo = $HOME/dev/src/github.com/globis-org/hodai-2c-lp

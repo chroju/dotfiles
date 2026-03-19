@@ -84,13 +84,13 @@
       {
         "id": "e1fa6ef7-1050-4a29-8189-87997f78faf0",
         "type": "custom-command",
-        "commandPath": "npx -y ccusage@latest statusline | awk '{print $9}'",
-        "timeout": 5000,
-        "color": "ansi256:247"
+        "color": "ansi256:247",
+        "commandPath": "ccusage statusline | awk '{print $11}'",
+        "timeout": 6000
       }
     ]
   ],
-  "flexMode": "full-minus-40",
+  "flexMode": "full",
   "compactThreshold": 60,
   "colorLevel": 2,
   "inheritSeparatorColors": false,

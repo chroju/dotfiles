@@ -1,0 +1,11 @@
+#!/bin/bash
+# Bitwarden SSH Agent が利用可能か確認する
+# gpg.format = ssh かつ commit.gpgsign = true の場合、
+# エージェントが無効だと署名に失敗するため事前チェックする
+
+if ! ssh-add -l &>/dev/null; then
+  echo "Error: SSH agent に鍵が見つかりません。Bitwarden を起動します..."
+  open /System/Volumes/Data/Applications/Bitwarden.app
+  echo "Bitwarden のロックを解除してから再度コミットしてください。"
+  exit 1
+fi
