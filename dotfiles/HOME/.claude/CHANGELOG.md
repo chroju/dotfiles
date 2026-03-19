@@ -3,7 +3,45 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.74 -->
+<!-- claude-code-version: 2.1.79 -->
+
+## 2.1.79
+
+5バージョン分の更新（2.1.75〜2.1.79）。
+
+### 主要な新機能
+
+- **Opus 4.6 1Mコンテキスト**: Max/Team/Enterprise でデフォルト有効 (2.1.75)
+- **Opus 4.6 出力トークン上限引き上げ**: デフォルト64k、上限128k (2.1.77)
+- **MCP elicitation**: MCPサーバーがタスク中に構造化入力を要求可能 (2.1.76)
+- **`StopFailure` フック**: APIエラー（レート制限、認証失敗等）でターンが終了した時に発火 (2.1.78)
+- **`PostCompact` フック**: コンパクション完了時に発火 (2.1.76)
+- **`Elicitation` / `ElicitationResult` フック**: MCP elicitation の割り込み・オーバーライド (2.1.76)
+- **`worktree.sparsePaths` 設定**: 大規模モノレポで必要なディレクトリだけチェックアウト (2.1.76)
+- **`allowRead` サンドボックス設定**: denyRead 内で再許可 (2.1.77)
+- **レスポンスの行単位ストリーミング** (2.1.78)
+- **tmux passthrough でターミナル通知**: `set -g allow-passthrough on` で tmux 越しに通知到達 (2.1.78)
+- **`ANTHROPIC_CUSTOM_MODEL_OPTION` 環境変数**: /model ピッカーにカスタムエントリ追加 (2.1.78)
+- **`/color` コマンド**: セッションごとのプロンプトバー色設定 (2.1.75)
+- **`/effort` スラッシュコマンド** (2.1.76)
+- **`/fork` → `/branch` にリネーム** (2.1.77)
+- **`--console` フラグ**: `claude auth login` で Anthropic Console 認証 (2.1.79)
+- **`/config` に「Show turn duration」トグル** (2.1.79)
+
+### 主なバグ修正
+
+- トークン推定の過大カウント修正（早期コンパクション防止）(2.1.75)
+- deferred tools がコンパクション後にスキーマ消失する問題修正 (2.1.76)
+- "Always Allow" で compound bash コマンドが1ルールになる問題修正 (2.1.77)
+- deny 権限ルールが MCP サーバーツールに効かない問題修正 (2.1.78)
+- サンドボックス依存関係不足時のサイレント無効化→警告表示 (2.1.78)
+- 起動メモリ使用量 ~18MB 改善 (2.1.79)
+
+### 設定への影響
+
+- `settings.json`: `StopFailure` フック追加（APIエラー終了時の macOS 通知）、`ENABLE_CLAUDEAI_MCP_SERVERS` を `"true"` に変更
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.74
 

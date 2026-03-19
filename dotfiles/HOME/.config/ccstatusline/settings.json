@@ -84,9 +84,9 @@
       {
         "id": "e1fa6ef7-1050-4a29-8189-87997f78faf0",
         "type": "custom-command",
+        "color": "ansi256:247",
         "commandPath": "npx -y ccusage@latest statusline | awk '{print $9}'",
-        "timeout": 5000,
-        "color": "ansi256:247"
+        "timeout": 6000
       }
     ]
   ],
