@@ -3,7 +3,53 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.79 -->
+<!-- claude-code-version: 2.1.81 -->
+
+## 2.1.81 (2026-03-20)
+
+### 新機能
+
+- **`--bare` フラグ**: スクリプト向け `-p` 呼び出しで hooks/LSP/plugin 同期をスキップ（API キー必須）
+- **`--channels` permission relay**: チャンネルサーバーがツール承認プロンプトを電話へ転送
+- **Remote Control**: セッション再開時のワークツリー切り替え改善
+- **行単位レスポンスストリーミング**（Windows/WSL では無効）
+- **MCP OAuth**: Client ID Metadata Document（CIMD / SEP-991）サポート
+
+### バグ修正
+
+- 複数セッションで OAuth 再認証が繰り返し要求される問題
+- Voice mode retry 失敗と WebSocket ドロップ
+- プラグインディレクトリ削除時にプラグイン hook がプロンプト送信をブロックする問題
+- バックグラウンドエージェントタスク出力のレースコンディション
+- Node.js 18 互換性クラッシュ
+- ダッシュ付き Bash コマンドへの不要なパーミッションプロンプト
+
+### 設定変更
+
+なし
+
+## 2.1.80 (2026-03-19)
+
+### 新機能
+
+- **statusline `rate_limits` フィールド**: Claude.ai レート制限使用量を statusline に表示可能
+- **`source: 'settings'` プラグインマーケットプレイス**: `settings.json` 内にインラインでマーケットプレイス定義を記述できる（別リポジトリ不要。各プラグイン本体は GitHub 等を参照）
+- **CLI ツール使用検出によるプラグインヒント**
+- **`effort` frontmatter**: スキル/スラッシュコマンドで thinking effort を指定可能
+- **`--channels` research preview**: MCP サーバーがセッションへメッセージをプッシュ
+
+### バグ修正
+
+- `--resume` でパラレルツール結果が欠落する問題
+- Cloudflare ボット検出による Voice mode WebSocket 失敗
+- API プロキシ経由のファインゲインドツールストリーミングで 400 エラー
+- キャッシュ済み設定でのマネージド設定が起動時に未適用になる問題
+- 大規模リポジトリでのファイル自動補完レスポンス改善
+- 起動時のメモリ使用量 ~80MB 削減
+
+### 設定変更
+
+なし（プラグイン未使用のため `source: 'settings'` は不要）
 
 ## 2.1.79
 
