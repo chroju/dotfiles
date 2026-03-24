@@ -37,28 +37,10 @@
         "type": "separator"
       },
       {
-        "id": "7",
-        "type": "git-changes",
-        "color": "white"
-      },
-      {
-        "id": "6",
-        "type": "separator"
-      },
-      {
         "id": "e9d6fd5c-e260-48ab-91ee-4fd7b54b6c97",
         "type": "model",
         "color": "white",
         "rawValue": true
-      },
-      {
-        "id": "29320aa6-968e-4d5a-a1c5-cff29bd272af",
-        "type": "separator"
-      },
-      {
-        "id": "4c6204e0-250e-49f1-8922-e54f290103a6",
-        "type": "version",
-        "rawValue": false
       }
     ],
     [
@@ -74,8 +56,8 @@
       {
         "id": "defe91d7-21e8-4ace-9f1d-685b4210e1f1",
         "type": "custom-command",
-        "commandPath": "$HOME/.claude/scripts/rate_limits_statusline.sh",
-        "color": "ansi256:247"
+        "color": "ansi256:247",
+        "commandPath": "$HOME/.claude/scripts/rate_limits_statusline.sh"
       },
       {
         "id": "13d5d413-dc0b-44ee-b4b8-1b8f0e8f7fac",
@@ -85,8 +67,16 @@
         "id": "e1fa6ef7-1050-4a29-8189-87997f78faf0",
         "type": "custom-command",
         "color": "ansi256:247",
-        "commandPath": "ccusage statusline | awk '{print $11}'",
+        "commandPath": "ccusage statusline | sed 's/.*\\(\\$[0-9.]* today\\).*/\\1/'",
         "timeout": 6000
+      },
+      {
+        "id": "b25b3981-0773-42ea-8e74-4e4fb477f315",
+        "type": "separator"
+      },
+      {
+        "id": "ae87acfa-6737-4191-af96-0a0fb41da187",
+        "type": "version"
       }
     ]
   ],
