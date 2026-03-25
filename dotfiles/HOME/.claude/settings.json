@@ -64,7 +64,8 @@
       "Bash(gh issue create:*)",
       "Bash(gh repo create:*)"
     ],
-    "defaultMode": "plan"
+    "defaultMode": "plan",
+    "disableBypassPermissionsMode": "disable"
   },
   "hooks": {
     "PostToolUse": [
