@@ -8,6 +8,9 @@
   "permissions": {
     "allow": [
       "Read",
+      "Edit",
+      "MultiEdit",
+      "Write",
       "Glob",
       "Grep",
       "WebFetch",
@@ -30,7 +33,9 @@
       "Bash(gh issue view:*)",
       "Bash(gh repo view:*)",
       "Bash(icalPal:*)",
-      "Bash(date:*)"
+      "Bash(date:*)",
+      "Bash(terraform fmt:*)",
+      "Bash(terraform validate:*)"
     ],
     "deny": [
       "Bash(sudo:*)",
