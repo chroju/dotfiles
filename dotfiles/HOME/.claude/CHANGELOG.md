@@ -3,7 +3,59 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.81 -->
+<!-- claude-code-version: 2.1.83 -->
+
+## 2.1.83 (2026-03-25)
+
+2.1.82〜2.1.83 の更新。
+
+### 新機能
+
+- **`managed-settings.d/` ドロップインディレクトリ**: 複数チーム向けポリシー断片をアルファベット順マージ
+- **`CwdChanged` / `FileChanged` hook イベント**: direnv 等の環境管理向け
+- **`sandbox.failIfUnavailable` 設定**: サンドボックス起動失敗時にエラー終了（サイレント無効化を防止）
+- **`CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1` 環境変数**: サブプロセスから Anthropic / クラウドプロバイダー認証情報を除去
+- **トランスクリプト検索**: `Ctrl+O` → `/` で検索、`n`/`N` でステップ移動
+- **`Ctrl+X Ctrl+E`**: 外部エディタ起動のエイリアス（`Ctrl+G` と同等）
+- **貼り付け画像 `[Image #N]` チップ**: 画像を位置参照可能に
+- **Agent `initialPrompt` frontmatter**: エージェント起動時の初回ターンを自動送信
+- **`chat:killAgents` / `chat:fastMode` キーバインド**: `~/.claude/keybindings.json` でカスタマイズ可能に
+- **プラグイン `manifest.userConfig`**: プラグイン有効化時にユーザー設定を要求可能（`sensitive: true` は Keychain 保存）
+
+### 改善
+
+- `Ctrl+F` → `Ctrl+X Ctrl+K` に変更（バックグラウンドエージェント全停止。readline forward-char との衝突回避）
+- `TaskOutput` ツール非推奨化（`Read` で代替）
+- `Ctrl+L` で画面クリア＋再描画、`Ctrl+U` / double-Esc で入力クリア
+- `Ctrl+B` はアイドル時の readline backward-char を妨害しなくなった
+- MEMORY.md 上限: 200行 + 25KB
+- `--bare -p` が約14%高速化
+- Bedrock SDK コールドスタートレイテンシ改善
+- `--resume` メモリ使用量・起動レイテンシ改善
+- non-streaming fallback トークン上限 21k → 64k、タイムアウト 120s → 300s
+- `/status` がレスポンス中にも動作可能に
+- WebFetch UA を `Claude-User` に変更（robots.txt でのアクセス制御対応）
+- `--channels` アクティブ時に `AskUserQuestion` / プランモードツール無効化
+
+### バグ修正
+
+- `caffeinate` プロセスが終了せず Mac スリープを阻害する問題
+- macOS 終了時ハング
+- 大ファイル diff のハング（5秒タイムアウト追加）
+- Voice 入力の音声モジュール遅延読み込みによる1-8秒 UI フリーズ
+- claude.ai MCP 設定フェッチによる起動3秒遅延
+- `--mcp-config` が managed policy を迂回する問題
+- claude.ai MCP コネクタが `--print` モードで使えない問題
+- バックグラウンドエージェントがコンパクション後に不可視になる問題
+- ツール結果ファイルの `cleanupPeriodDays` 未適用
+- マウストラッキングエスケープシーケンスのリーク
+- 多数の UI / スクロール / Remote Control 修正
+
+### 設定変更
+
+- `settings.json`: `env` に `"CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1"` を追加（サブプロセスから認証情報を除去する防御的セキュリティ設定）
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.81 (2026-03-20)
 
