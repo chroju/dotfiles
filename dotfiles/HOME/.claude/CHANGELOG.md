@@ -3,7 +3,51 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.83 -->
+<!-- claude-code-version: 2.1.84 -->
+
+## 2.1.84 (2026-03-26)
+
+### 新機能
+
+- **PowerShell tool (Windows opt-in preview)**: Windows環境向け。macOSでは不要
+- **モデル機能検出の環境変数オーバーライド**: `ANTHROPIC_DEFAULT_{OPUS,SONNET,HAIKU}_MODEL_SUPPORTS`、`_MODEL_NAME`、`_DESCRIPTION` で3pプロバイダー（Bedrock, Vertex, Foundry）のモデルラベル・機能をカスタマイズ
+- **`CLAUDE_STREAM_IDLE_TIMEOUT_MS` 環境変数**: ストリーミングアイドル監視タイムアウト設定（デフォルト90秒）
+- **`TaskCreated` hook**: `TaskCreate` でタスク作成時に発火
+- **`WorktreeCreate` hook の `type: "http"` サポート**: `hookSpecificOutput.worktreePath` でworktreeパスを返却可能
+- **`allowedChannelPlugins` managed setting**: チーム/Enterprise向けプラグイン許可リスト
+- **`x-client-request-id` APIリクエストヘッダー**: タイムアウトデバッグ用
+- **75分アイドル後の `/clear` 推奨プロンプト**: トークン再キャッシュ削減
+- **Deep link (`claude-cli://`) が優先ターミナルで開く**
+- **Rules/skills `paths:` がYAMLリスト形式のglobを受け付け**: `.claude/rules/` で複数パターン指定可能に
+
+### 改善
+
+- MCP tool description / server instructions を2KBに制限（コンテキスト肥大化防止）
+- MCP サーバー重複排除（ローカル設定が claude.ai コネクタに優先）
+- トークンカウント ≥1M を "1.5m" 形式で表示
+- `ToolSearch` 有効時のグローバルシステムプロンプトキャッシュ対応
+- ~30ms 起動改善（並列 `setup()` 実行）
+- Issue/PR参照が `owner/repo#123` 形式のみクリック可能に（裸の `#123` は自動リンクされない）
+- 利用不可スラッシュコマンド (`/voice`, `/mobile` 等) が非表示に
+
+### バグ修正
+
+- Voice push-to-talk のテキスト入力リーク
+- `Ctrl+U`（行頭まで削除）の複数行入力での動作
+- chord binding の null アンバインド
+- ワークフローサブエージェントの `--json-schema` 使用時 400 エラー
+- IME (CJK入力) のインライン描画・カーソル追跡（日本語入力の改善）
+- MCP tool/resource キャッシュリーク（再接続時）
+- Partial clone リポジトリ (Scalar/GVFS) の起動パフォーマンス
+- macOS keychain の一時的読み取り失敗
+- Deferred tools のコールドスタート競合（Edit/Write失敗防止）
+- 大ファイル添付スニペット生成ハング
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.83 (2026-03-25)
 
