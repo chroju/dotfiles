@@ -3,7 +3,41 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.84 -->
+<!-- claude-code-version: 2.1.85 -->
+
+## 2.1.85 (2026-03-27)
+
+### 新機能
+
+- **Hook の条件付き実行 (`if` フィールド)**: permission rule 構文（例: `Bash(git *)`）でフック発火条件をフィルタ可能。プロセス生成オーバーヘッド削減
+- **MCP サーバー環境変数**: `CLAUDE_CODE_MCP_SERVER_NAME` / `CLAUDE_CODE_MCP_SERVER_URL` が `headersHelper` スクリプトに渡される（1つのヘルパーで複数サーバー対応）
+- **PreToolUse hook で `AskUserQuestion` に応答可能**: `updatedInput` + `permissionDecision: "allow"` でヘッドレス統合対応
+- **Deep link クエリ拡張**: 最大5,000文字サポート
+- **MCP OAuth RFC 9728 対応**: Protected Resource Metadata discovery で認可サーバーを検出
+- **Organization Policy によるプラグインブロック**: `managed-settings.json` でブロックされたプラグインのインストール/有効化を禁止
+- **OpenTelemetry ツール詳細ゲーティング**: `OTEL_LOG_TOOL_DETAILS=1` で `tool_parameters` 出力を制御
+
+### 改善
+
+- スクロールパフォーマンス改善（WASM yoga-layout → pure TypeScript）
+- @メンション ファイル補完の大規模リポジトリでのパフォーマンス改善
+- 大セッションでのコンパクション時 UI スタッター削減
+
+### バグ修正
+
+- `/compact` の "context exceeded" エラー
+- `--worktree` の非gitリポジトリでのエラー
+- `deniedMcpServers` 設定が claude.ai MCP サーバーをブロックしない問題
+- SSH/VS Code統合ターミナルでの raw key sequences 表示
+- MCP step-up authorization の既存リフレッシュトークン問題
+- リモートセッションでのストリーミング中断時メモリリーク
+- shift+enter / meta+enter がタイプアヘッド候補に横取りされる問題
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.84 (2026-03-26)
 
