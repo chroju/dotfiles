@@ -93,6 +93,12 @@ Uses `mise` (migrated from asdf) for managing tool versions:
 
 ## Important Notes
 
+### File Management via Symlinks
+Files under `$HOME` (e.g., `~/.tmux.conf`, `~/.claude/scripts/`) are managed as symlinks pointing to this repository. When adding or editing these files:
+- Always edit or create files in `dotfiles/HOME/` within this repository, not directly in `$HOME`
+- After adding a new file, run `./setup_symlinks.sh` to create the symlink
+- Never edit the symlinked file directly in `$HOME`, as it points to this repo anyway
+
 ### System Defaults
 When modifying macOS defaults in `setup_defaults.sh`, test changes manually first with `defaults write` before adding to the script.
 
