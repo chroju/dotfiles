@@ -99,6 +99,17 @@
         ]
       }
     ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/tmux-stop.sh"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "",
