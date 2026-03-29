@@ -22,4 +22,4 @@ keybind = ctrl+s>l=new_split:right
 keybind = ctrl+s>j=new_split:down
 
 split-divider-color = "#4c566a"
-
+mouse-shift-capture = false
