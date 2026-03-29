@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Select repository with fzf
+dir=$(ghq list | fzf +m) || exit 0
+repo_path="$(ghq root)/$dir"
+repo_name=$(basename "$dir")
+
+# Ask for window title
+read -rp "Window title [$repo_name]: " title
+title="${title:-$repo_name}"
+
+# Create new window and set title
+tmux new-window -c "$repo_path" -n "$title"
+
+# Split vertically and open claude code in right pane (30%)
+tmux split-window -h -l 30% -c "$repo_path"
+tmux send-keys "claude" Enter
+
+# Focus left pane and open neovim
+tmux select-pane -L
+tmux send-keys "nvim" Enter
