@@ -3,7 +3,38 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.85 -->
+<!-- claude-code-version: 2.1.86 -->
+
+## 2.1.86 (2026-03-29)
+
+### 新機能・改善
+
+- **`X-Claude-Code-Session-Id` ヘッダー追加**: APIリクエストにセッションIDを付与。プロキシがセッション単位でリクエストを集約しやすくなる
+- **VCSディレクトリ除外拡張**: `.jj`（Jujutsu）と `.sl`（Sapling）をメタデータ除外リストに追加。Grep・ファイル補完のパフォーマンス向上
+- **ファイル補完トークン削減**: オートコンプリートのトークンオーバーヘッド削減、ファイル内容のJSONエスケープ廃止
+
+### バグ修正
+
+- `--resume` で「tool_use ids were found without tool_result blocks」エラー
+- プロジェクトルート外ファイルのWrite/Edit/Read失敗
+- スキル呼び出し時の不要な設定ディスク書き込み削減（Windows設定破損防止）
+- `/feedback` コマンドの長セッションOOMクラッシュ
+- `--bare` モードでMCPツールが削除される問題
+- macOS/Linux マーケットプレイスプラグインのスクリプト権限エラー
+- 複数インスタンス実行時のステータスラインモデル表示バグ
+- Max planユーザーがOAuthトークン更新後にSonnetにデフォルト設定される問題
+
+### パフォーマンス
+
+- markdownハイライトレンダリングキャッシュのメモリ削減
+- Bedrock/Vertex/Foundryのプロンプトキャッシュヒット率向上（ツール説明から動的コンテンツを除去）
+- Readツールの行番号フォーマット圧縮によるトークン削減
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.85 (2026-03-27)
 
