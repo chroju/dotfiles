@@ -68,6 +68,17 @@
     "disableBypassPermissionsMode": "disable"
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE_PATH=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // .path // \"\"'); if echo \"$FILE_PATH\" | grep -qE '^/Users/chroju/' && ! echo \"$FILE_PATH\" | grep -qE '^/Users/chroju/dev/src/github\\.com/chroju/dotfiles/'; then echo \"ERROR: $FILE_PATH is under \\$HOME but not in the dotfiles repository. Edit dotfiles/HOME/ in the repository instead.\"; exit 2; fi"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write",
@@ -88,24 +99,13 @@
         ]
       }
     ],
-    "Stop": [
+    "Notification": [
       {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"✅ Done\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
-          }
-        ]
-      }
-    ],
-    "StopFailure": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"❌ Failed\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
+            "command": "~/.claude/scripts/tmux-notify.sh"
           }
         ]
       }
