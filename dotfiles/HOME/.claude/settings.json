@@ -98,28 +98,6 @@
           }
         ]
       }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"✅ Done\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
-          }
-        ]
-      }
-    ],
-    "StopFailure": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "DIR=$(basename \"$(git rev-parse --show-toplevel 2>/dev/null || echo $PWD)\") && BRANCH=$(git branch --show-current 2>/dev/null) && SUBTITLE=\"@$DIR${BRANCH:+ ($BRANCH)}\" && osascript -e \"display notification \\\"❌ Failed\\\" with title \\\"Claude Code\\\" subtitle \\\"$SUBTITLE\\\"\""
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
