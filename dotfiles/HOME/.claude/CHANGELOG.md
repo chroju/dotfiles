@@ -3,7 +3,19 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.86 -->
+<!-- claude-code-version: 2.1.87 -->
+
+## 2.1.87 (2026-03-29)
+
+### バグ修正
+
+- Cowork Dispatch のメッセージが届かない問題を修正
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.86 (2026-03-29)
 
