@@ -5,9 +5,9 @@ output=""
 
 while IFS=$'\t' read -r session_id session_name; do
   if [ "$session_name" = "$current" ]; then
-    output+="#[range=session|${session_id}]#[fg=#88c0d0 bold] ${session_name} #[default nobold]#[norange]"
+    output+="#[range=session|${session_id}]#[fg=#89b4fa bold] ${session_name} #[default nobold]#[norange]"
   else
-    output+="#[range=session|${session_id}]#[fg=#7b88a0] ${session_name} #[default]#[norange]"
+    output+="#[range=session|${session_id}]#[fg=#6c7086] ${session_name} #[default]#[norange]"
   fi
 done < <(tmux list-sessions -F $'#{session_id}\t#{session_name}')
 
