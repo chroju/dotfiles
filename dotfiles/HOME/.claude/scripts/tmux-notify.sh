@@ -14,5 +14,5 @@ SESSION=$(tmux display-message -t "$TMUX_PANE" -p '#{session_name}' 2>/dev/null)
 NOTIFICATION_TYPE=$(echo "$INPUT" | jq -r '.notification_type // ""')
 TITLE="CC [${SESSION}:${WINDOW} ${WTITLE}]${NOTIFICATION_TYPE:+ ($NOTIFICATION_TYPE)}"
 
-printf '\033Ptmux;\033\033]9;Claude Code\007\033\\' > /dev/tty
+printf '\a' > /dev/tty
 osascript -e "display notification \"$MESSAGE\" with title \"$TITLE\""
