@@ -3,7 +3,41 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.87 -->
+<!-- claude-code-version: 2.1.88 -->
+
+## 2.1.88 (2026-03-31)
+
+### 新機能
+
+- **`CLAUDE_CODE_NO_FLICKER=1` 環境変数**: alt-screen + 仮想スクロールバックによるフリッカーフリー描画（opt-in）
+- **`PermissionDenied` hook**: auto mode のクラシファイア拒否後に発火。`{retry: true}` でモデルにリトライを許可
+- **@メンションで名前付きサブエージェント補完**: typeahead に名前付きサブエージェントが表示
+
+### バグ修正
+
+- 長セッションでツールスキーマバイト変動によるプロンプトキャッシュミス
+- ネストされた CLAUDE.md が長セッションで数十回再注入される問題
+- CJK・絵文字を含む prompt history が4KB境界で消失する問題
+- iTerm2 + tmux でのストリーミング中 UI jitter
+- LSP サーバーのクラッシュ後ゾンビ状態（次リクエストで再起動するよう修正）
+- hooks `if` 条件が compound command (`ls && git push`) や env-var prefix 付きコマンドにマッチしない問題
+- Edit ツールの巨大ファイル（>1GiB）での OOM クラッシュ
+- `--resume` で旧バージョンのツール結果を含むトランスクリプトでクラッシュ
+- `StructuredOutput` スキーマキャッシュバグ（複数スキーマワークフローで約50%失敗）
+- メモリリーク（大きなJSON入力がLRUキャッシュキーとして保持）
+- `/stats` の30日超データ消失・サブエージェント/fork使用量の未カウント
+
+### 改善
+
+- thinking summary がデフォルト無効に（`showThinkingSummaries: true` で復元可能）
+- auto mode 拒否コマンドが通知表示＋ `/permissions` → Recent タブに記録
+- `!command` 貼り付けで bash モードに移行
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.87 (2026-03-29)
 
