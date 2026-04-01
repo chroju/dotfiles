@@ -3,7 +3,37 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.88 -->
+<!-- claude-code-version: 2.1.89 -->
+
+## 2.1.89 (2026-04-01)
+
+### 新機能
+
+- **Deferred Permission Decisions**: PreToolUse hooks に `"defer"` 決定を追加。headless セッションがツール呼び出しで一時停止し、`-p --resume` で再評価可能に
+- **MCP Non-Blocking Mode**: `MCP_CONNECTION_NONBLOCKING=true` で `-p` mode の MCP 接続待機をスキップ。`--mcp-config` サーバー接続は5秒タイムアウト
+
+### バグ修正
+
+- Edit/Read allow rules (`//path/**`) がシンボリックリンク先を検証するよう修正
+- `claude-cli://` deep link が macOS で開かない問題
+- MCP tool errors が先頭の content block のみに切り捨てられる問題
+- skill reminders が画像付き SDK メッセージで消失する問題
+- autocompact が context refill を検出せず thrash loop に陥る問題（アクション可能なエラーに変更）
+- hooks `PreToolUse`/`PostToolUse` で Write/Edit/Read の `file_path` が絶対パスで渡されない問題
+- collapsed search/read group badges のスクロールバック重複
+- Rate limit エラーメッセージが実際の entitlement エラーを隠す問題
+
+### 改善
+
+- `Edit` ツールが `Bash` で `sed -n`/`cat` により閲覧済みのファイルに対して別途 `Read` 不要に
+- hook output 50K 文字超はディスク保存＋プレビューに変更（コンテキスト注入を回避）
+- `cleanupPeriodDays: 0` がバリデーションエラーに（サイレント無効化を防止）
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.88 (2026-03-31)
 
