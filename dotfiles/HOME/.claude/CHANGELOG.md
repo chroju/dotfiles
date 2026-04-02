@@ -3,7 +3,38 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.89 -->
+<!-- claude-code-version: 2.1.90 -->
+
+## 2.1.90 (2026-04-02)
+
+### 新機能
+
+- **`/powerup` コマンド**: Claude Code機能のインタラクティブレッスン（アニメーションデモ付き）
+- **`CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE` 環境変数**: `git pull` 失敗時にマーケットプレイスキャッシュを保持（オフライン環境向け）
+- **`.husky` を保護ディレクトリに追加**: acceptEdits モードで保護対象に
+
+### バグ修正
+
+- レート制限ダイアログが無限ループ→クラッシュする問題
+- `--resume` でdeferred tools/MCPサーバー/カスタムエージェント使用時にプロンプトキャッシュミス（v2.1.69以降のリグレッション）
+- PostToolUse format-on-save フックがファイルを書き換えた後に Edit/Write が "File content has changed" で失敗する問題
+- PreToolUse フックが JSON stdout + exit code 2 でツール呼び出しを正しくブロックしない問題
+- auto mode がユーザー境界（"don't push" 等）を無視する問題
+- ライトテーマでの click-to-expand ホバーテキスト視認性
+- `/model`, `/config` 等の選択画面でヘッダーが消える問題
+
+### パフォーマンス
+
+- MCP ツールスキーマのキャッシュキー検索で毎ターン JSON.stringify していたのを除去
+- SSE 大フレーム処理が O(n) に改善（O(n²) だった）
+- 長セッションの SDK トランスクリプト書き込みが O(n²) → 線形に
+- `/resume` のプロジェクトセッション並列ロード
+
+### 設定変更
+
+- `settings.json`: 変更なし（PostToolUse フックとの競合修正、PreToolUse exit 2 修正はいずれも本体側で対応済み）
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.89 (2026-04-01)
 
