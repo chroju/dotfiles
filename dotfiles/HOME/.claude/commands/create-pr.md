@@ -97,4 +97,4 @@ allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git branch:*), Bash(gi
 7. リモートへpush（必要な場合）
 8. `gh pr create` でPR作成
 9. PR URLを表示
-10. `/watch-pr` でPRの監視を開始するか確認（Yes の場合: `/loop 5m /watch-pr` の実行を提案）
+10. `/follow-pr` でPRの監視を開始するか確認
