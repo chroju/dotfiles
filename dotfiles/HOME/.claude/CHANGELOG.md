@@ -3,7 +3,63 @@
 このファイルは Claude Code のバージョンアップ時に設定を見直した記録を管理する。
 `scripts/check-version.sh` が `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.90 -->
+<!-- claude-code-version: 2.1.92 -->
+
+## 2.1.92 (2026-04-04)
+
+### 新機能
+
+- **`/cost` コマンド強化**: サブスクリプションユーザー向けにモデル別・キャッシュヒット別の詳細表示
+- **`/release-notes` のインタラクティブ化**: バージョン選択が可能に
+- **`forceRemoteSettingsRefresh` ポリシー設定**: リモート管理設定をフレッシュフェッチするまでCLI起動をブロック（フェイルクローズ）。個人利用には不要
+- **Bedrock セットアップウィザード**: 3rd-partyプラットフォーム選択時にインタラクティブウィザードが表示。AWS使用者向け
+- **Remote Control セッション名**: ホスト名がデフォルトプレフィックスとして使用（例: `myhost-graceful-unicorn`）
+
+### バグ修正
+
+- subagent spawn失敗（tmuxウィンドウ削除・リナンバー後の"pane count"エラー）を修正
+- Stop フックの `ok:false` 返却時の失敗修正、`preventContinuation:true` セマンティクス復元
+- ストリーミング配列/オブジェクト JSON 文字列としてのツール入力検証エラー修正
+- extended thinking が空白のみのテキストブロックを生成した時の API 400 エラー修正
+- Write tool diff 計算速度 60% 高速化（タブ/`&`/`$` 含むファイル）
+
+### 削除された機能
+
+- `/tag` コマンド削除
+- `/vim` コマンド削除（vim モードは `/config` → Editor mode で切り替え）
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし（削除された /tag, /vim はカスタムコマンドとして存在しない）
+
+## 2.1.91 (2026-04-02)
+
+### 新機能
+
+- **MCP tool result persistence override**: `_meta["anthropic/maxResultSizeChars"]` アノテーション（最大500K）でDBスキーマなどの大規模結果をtruncationなしで通過可能
+- **`disableSkillShellExecution` 設定**: スキル/カスタムスラッシュコマンド/プラグインコマンド内のインラインシェル実行を無効化するセキュリティ設定。個人利用には不要
+- **マルチラインプロンプト対応**: `claude-cli://open?q=` ディープリンクがエンコードされた改行 `%0A` をサポート
+- **プラグイン実行ファイル**: `bin/` 配下の実行ファイルをBashツール内からベアコマンドで呼び出し可能
+
+### バグ修正
+
+- `--resume` 時の非同期トランスクリプト書き込み失敗による会話履歴喪失を修正
+- `cmd+delete` の行頭削除が iTerm2/kitty/WezTerm/Ghostty/Windows Terminal で機能しない問題を修正
+- コンテナ再起動後のplan fileトラッキング喪失と権限プロンプトを修正
+- `permissions.defaultMode: "auto"` の JSON スキーマ検証を修正
+
+### パフォーマンス
+
+- Bun での `stripAnsi` 高速化（`Bun.stripANSI` へのルーティング）
+- Edit tool が短い `old_string` アンカーを使用してoutput token削減
+
+### 設定変更
+
+- `settings.json`: 変更なし
+- `CLAUDE.md`: 変更なし
+- `commands/`: 変更なし
 
 ## 2.1.90 (2026-04-02)
 
