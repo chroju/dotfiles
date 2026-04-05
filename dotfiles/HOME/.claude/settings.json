@@ -120,6 +120,17 @@
           }
         ]
       }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/permission-log.sh"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
