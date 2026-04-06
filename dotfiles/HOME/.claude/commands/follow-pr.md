@@ -1,7 +1,7 @@
 ---
 description: PRをマージまで追いかけ、チェック・対応・マージ・クリーンアップを実行
 argument-hint: "[省略可: PR番号]"
-allowed-tools: Bash(gh pr view:*), Bash(gh pr merge:*), Bash(git status:*), Bash(git branch:*), Bash(git switch:*), Bash(git pull:*), Skill(check-pr), Skill(loop)
+allowed-tools: Bash(gh pr view:*), Bash(gh pr merge:*), Bash(git status:*), Bash(git branch:*), Bash(git switch:*), Bash(git pull:*), Skill(check-pr), Skill(loop), Skill(logging-to-obsidian)
 ---
 
 # タスク
@@ -28,7 +28,7 @@ gh pr view <number> --json state,reviewDecision,statusCheckRollup,title,url,numb
 
 ## Step 3: 監視の開始
 
-`/loop 5m /check-pr <number>` を実行してPRの定期監視を開始する。
+`/loop 3m /check-pr <number>` を実行してPRの定期監視を開始する。
 
 `/check-pr` がマージ準備完了（CI全成功＆レビュー承認済み）を報告したら、**Step 4** へ進む。
 
@@ -45,7 +45,11 @@ gh pr view <number> --json state,reviewDecision,statusCheckRollup,title,url,numb
 2. `git switch main` でmainブランチに切り替え
 3. `git pull` で最新化
 4. `git branch -d <branch>` でローカルブランチを削除（リモートブランチは削除しない）
-5. 「PR #N はマージされました。ローカルブランチ `<branch>` を削除しました。」と報告して終了
+5. 「PR #N はマージされました。ローカルブランチ `<branch>` を削除しました。」と報告
+
+## Step 6: 作業ログの記録
+
+`/logging-to-obsidian` を実行して、この会話の作業ログをObsidianのdaily noteに記録する。
 
 ## エラーハンドリング
 
