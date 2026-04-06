@@ -35,7 +35,8 @@
       "Bash(icalPal:*)",
       "Bash(date:*)",
       "Bash(terraform fmt:*)",
-      "Bash(terraform validate:*)"
+      "Bash(terraform validate:*)",
+      "Bash(gh pr comment:*)"
     ],
     "deny": [
       "Bash(sudo:*)",
