@@ -140,5 +140,6 @@
     "padding": 0
   },
   "alwaysThinkingEnabled": false,
+  "effortLevel": "high",
   "plansDirectory": "./.local/claude/plans"
 }
