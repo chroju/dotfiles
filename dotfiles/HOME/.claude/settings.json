@@ -3,7 +3,8 @@
   "env": {
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "true",
-    "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1"
+    "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
   },
   "permissions": {
     "allow": [
@@ -140,6 +141,5 @@
     "padding": 0
   },
   "alwaysThinkingEnabled": false,
-  "effortLevel": "high",
   "plansDirectory": "./.local/claude/plans"
 }

@@ -5,7 +5,13 @@ Claude Code 自体の新機能・バグ修正は記録しない。
 
 `check-version.md` コマンドが `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.97 -->
+<!-- claude-code-version: 2.1.98 -->
+
+## 2.1.98 (2026-04-10)
+
+### 設定変更
+
+- 設定変更なし
 
 ## 2.1.97 (2026-04-09)
 
