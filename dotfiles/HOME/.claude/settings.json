@@ -140,5 +140,6 @@
     "padding": 0
   },
   "alwaysThinkingEnabled": false,
-  "plansDirectory": "./.local/claude/plans"
+  "plansDirectory": "./.local/claude/plans",
+  "tui": "fullscreen"
 }
