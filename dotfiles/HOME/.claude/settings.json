@@ -131,6 +131,17 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/tmux-window-name-check.sh"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
