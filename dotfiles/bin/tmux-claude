@@ -1,0 +1,67 @@
+#!/bin/bash
+# List Claude Code tmux windows and switch with fzf
+
+[ -z "$TMUX" ] && { echo "Error: must be run inside tmux" >&2; exit 1; }
+command -v fzf &>/dev/null || { echo "Error: fzf not found" >&2; exit 1; }
+
+CURRENT_SESSION=$(tmux display-message -p '#{session_name}')
+CURRENT_WINDOW=$(tmux display-message -p '#{window_index}')
+
+claude_window_list=$(tmux list-panes -a -F $'#{session_name}\t#{window_index}\t#{pane_current_command}' \
+  | awk -F'\t' '$3 == "node" || $3 == "claude" {print $1 ":" $2}' | sort -u)
+
+if [ -z "$claude_window_list" ]; then
+  echo "No Claude Code sessions found."
+  read -r
+  exit 0
+fi
+
+entries=()
+while IFS=$'\t' read -r sess win_index win_name claude_done claude_working bell_flag; do
+  echo "$claude_window_list" | grep -qxF "${sess}:${win_index}" || continue
+
+  if [ "$claude_working" = "1" ]; then
+    status="\033[5;36m>> working\033[0m"
+  elif [ "$bell_flag" = "1" ]; then
+    status="\033[5;33m!! waiting\033[0m"
+  elif [ "$claude_done" = "1" ]; then
+    status="\033[32mvv done   \033[0m"
+  else
+    status="\033[90m.. idle   \033[0m"
+  fi
+
+  if [ "$sess" = "$CURRENT_SESSION" ] && [ "$win_index" = "$CURRENT_WINDOW" ]; then
+    current="\033[35m*\033[0m "
+  else
+    current="  "
+  fi
+
+  entries+=("${sess}"$'\t'"${win_index}"$'\t'"${current}${status}  \033[1m${sess}:${win_index}\033[0m [${win_name}]")
+done < <(tmux list-windows -a -F $'#{session_name}\t#{window_index}\t#{window_name}\t#{@claude_done}\t#{@claude_working}\t#{window_bell_flag}')
+
+if [ "${#entries[@]}" -eq 0 ]; then
+  echo "No Claude Code sessions found."
+  read -r
+  exit 0
+fi
+
+tmpfile=$(mktemp)
+printf '%b\n' "${entries[@]}" > "$tmpfile"
+
+selected=$(fzf \
+  --ansi \
+  --with-nth=3.. \
+  --delimiter=$'\t' \
+  --preview='tmux capture-pane -p -t {1}:{2} 2>&1 | tail -40' \
+  --preview-window='right,55%,border-left' \
+  --header='Claude Code Windows  [Enter: switch / Esc: cancel]' \
+  --prompt='claude> ' < "$tmpfile")
+rm -f "$tmpfile"
+
+[ -z "$selected" ] && exit 0
+
+target_session=$(printf '%s' "$selected" | cut -f1)
+target_window=$(printf '%s' "$selected" | cut -f2)
+
+tmux switch-client -t "$target_session"
+tmux select-window -t "${target_session}:${target_window}"

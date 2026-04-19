@@ -121,6 +121,17 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/tmux-working.sh"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "",
