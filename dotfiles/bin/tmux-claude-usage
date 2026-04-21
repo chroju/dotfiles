@@ -109,7 +109,7 @@ else
   cost_str='$--'
 fi
 
-printf ' %s 5h:%s%% #[fg=%s]|#[fg=%s] %s 7d:%s%% #[fg=%s]|#[fg=%s] %s' \
+printf '%s 5h:%s%% #[fg=%s]|#[fg=%s] %s 7d:%s%% #[fg=%s]|#[fg=%s] %s' \
   "$(dot "$five")" "$five" \
   "$color_default" "$color_default" \
   "$(dot "$seven")" "$seven" \
