@@ -1,0 +1,117 @@
+#!/bin/bash
+# tmux status-right helper: show Claude Code rate limits and today's cost.
+#
+# Rate limits cache is written by ~/.claude/scripts/rate_limits_cache.sh
+# (invoked via ccstatusline).
+#
+# Today's cost is computed by ccusage (https://github.com/ryoppippi/ccusage),
+# cached locally and refreshed in the background when stale. ccusage handles
+# pricing for new models automatically.
+
+set -u
+
+tmp_dir="${TMPDIR:-/tmp}"
+rate_cache="$tmp_dir/claude-rate-limits.json"
+cost_cache="$tmp_dir/claude-cost.json"
+cost_lock="$tmp_dir/claude-cost.lock"
+rate_stale_sec=86400
+cost_stale_sec=300
+
+color_low="#a6e3a1"
+color_mid="#f9e2af"
+color_high="#f38ba8"
+color_na="#6c7086"
+color_default="#cdd6f4"
+
+dot() {
+  local pct=$1
+  local color
+  if [ "$pct" = "--" ]; then
+    color=$color_na
+  elif [ "$pct" -lt 50 ]; then
+    color=$color_low
+  elif [ "$pct" -lt 70 ]; then
+    color=$color_mid
+  else
+    color=$color_high
+  fi
+  printf '#[fg=%s]●#[fg=%s]' "$color" "$color_default"
+}
+
+read_rate_limits() {
+  if [ ! -r "$rate_cache" ]; then
+    echo "-- --"
+    return
+  fi
+  jq -r --argjson stale "$rate_stale_sec" '
+    if (now - (.updated_at // 0)) > $stale then "-- --"
+    else
+      ((.five_hour // "--") | if type == "number" then (. | floor | tostring) else . end) + " " +
+      ((.seven_day // "--") | if type == "number" then (. | floor | tostring) else . end)
+    end
+  ' "$rate_cache" 2>/dev/null || echo "-- --"
+}
+
+refresh_cost_async() {
+  # Avoid double-spawning while a previous refresh is still running.
+  if [ -e "$cost_lock" ]; then
+    local age
+    age=$(( $(date +%s) - $(stat -f %m "$cost_lock" 2>/dev/null || echo 0) ))
+    if [ "$age" -lt 60 ]; then
+      return
+    fi
+  fi
+  (
+    touch "$cost_lock"
+    trap 'rm -f "$cost_lock"' EXIT
+    local today
+    today=$(date +%Y%m%d)
+    local tmp
+    tmp=$(mktemp "$tmp_dir/claude-cost.XXXXXX")
+    if mise x node@22 -- npx -y ccusage@latest daily \
+          --since "$today" --until "$today" --json >"$tmp" 2>/dev/null; then
+      jq --argjson now "$(date +%s)" '{
+        cost: (.totals.totalCost // 0),
+        updated_at: $now
+      }' "$tmp" >"$cost_cache.new" 2>/dev/null \
+        && mv "$cost_cache.new" "$cost_cache"
+    fi
+    rm -f "$tmp"
+  ) </dev/null >/dev/null 2>&1 &
+  disown 2>/dev/null || true
+}
+
+read_cost() {
+  local cost=""
+  if [ -r "$cost_cache" ]; then
+    cost=$(jq -r '.cost // empty' "$cost_cache" 2>/dev/null)
+    local updated age
+    updated=$(jq -r '.updated_at // 0' "$cost_cache" 2>/dev/null)
+    age=$(( $(date +%s) - ${updated:-0} ))
+    if [ "$age" -gt "$cost_stale_sec" ]; then
+      refresh_cost_async
+    fi
+  else
+    refresh_cost_async
+  fi
+  printf '%s' "${cost:-}"
+}
+
+parts=$(read_rate_limits)
+five=${parts% *}
+seven=${parts#* }
+
+cost=$(read_cost)
+
+if [ -n "$cost" ]; then
+  cost_str=$(printf '$%.2f' "$cost")
+else
+  cost_str='$--'
+fi
+
+printf ' %s 5h:%s%% #[fg=%s]|#[fg=%s] %s 7d:%s%% #[fg=%s]|#[fg=%s] %s' \
+  "$(dot "$five")" "$five" \
+  "$color_default" "$color_default" \
+  "$(dot "$seven")" "$seven" \
+  "$color_default" "$color_default" \
+  "$cost_str"

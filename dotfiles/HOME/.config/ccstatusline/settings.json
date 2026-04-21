@@ -3,6 +3,15 @@
   "lines": [
     [
       {
+        "id": "bccc67d4-2b54-4160-a809-c8a8e1430d30",
+        "type": "context-percentage",
+        "color": ""
+      },
+      {
+        "id": "cca8e774-95b5-4ca8-9828-f4383e4dbf81",
+        "type": "separator"
+      },
+      {
         "id": "adf5e0ef-0b50-44c0-9714-06dc524630b1",
         "type": "custom-text",
         "color": "brightBlue",
@@ -41,42 +50,22 @@
         "type": "model",
         "color": "white",
         "rawValue": true
+      },
+      {
+        "id": "f7d9ed04-615f-4f30-8644-aae9ce8f5157",
+        "type": "separator"
+      },
+      {
+        "id": "eef23f9c-6288-46f2-851f-e5b4a7b927df",
+        "type": "version"
       }
     ],
     [
       {
-        "id": "0dfdd0da-5808-4a4a-b707-7322d1371b4d",
-        "type": "context-percentage",
-        "color": "ansi256:247"
-      },
-      {
-        "id": "9d6296fa-2500-4bcc-aeee-bd690d177796",
-        "type": "separator"
-      },
-      {
-        "id": "defe91d7-21e8-4ace-9f1d-685b4210e1f1",
+        "id": "rate-limits-cache",
         "type": "custom-command",
-        "color": "ansi256:247",
-        "commandPath": "$HOME/.claude/scripts/rate_limits_statusline.sh"
-      },
-      {
-        "id": "13d5d413-dc0b-44ee-b4b8-1b8f0e8f7fac",
-        "type": "separator"
-      },
-      {
-        "id": "e1fa6ef7-1050-4a29-8189-87997f78faf0",
-        "type": "custom-command",
-        "color": "ansi256:247",
-        "commandPath": "ccusage statusline | sed 's/.*\\(\\$[0-9.]* today\\).*/\\1/'",
-        "timeout": 6000
-      },
-      {
-        "id": "b25b3981-0773-42ea-8e74-4e4fb477f315",
-        "type": "separator"
-      },
-      {
-        "id": "ae87acfa-6737-4191-af96-0a0fb41da187",
-        "type": "version"
+        "color": "",
+        "commandPath": "$HOME/.claude/scripts/rate_limits_cache.sh"
       }
     ]
   ],
@@ -85,6 +74,7 @@
   "colorLevel": 2,
   "inheritSeparatorColors": false,
   "globalBold": false,
+  "minimalistMode": false,
   "powerline": {
     "enabled": false,
     "separators": [
@@ -95,6 +85,7 @@
     ],
     "startCaps": [],
     "endCaps": [],
-    "autoAlign": false
+    "autoAlign": false,
+    "continueThemeAcrossLines": false
   }
 }
