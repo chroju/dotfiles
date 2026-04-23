@@ -37,6 +37,7 @@
       "Bash(terraform fmt:*)",
       "Bash(terraform validate:*)",
       "Bash(gh pr comment:*)",
+      "Bash(tmux rename-window:*)",
       "mcp__notion__notion-fetch",
       "mcp__notion__notion-search",
       "mcp__notion__notion-query-data-sources",
