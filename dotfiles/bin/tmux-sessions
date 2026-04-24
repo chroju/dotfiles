@@ -5,7 +5,7 @@ output=""
 
 while IFS=$'\t' read -r session_id session_name; do
   if [ "$session_name" = "$current" ]; then
-    output+="#[range=session|${session_id}]#[fg=#89b4fa bold] ${session_name} #[default nobold]#[norange]"
+    output+="#[range=session|${session_id}]#[fg=#89b4fa bold] #[underscore]${session_name}#[nounderscore] #[default nobold]#[norange]"
   else
     output+="#[range=session|${session_id}]#[fg=#6c7086] ${session_name} #[default]#[norange]"
   fi
