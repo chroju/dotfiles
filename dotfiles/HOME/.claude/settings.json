@@ -164,5 +164,8 @@
   },
   "alwaysThinkingEnabled": false,
   "plansDirectory": "./.local/claude/plans",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true
+  }
 }
