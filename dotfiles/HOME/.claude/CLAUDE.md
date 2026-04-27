@@ -10,9 +10,16 @@
 - ファイルを読んでから変更を提案する
 - 要求された範囲を超えた機能追加やリファクタリングをしない
 - 疑問がある場合は推測せず、AskUserQuestionで明確化を求める
+- ユーザーへの確認が必要な場面では、原則 `AskUserQuestion` を使う。deferred toolとして名前だけ見えている場合は `ToolSearch` で `select:AskUserQuestion` を呼んでスキーマをロードしてから使用する
+- 自由記述でしか答えられない質問（任意の文字列入力・名前付けなど）に限り、素の質問文を使う。判断基準は「選択肢として提示できるか」
 
 ## Gitとバージョンコントロール
 
 - GitHubの操作には `gh` コマンドを用いる
 - 説明的なブランチ名を使用（例: `feat/add-authentication`）
 - main/masterへのforce pushをしない
+
+## GitHub Markdown
+
+- Issue/PR bodyでIssue・PR番号（`#1234`, `org/repo#1234`）を参照するときは箇条書きにする。文中に埋め込むとリンクプレビューが展開されない
+- 箇条書きにする場合は前後の文章も箇条書きにして統一感を出す
