@@ -1,5 +1,5 @@
 #!/bin/bash
-# tmux status-right helper: show Claude Code rate limits and today's cost.
+# tmux status-right helper: show Claude Code rate limits, today's cost, and clock.
 #
 # Rate limits cache is written by ~/.claude/scripts/rate_limits_cache.sh
 # (invoked via ccstatusline).
@@ -38,18 +38,29 @@ dot() {
   printf '#[fg=%s]●#[fg=%s]' "$color" "$color_default"
 }
 
+format_resets_at() {
+  local epoch=$1 fmt=${2:-'%a %H:%M'}
+  if [ "$epoch" = "--" ] || [ -z "$epoch" ] || [ "$epoch" = "null" ]; then
+    echo "--"
+    return
+  fi
+  LC_TIME=C date -r "$epoch" "+$fmt"
+}
+
 read_rate_limits() {
   if [ ! -r "$rate_cache" ]; then
-    echo "-- --"
+    echo "-- -- -- --"
     return
   fi
   jq -r --argjson stale "$rate_stale_sec" '
-    if (now - (.updated_at // 0)) > $stale then "-- --"
+    if (now - (.updated_at // 0)) > $stale then "-- -- -- --"
     else
       ((.five_hour // "--") | if type == "number" then (. | floor | tostring) else . end) + " " +
-      ((.seven_day // "--") | if type == "number" then (. | floor | tostring) else . end)
+      ((.five_hour_resets_at // "--") | tostring) + " " +
+      ((.seven_day // "--") | if type == "number" then (. | floor | tostring) else . end) + " " +
+      ((.seven_day_resets_at // "--") | tostring)
     end
-  ' "$rate_cache" 2>/dev/null || echo "-- --"
+  ' "$rate_cache" 2>/dev/null || echo "-- -- -- --"
 }
 
 refresh_cost_async() {
@@ -98,8 +109,13 @@ read_cost() {
 }
 
 parts=$(read_rate_limits)
-five=${parts% *}
-seven=${parts#* }
+five=$(echo "$parts" | cut -d' ' -f1)
+five_resets=$(echo "$parts" | cut -d' ' -f2)
+seven=$(echo "$parts" | cut -d' ' -f3)
+seven_resets=$(echo "$parts" | cut -d' ' -f4)
+
+five_reset_str=$(format_resets_at "$five_resets" '%H:%M')
+seven_reset_str=$(format_resets_at "$seven_resets" '%a %H:%M')
 
 cost=$(read_cost)
 
@@ -109,9 +125,13 @@ else
   cost_str='$--'
 fi
 
-printf '%s 5h:%s%% #[fg=%s]|#[fg=%s] %s 7d:%s%% #[fg=%s]|#[fg=%s] %s' \
-  "$(dot "$five")" "$five" \
+clock_str=$(LC_TIME=C date '+%Y-%m-%d (%a) %H:%M')
+
+printf '%s %s%% »%s #[fg=%s]|#[fg=%s] %s %s%% »%s #[fg=%s]|#[fg=%s] %s #[fg=%s]|#[fg=%s] %s' \
+  "$(dot "$five")" "$five" "$five_reset_str" \
   "$color_default" "$color_default" \
-  "$(dot "$seven")" "$seven" \
+  "$(dot "$seven")" "$seven" "$seven_reset_str" \
   "$color_default" "$color_default" \
-  "$cost_str"
+  "$cost_str" \
+  "$color_default" "$color_default" \
+  "$clock_str"

@@ -14,7 +14,9 @@ fi
 
 echo "$input" | jq '{
   five_hour: .rate_limits.five_hour.used_percentage,
+  five_hour_resets_at: .rate_limits.five_hour.resets_at,
   seven_day: .rate_limits.seven_day.used_percentage,
+  seven_day_resets_at: .rate_limits.seven_day.resets_at,
   updated_at: now
 }' >"$tmp_file" 2>/dev/null || exit 0
 
