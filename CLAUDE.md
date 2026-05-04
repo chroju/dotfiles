@@ -113,6 +113,7 @@ When modifying macOS defaults in `setup_defaults.sh`, test changes manually firs
 - Merge uses `ff = false` (always create merge commit)
 - Rebase uses `autostash = true`
 - Conflict style is `zdiff3`
+- This is a personal dotfiles repo, so `/commit` should commit and push directly to `main` without creating a new branch, even when the current branch is `main` (the `mainへ直接` argument is not required)
 
 ### ghq Integration
 - Repositories are cloned to `~/dev/src` (configured in `.gitconfig:98`)
