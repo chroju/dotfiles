@@ -127,7 +127,7 @@ fi
 
 clock_str=$(LC_TIME=C date '+%Y-%m-%d (%a) %H:%M')
 
-printf '%s %s%% ▶ %s #[fg=#d8dee9]·#[fg=%s] %s %s%% ▶ %s #[fg=#d8dee9]·#[fg=%s] %s #[fg=#d8dee9]·#[fg=%s] %s' \
+printf '%s %s%% ▶ %s #[fg=#9399b2]┊#[fg=%s] %s %s%% ▶ %s #[fg=#9399b2]┊#[fg=%s] %s #[fg=#9399b2]┊#[fg=%s] %s' \
   "$(dot "$five")" "$five" "$five_reset_str" \
   "$color_default" \
   "$(dot "$seven")" "$seven" "$seven_reset_str" \
