@@ -1,7 +1,7 @@
 # vim: set filetype=hcl:
 theme = nord
-font-family = "Cascadia Code"
-font-size = 14
+font-family = "Bizin Gothic"
+font-size = 16
 cursor-style = block
 # https://github.com/ghostty-org/ghostty/issues/3402#issuecomment-2563705231
 shell-integration-features = no-cursor
