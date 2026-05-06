@@ -80,7 +80,6 @@
     "disableBypassPermissionsMode": "disable",
     "disableAutoMode": "disable"
   },
-  "model": "sonnet[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -158,11 +157,6 @@
           {
             "type": "command",
             "command": "~/.claude/scripts/tmux-window-name-check.sh"
-          },
-          {
-            "type": "prompt",
-            "prompt": "AskUserQuestionツールはdeferred toolです。会話の早い段階で `ToolSearch` を `select:AskUserQuestion` で呼んでスキーマをロードしておき、ユーザーへの確認が必要になった瞬間にすぐ使える状態にしてください。ロードは1セッション1回で十分です。",
-            "timeout": 10
           }
         ]
       }
