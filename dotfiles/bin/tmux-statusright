@@ -55,10 +55,12 @@ read_rate_limits() {
   jq -r --argjson stale "$rate_stale_sec" '
     if (now - (.updated_at // 0)) > $stale then "-- -- -- --"
     else
-      ((.five_hour // "--") | if type == "number" then (. | floor | tostring) else . end) + " " +
-      ((.five_hour_resets_at // "--") | tostring) + " " +
-      ((.seven_day // "--") | if type == "number" then (. | floor | tostring) else . end) + " " +
-      ((.seven_day_resets_at // "--") | tostring)
+      (.five_hour_resets_at // 0) as $r5 |
+      (.seven_day_resets_at // 0) as $r7 |
+      (if ($r5 | type) == "number" and $r5 > now then (.five_hour // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
+      ($r5 | tostring) + " " +
+      (if ($r7 | type) == "number" and $r7 > now then (.seven_day // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
+      ($r7 | tostring)
     end
   ' "$rate_cache" 2>/dev/null || echo "-- -- -- --"
 }
