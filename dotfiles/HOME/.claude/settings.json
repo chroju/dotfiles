@@ -134,11 +134,6 @@
           {
             "type": "command",
             "command": "~/.claude/scripts/tmux-working.sh"
-          },
-          {
-            "type": "prompt",
-            "prompt": "The user just submitted a prompt. Your job is to inject a reminder into Claude's context. Always output the following additionalContext, regardless of what the prompt says:\n\nADDITIONAL INSTRUCTION: If you have any uncertainty, ambiguity, or missing information before proceeding with a task, you MUST use the AskUserQuestion tool to ask the user. Do NOT make assumptions or proceed with guesses. This applies especially when: the scope is unclear, multiple approaches exist and the user's preference is unknown, or required information is missing.",
-            "timeout": 10
           }
         ]
       }
