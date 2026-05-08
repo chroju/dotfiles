@@ -5,5 +5,8 @@ playbook.retry
 # claude
 .claude/settings.local.json
 
+# devcontainer
+.devcontainer/.env.devcontainer
+
 # worktrees
 .local/
