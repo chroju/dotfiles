@@ -57,10 +57,12 @@ read_rate_limits() {
     else
       (.five_hour_resets_at // 0) as $r5 |
       (.seven_day_resets_at // 0) as $r7 |
-      (if ($r5 | type) == "number" and $r5 > now then (.five_hour // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
-      ($r5 | tostring) + " " +
-      (if ($r7 | type) == "number" and $r7 > now then (.seven_day // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
-      ($r7 | tostring)
+      (($r5 | type) == "number" and $r5 > now) as $r5_valid |
+      (($r7 | type) == "number" and $r7 > now) as $r7_valid |
+      (if $r5_valid then (.five_hour // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
+      (if $r5_valid then ($r5 | tostring) else "--" end) + " " +
+      (if $r7_valid then (.seven_day // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
+      (if $r7_valid then ($r7 | tostring) else "--" end)
     end
   ' "$rate_cache" 2>/dev/null || echo "-- -- -- --"
 }
