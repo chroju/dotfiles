@@ -5,7 +5,13 @@ Claude Code 自体の新機能・バグ修正は記録しない。
 
 `check-version.md` コマンドが `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.138 -->
+<!-- claude-code-version: 2.1.145 -->
+
+## 2.1.145 (2026-05-20)
+
+### 設定変更
+
+- `settings.json`: `env.CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` を追加。プラグインクローンを SSH ではなく HTTPS で行う（v2.1.141 で導入）
 
 ## 2.1.138 (2026-05-12)
 
