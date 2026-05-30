@@ -229,6 +229,7 @@ esac
 # iterm2
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # fzf
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always {} 2>/dev/null || ls {}' --preview-window 'right:60%'"
 test -f ~/.fzf.zsh && source ~/.fzf.zsh
 # starship
 eval "$(starship init zsh)"
