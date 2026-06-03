@@ -31,18 +31,24 @@ if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
 fi
 MESSAGE="${MESSAGE:-${HOOK_MESSAGE:-入力待ち}}"
 
-WINDOW_INDEX=$(tmux display-message -t "$TMUX_PANE" -p '#{window_index}' 2>/dev/null)
-WINDOW_NAME=$(tmux display-message -t "$TMUX_PANE" -p '#{window_name}' 2>/dev/null)
-SESSION=$(tmux display-message -t "$TMUX_PANE" -p '#{session_name}' 2>/dev/null)
+PANE_INFO=$(tmux display-message -t "$TMUX_PANE" -p '#{session_name}|#{window_index}|#{window_name}|#{pane_tty}' 2>/dev/null)
+SESSION=${PANE_INFO%%|*}; REST=${PANE_INFO#*|}
+WINDOW_INDEX=${REST%%|*}; REST=${REST#*|}
+WINDOW_NAME=${REST%%|*}
+PANE_TTY=${REST#*|}
 
 TITLE="CC [${SESSION}:${WINDOW_INDEX} ${WINDOW_NAME}]"
 [ -n "$NOTIFICATION_TYPE" ] && TITLE="${TITLE} (${NOTIFICATION_TYPE})"
 
-# Ring the tmux bell by writing BEL directly to the pane's pty.
-# send-keys 'C-g' sends a Ctrl+G keystroke (which opens Claude Code's
-# external editor), not a BEL character. Use send-keys with a literal
-# BEL byte instead.
-tmux send-keys -t "$TMUX_PANE" $'\a' 2>/dev/null &
+# Ring the tmux bell by writing BEL directly to the pane's tty so tmux's
+# monitor-bell sees it and sets window_bell_flag.
+#   - `printf '\a' > /dev/tty` does NOT work from a hook because the hook
+#     has no controlling terminal (Device not configured).
+#   - `tmux send-keys $'\a'` also does NOT work: send-keys delivers the
+#     BEL byte as keyboard input to the pane process. The process does not
+#     echo it back to the tty, so monitor-bell never fires. (`C-g` has the
+#     same problem and additionally triggers Claude Code's external editor.)
+[ -n "$PANE_TTY" ] && [ -w "$PANE_TTY" ] && printf '\a' > "$PANE_TTY" 2>/dev/null &
 
 # Desktop notification. Pass strings via argv so embedded quotes /
 # backslashes / newlines cannot break the AppleScript.
