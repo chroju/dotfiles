@@ -1,11 +1,34 @@
 #!/bin/bash
+
 # Bitwarden SSH Agent が利用可能か確認する
 # gpg.format = ssh かつ commit.gpgsign = true の場合、
 # エージェントが無効だと署名に失敗するため事前チェックする
-
 if ! ssh-add -l &>/dev/null; then
   echo "Error: SSH agent に鍵が見つかりません。Bitwarden を起動します..."
   open /System/Volumes/Data/Applications/Bitwarden.app
   echo "Bitwarden のロックを解除してから再度コミットしてください。"
+  exit 1
+fi
+
+# Reject commits that introduce hardcoded `/Users/<name>/` paths.
+# Use `$HOME` or `~` instead. Bypass with `git commit --no-verify`.
+# Restrict <name> to plain identifier chars so doc placeholders like
+# `/Users/<name>/` and regex literals like `/Users/[^/]+/` don't match.
+added=$(git diff --cached --diff-filter=ACM -U0 \
+  | grep -E '^\+' | grep -vE '^\+\+\+')
+violations=$(printf '%s\n' "$added" \
+  | grep -oE '/Users/[A-Za-z0-9_.-]+/' \
+  | sort -u \
+  || true)
+if [ -n "$violations" ]; then
+  cat >&2 <<EOF
+Error: staged changes contain hardcoded /Users/<name>/ paths.
+Use \$HOME or ~ instead.
+
+Offending prefixes:
+$violations
+
+To bypass intentionally: git commit --no-verify
+EOF
   exit 1
 fi

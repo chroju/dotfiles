@@ -102,7 +102,7 @@ Files under `$HOME` (e.g., `~/.tmux.conf`, `~/.claude/scripts/`) are managed as 
 ### No hardcoded `/Users/<name>/` paths
 Use `$HOME` or `~` instead of writing `/Users/<name>/` literally. The same dotfiles are used on multiple machines whose login names differ, so any hardcoded user directory breaks on the other machine.
 
-A `pre-commit` hook at `dotfiles/git-hooks/pre-commit` (symlinked into `.git/hooks/` by `setup_symlinks.sh`) rejects commits that introduce hardcoded `/Users/<name>/` paths. To bypass intentionally, use `git commit --no-verify` — but prefer fixing the path.
+A `pre-commit` hook at `dotfiles/HOME/.githooks/pre-commit` rejects commits that introduce hardcoded `/Users/<name>/` paths. It is picked up via `core.hooksPath = ~/.githooks` in `.gitconfig`, so the check applies to every repository on this machine — including this one. To bypass intentionally, use `git commit --no-verify` — but prefer fixing the path.
 
 ### System Defaults
 When modifying macOS defaults in `setup_defaults.sh`, test changes manually first with `defaults write` before adding to the script.

@@ -28,5 +28,4 @@ fi
 
 make_symlinks dotfiles/HOME $HOME $1
 make_symlinks dotfiles/bin /usr/local/bin $1
-make_symlinks dotfiles/git-hooks $PWD/.git/hooks $1
 
