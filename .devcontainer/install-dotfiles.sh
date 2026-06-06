@@ -24,5 +24,9 @@ symlink "$REPO_DIR/dotfiles/HOME/.config/gh/config.yml" "$HOME_DIR/.config/gh/co
 # claude
 for f in $(find "$REPO_DIR/dotfiles/HOME/.claude" -not -type d); do
     rel="${f#$REPO_DIR/dotfiles/HOME/}"
+    # skip files managed by bind mount
+    case "$rel" in
+        .claude/.credentials.json) continue ;;
+    esac
     symlink "$f" "$HOME_DIR/$rel"
 done
