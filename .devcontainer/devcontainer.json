@@ -10,16 +10,11 @@
     "ghcr.io/devcontainers/features/aws-cli:1": {},
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
-  "dotfiles": {
-    "repository": "https://github.com/chroju/dotfiles",
-    "installCommand": ".devcontainer/install-dotfiles.sh"
-  },
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,readonly",
     "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind"
   ],
   "initializeCommand": "bash .devcontainer/init.sh",
-  "onCreateCommand": "bash .devcontainer/setup.sh",
   "runArgs": ["--env-file", ".devcontainer/.env.devcontainer"],
   "remoteUser": "root"
 }
