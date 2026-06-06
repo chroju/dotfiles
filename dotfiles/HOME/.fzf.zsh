@@ -27,7 +27,7 @@ export FZF_DEFAULT_OPTS='--layout=reverse'
 
 fghq() {
   local dir
-  dir=$(ghq list > /dev/null | fzf +m) &&
+  dir=$(ghq list 2> /dev/null | fzf +m) &&
     cd $(ghq root)/$dir
 }
 
