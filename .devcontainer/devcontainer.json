@@ -12,7 +12,9 @@
   },
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,readonly",
-    "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind"
+    "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind",
+    "source=${localEnv:HOME}/.claude/projects-devcontainer,target=/root/.claude/projects,type=bind",
+    "source=${localEnv:HOME}/.claude/todos-devcontainer,target=/root/.claude/todos,type=bind"
   ],
   "initializeCommand": "bash .devcontainer/init.sh",
   "runArgs": ["--env-file", ".devcontainer/.env.devcontainer"],
