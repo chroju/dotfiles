@@ -12,6 +12,7 @@
 - 疑問がある場合は推測せず、AskUserQuestionで明確化を求める
 - ユーザーへの確認が必要な場面では、原則 `AskUserQuestion` を使う。deferred toolとして名前だけ見えている場合は `ToolSearch` で `select:AskUserQuestion` を呼んでスキーマをロードしてから使用する
 - 自由記述でしか答えられない質問（任意の文字列入力・名前付けなど）に限り、素の質問文を使う。判断基準は「選択肢として提示できるか」
+- 一時ファイルが必要な場合は `/tmp` ではなくカレントプロジェクトの `.local/claude/tmp/` を使用する（`.local/` はgitignore済みで許可プロンプトが不要）
 
 ## Gitとバージョンコントロール
 
