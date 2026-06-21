@@ -1,4 +1,6 @@
 #!/bin/bash
+# Devcontainer dotfiles install script.
+# Automatically executed by the devcontainer "dotfiles.repository" feature.
 
 cd "$(dirname "$0")"
 
@@ -22,3 +24,13 @@ function make_symlinks() {
 }
 
 make_symlinks dotfiles/HOME $HOME
+
+sudo chmod 1777 /tmp
+sudo chown chroju:chroju "$HOME/.claude"
+ln -sf ~/.ssh-agent.sock ~/.bitwarden-ssh-agent.sock
+
+npm i -g @anthropic-ai/claude-code
+
+if ! command -v mise &>/dev/null; then
+    curl https://mise.run | sh
+fi

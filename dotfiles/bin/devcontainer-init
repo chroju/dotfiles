@@ -17,8 +17,6 @@ for i in $(seq 1 10); do
     sleep 1
 done
 
-# CLAUDE_CODE_OAUTH_TOKEN must be set manually via `claude setup-token`
-# and stored in .devcontainer/.env.devcontainer.local (gitignored)
 if [ -f .devcontainer/.env.devcontainer.local ]; then
     cat .devcontainer/.env.devcontainer.local >> .devcontainer/.env.devcontainer
 fi

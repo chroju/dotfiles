@@ -27,8 +27,8 @@
     "COLORTERM": "truecolor",
     "TZ": "Asia/Tokyo"
   },
-  "postStartCommand": "bash .devcontainer/setup.sh",
-  "initializeCommand": "bash .devcontainer/init.sh",
+  "postStartCommand": "bash install.sh",
+  "initializeCommand": "devcontainer-init",
   "runArgs": ["--env-file", ".devcontainer/.env.devcontainer", "--security-opt", "label=disable"],
   "remoteUser": "chroju"
 }
