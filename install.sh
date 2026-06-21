@@ -23,13 +23,13 @@ function make_symlinks() {
     done
 }
 
-make_symlinks dotfiles/HOME $HOME
-
 sudo chmod 1777 /tmp
 sudo chown chroju:chroju "$HOME/.claude"
+
+make_symlinks dotfiles/HOME $HOME
 ln -sf ~/.ssh-agent.sock ~/.bitwarden-ssh-agent.sock
 
-npm i -g @anthropic-ai/claude-code
+sudo npm i -g @anthropic-ai/claude-code
 
 if ! command -v mise &>/dev/null; then
     curl https://mise.run | sh
