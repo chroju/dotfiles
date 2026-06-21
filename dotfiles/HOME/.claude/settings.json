@@ -78,8 +78,7 @@
       "Bash(gh repo create:*)"
     ],
     "defaultMode": "plan",
-    "disableBypassPermissionsMode": "disable",
-    "disableAutoMode": "disable"
+    "disableBypassPermissionsMode": "disable"
   },
   "hooks": {
     "PreToolUse": [
