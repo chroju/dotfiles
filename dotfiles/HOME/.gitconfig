@@ -108,11 +108,11 @@
 
 [credential "https://github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 
 [credential "https://gist.github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [scalar]
 	repo = $HOME/dev/src/github.com/globis-org/hodai-2c-lp
 	repo = $HOME/dev/src/github.com/globis-org/hodai-2c-lp/src
