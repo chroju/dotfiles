@@ -2,6 +2,20 @@
 set -euo pipefail
 
 echo "GH_TOKEN=$(gh auth token)" > .devcontainer/.env.devcontainer
+echo "SSH_AUTH_SOCK=/home/chroju/.ssh-agent.sock" >> .devcontainer/.env.devcontainer
+
+# Forward SSH agent into Podman VM via SSH remote forwarding
+# Source in devcontainer.json is /tmp/ssh-agent.sock (VM side), target is /home/chroju/.ssh-agent.sock (container side)
+if ! pgrep -f "podman machine ssh.*ssh-agent.sock" > /dev/null 2>&1; then
+    podman machine ssh -- -R /tmp/ssh-agent.sock:"${SSH_AUTH_SOCK:-}" -N &
+fi
+for i in $(seq 1 10); do
+    if podman machine ssh -- test -S /tmp/ssh-agent.sock 2>/dev/null; then
+        podman machine ssh -- chmod 777 /tmp/ssh-agent.sock
+        break
+    fi
+    sleep 1
+done
 
 # CLAUDE_CODE_OAUTH_TOKEN must be set manually via `claude setup-token`
 # and stored in .devcontainer/.env.devcontainer.local (gitignored)
@@ -9,6 +23,7 @@ if [ -f .devcontainer/.env.devcontainer.local ]; then
     cat .devcontainer/.env.devcontainer.local >> .devcontainer/.env.devcontainer
 fi
 
-mkdir -p "$HOME/.claude/projects-devcontainer"
-mkdir -p "$HOME/.claude/todos-devcontainer"
 touch "$HOME/.claude/.credentials-devcontainer.json"
+if [ ! -f "$HOME/.claude.devcontainer.json" ]; then
+    echo '{"hasCompletedOnboarding": true}' > "$HOME/.claude.devcontainer.json"
+fi
