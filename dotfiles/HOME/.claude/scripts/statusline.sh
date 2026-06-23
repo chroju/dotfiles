@@ -40,15 +40,25 @@ fi
 
 MODEL_NAME=$(echo "$input" | jq -r '.model.display_name // .model.id // ""')
 
+DEVCONTAINER_IND=""
+if [ -n "${container}" ]; then
+  DEVCONTAINER_IND="yes"
+fi
+
 C=$'\033'
 yellow="${C}[33m"
+blue="${C}[34m"
 magenta="${C}[35m"
 cyan="${C}[36m"
 sep="${C}[90m | "
 light="${C}[38;5;245m"
 reset="${C}[0m"
 
-printf "%s%s%s%s%s%s%s%s%s%s%s%s" \
+if [ -n "$DEVCONTAINER_IND" ]; then
+  printf "%s%s%s" "${blue}" "⬡" "${sep}"
+fi
+
+printf "%s%s%s%s%s%s%s%s%s%s%s" \
   "${yellow}" "${DISPLAY_DIR}" \
   "${sep}" "${magenta}⎇ ${BRANCH}" \
   "${sep}" "${cyan}⧉  ${WORKTREE}" \
