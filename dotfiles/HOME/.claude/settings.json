@@ -170,6 +170,9 @@
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true
   },
+  "autoMode": {
+    "classifyAllShell": true
+  },
   "alwaysThinkingEnabled": false,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",

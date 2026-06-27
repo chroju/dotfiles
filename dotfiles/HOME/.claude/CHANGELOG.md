@@ -5,7 +5,13 @@ Claude Code 自体の新機能・バグ修正は記録しない。
 
 `check-version.md` コマンドが `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.185 -->
+<!-- claude-code-version: 2.1.195 -->
+
+## 2.1.195 (2026-06-27)
+
+### 設定変更
+
+- `settings.json`: `autoMode.classifyAllShell: true` を追加。auto モードで全シェルコマンドを分類器に通すよう変更（v2.1.193 で導入）
 
 ## 2.1.185 (2026-06-21)
 
