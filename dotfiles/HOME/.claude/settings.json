@@ -55,12 +55,24 @@
       "Bash(sudo:*)",
       "Bash(curl:*)",
       "Bash(wget:*)",
-      "Read(./.env)",
-      "Read(./.env.*)",
+      "Bash(rm -rf:*)",
+      "Bash(rm -r:*)",
+      "Bash(rm -f:*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.key)",
+      "Read(**/*.pem)",
       "Read(./secrets/**)",
+      "Read(**/.aws/**)",
       "Read(**/.aws/credentials)",
+      "Read(**/.ssh/**)",
       "Read(**/.ssh/id_*)",
       "Read(**/.gnupg/**)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
+      "Write(**/*.key)",
+      "Write(**/*.pem)",
+      "Write(**/.ssh/id_*)",
       "Read(**/node_modules/**)",
       "Read(**/.terraform/**)",
       "Read(**/__pycache__/**)",
@@ -72,7 +84,6 @@
     ],
     "ask": [
       "Bash(git push:*)",
-      "Bash(rm -rf:*)",
       "Bash(gh pr create:*)",
       "Bash(gh pr merge:*)",
       "Bash(gh issue create:*)",
@@ -81,6 +92,7 @@
     "defaultMode": "plan",
     "disableBypassPermissionsMode": "disable"
   },
+  "model": "sonnet[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -176,5 +188,6 @@
   "alwaysThinkingEnabled": false,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
-  "preferredNotifChannel": "terminal_bell"
+  "preferredNotifChannel": "terminal_bell",
+  "skipWorkflowUsageWarning": true
 }
