@@ -1,0 +1,18 @@
+# Declarative manifest of external Agent Skills.
+#
+# Entry fields:
+#   repo:  <owner/name> on GitHub
+#   path:  skill directory inside that repo
+#   sha:   full 40-char commit SHA (pin)
+#   scope: project | user (optional, default: project)
+#          project -> ./.claude/skills/   (relative to this manifest)
+#          user    -> ~/.claude/skills/
+#
+# The "# renovate:" comment must sit DIRECTLY above the sha line it
+# updates; Renovate bumps the SHA to the head of the tracked branch.
+skills:
+  - repo: mattpocock/skills
+    path: skills/productivity/grill-me
+    # renovate: datasource=git-refs depName=https://github.com/mattpocock/skills currentValue=main
+    sha: "9603c1cc8118d08bc1b3bf34cf714f62178dea3b"
+    scope: user
