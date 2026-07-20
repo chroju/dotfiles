@@ -1,0 +1,2 @@
+[dotfiles]
+"/usr/local/bin" = { source = "dotfiles/bin", mode = "symlink-each" }
