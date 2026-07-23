@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "claude-opus-4-6[1m]",
   "env": {
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "true",
@@ -89,10 +88,9 @@
       "Bash(gh issue create:*)",
       "Bash(gh repo create:*)"
     ],
-    "defaultMode": "plan",
     "disableBypassPermissionsMode": "disable"
   },
-  "model": "sonnet[1m]",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -182,12 +180,13 @@
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true
   },
-  "autoMode": {
-    "classifyAllShell": true
-  },
   "alwaysThinkingEnabled": false,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
   "preferredNotifChannel": "terminal_bell",
-  "skipWorkflowUsageWarning": true
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "classifyAllShell": true
+  }
 }
