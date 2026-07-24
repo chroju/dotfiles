@@ -1,0 +1,59 @@
+# herdr configuration
+# tmux.conf からの移行設定。キーバインドは tmux 時代の手癖を再現している。
+
+onboarding = false
+
+[theme]
+name = "catppuccin"
+
+[keys]
+# tmux: prefix+d でdetach（herdrデフォルトは prefix+q）
+detach = "prefix+d"
+# tmux: bind a new-session
+new_workspace = "prefix+a"
+# tmux: bind C-r source-file
+reload_config = "prefix+ctrl+r"
+# tmux: bind s split-window -v（上下分割）/ bind v split-window -h（左右分割）
+split_horizontal = "prefix+s"
+split_vertical = "prefix+v"
+# tmux: bind K confirm-before kill-window
+close_tab = "prefix+shift+k"
+# tmux: bind y copy-mode
+edit_scrollback = "prefix+y"
+# tmux: bind H/J/K/L resize-pane の代替（モード内で h/j/k/l）
+resize_mode = "prefix+r"
+# tmux: bind -n C-f display-popup tmux-claude（agent切替）の代替
+goto = "ctrl+f"
+
+# tmux: bind -n C-g display-popup tmux-dev
+[[keys.command]]
+key = "ctrl+g"
+type = "popup"
+command = "herdr-dev"
+description = "open dev tab (ghq)"
+width = "80%"
+height = "60%"
+
+# tmux: bind -n C-k display-popup
+[[keys.command]]
+key = "ctrl+k"
+type = "popup"
+command = "zsh"
+description = "scratch shell"
+width = "80%"
+height = "60%"
+
+# tmux: bind @ display-popup fzf-file-picker.sh
+[[keys.command]]
+key = "prefix+@"
+type = "popup"
+command = "~/.claude/scripts/fzf-file-picker.sh"
+description = "insert @file paths"
+width = "80%"
+height = "60%"
+
+[ui]
+agent_panel_sort = "spaces"
+
+[ui.toast]
+delivery = "system"

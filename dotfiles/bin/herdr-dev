@@ -1,0 +1,43 @@
+#!/bin/bash
+# Select a ghq repository with fzf and open a dev tab in herdr (nvim + claude).
+# herdr port of tmux-dev; intended to run inside a herdr popup.
+
+command -v fzf &>/dev/null || { echo "Error: fzf not found" >&2; exit 1; }
+command -v jq &>/dev/null || { echo "Error: jq not found" >&2; exit 1; }
+
+# Select repository with fzf, choosing mode via key binding
+output=$(ghq list | fzf +m \
+  --layout=reverse --no-separator \
+  --color='bg+:#313244,fg+:#cdd6f4,hl:#cba6f7,hl+:#cba6f7,header:#6c7086,prompt:#cba6f7,pointer:#f9e2af,gutter:-1' \
+  --prompt='repo> ' \
+  --expect=ctrl-d,ctrl-b \
+  --header='ctrl-d: dev (nvim+claude)  ctrl-b: shell  enter: dev')
+[ -z "$output" ] && exit 0
+
+key=$(echo "$output" | head -1)
+dir=$(echo "$output" | tail -1)
+repo_path="$(ghq root)/$dir"
+repo_name=$(basename "$dir")
+
+# Ask for tab title
+read -rp "Tab title [$repo_name]: " title
+title="${title:-$repo_name}"
+
+pane_id=$(herdr tab create --cwd "$repo_path" --label "$title" --focus | jq -r '.result.root_pane.pane_id')
+{ [ -z "$pane_id" ] || [ "$pane_id" = "null" ]; } && { echo "Error: failed to create tab" >&2; exit 1; }
+
+case "$key" in
+  ctrl-b)
+    # shell only
+    ;;
+  *)
+    # dev: 30% right pane for claude, nvim on the left
+    right_id=$(herdr pane split --pane "$pane_id" --direction right --ratio 0.7 --cwd "$repo_path" | jq -r '.result.pane.pane_id')
+    if [ -n "$right_id" ] && [ "$right_id" != "null" ]; then
+      herdr pane send-text "$right_id" "claude"
+      herdr pane send-keys "$right_id" enter
+    fi
+    herdr pane send-text "$pane_id" "nvim"
+    herdr pane send-keys "$pane_id" enter
+    ;;
+esac

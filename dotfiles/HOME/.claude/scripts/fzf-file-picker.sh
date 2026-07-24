@@ -21,7 +21,12 @@ SELECTED=$(printf '%s\n' "$FILE_LIST" \
 
 if [ -n "$SELECTED" ]; then
   AT_FILES=$(printf '%s\n' "$SELECTED" | sed 's/^/@/' | tr '\n' ' ')
-  if [ -n "$TARGET_PANE" ]; then
+  if [ -n "${HERDR_ACTIVE_PANE_ID:-}${HERDR_PANE_ID:-}" ]; then
+    # herdr popup 内: popupを開く前にアクティブだったpaneへ送る
+    target="${TARGET_PANE:-${HERDR_ACTIVE_PANE_ID:-}}"
+    [ -z "$target" ] && target=$(herdr pane current | jq -r '.result.pane.pane_id')
+    herdr pane send-text "$target" "$AT_FILES"
+  elif [ -n "$TARGET_PANE" ]; then
     tmux send-keys -t "$TARGET_PANE" "$AT_FILES"
   else
     tmux send-keys "$AT_FILES"
