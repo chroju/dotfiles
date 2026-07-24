@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# Required parameters:
+# @raycast.schemaVersion 1
+# @raycast.title Claude Status
+# @raycast.mode inline
+# @raycast.refreshTime 30s
+
+# Optional parameters:
+# @raycast.icon claude-icon.png
+
+# Documentation:
+# @raycast.author chroju
+# @raycast.authorURL https://github.com/chroju
+
+# Menu bar version of dotfiles/bin/tmux-statusright: shows Claude Code rate
+# limits and today's cost without tmux color escapes.
+#
+# Rate limits cache is written by ~/.claude/scripts/rate_limits_cache.sh
+# (invoked via ccstatusline).
+#
+# Today's cost is computed by ccusage (https://github.com/ryoppippi/ccusage),
+# cached locally and refreshed in the background when stale.
+
+set -u
+
+tmp_dir="${TMPDIR:-/tmp}"
+rate_cache="$tmp_dir/claude-rate-limits.json"
+cost_cache="$tmp_dir/claude-cost.json"
+cost_lock="$tmp_dir/claude-cost.lock"
+rate_stale_sec=86400
+cost_stale_sec=300
+
+dot() {
+  local pct=$1
+  if [ "$pct" = "--" ]; then
+    echo "⚪"
+  elif [ "$pct" -lt 50 ]; then
+    echo "🟢"
+  elif [ "$pct" -lt 70 ]; then
+    echo "🟡"
+  else
+    echo "🔴"
+  fi
+}
+
+format_resets_at() {
+  local epoch=$1 fmt=${2:-'%a %H:%M'}
+  if [ "$epoch" = "--" ] || [ -z "$epoch" ] || [ "$epoch" = "null" ]; then
+    echo "--"
+    return
+  fi
+  LC_TIME=C date -r "$epoch" "+$fmt"
+}
+
+read_rate_limits() {
+  if [ ! -r "$rate_cache" ]; then
+    echo "-- -- -- --"
+    return
+  fi
+  jq -r --argjson stale "$rate_stale_sec" '
+    if (now - (.updated_at // 0)) > $stale then "-- -- -- --"
+    else
+      (.five_hour_resets_at // 0) as $r5 |
+      (.seven_day_resets_at // 0) as $r7 |
+      (($r5 | type) == "number" and $r5 > now) as $r5_valid |
+      (($r7 | type) == "number" and $r7 > now) as $r7_valid |
+      (if $r5_valid then (.five_hour // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
+      (if $r5_valid then ($r5 | tostring) else "--" end) + " " +
+      (if $r7_valid then (.seven_day // "--" | if type == "number" then floor | tostring else . end) else "--" end) + " " +
+      (if $r7_valid then ($r7 | tostring) else "--" end)
+    end
+  ' "$rate_cache" 2>/dev/null || echo "-- -- -- --"
+}
+
+refresh_cost_async() {
+  # Avoid double-spawning while a previous refresh is still running.
+  if [ -e "$cost_lock" ]; then
+    local age
+    age=$(( $(date +%s) - $(stat -f %m "$cost_lock" 2>/dev/null || echo 0) ))
+    if [ "$age" -lt 60 ]; then
+      return
+    fi
+  fi
+  (
+    touch "$cost_lock"
+    trap 'rm -f "$cost_lock"' EXIT
+    local today
+    today=$(date +%Y%m%d)
+    local tmp
+    tmp=$(mktemp "$tmp_dir/claude-cost.XXXXXX")
+    if mise x node@22 -- npx -y ccusage@latest daily \
+          --since "$today" --until "$today" --json >"$tmp" 2>/dev/null; then
+      jq --argjson now "$(date +%s)" '{
+        cost: (.totals.totalCost // 0),
+        updated_at: $now
+      }' "$tmp" >"$cost_cache.new" 2>/dev/null \
+        && mv "$cost_cache.new" "$cost_cache"
+    fi
+    rm -f "$tmp"
+  ) </dev/null >/dev/null 2>&1 &
+  disown 2>/dev/null || true
+}
+
+read_cost() {
+  local cost=""
+  if [ -r "$cost_cache" ]; then
+    cost=$(jq -r '.cost // empty' "$cost_cache" 2>/dev/null)
+    local updated age
+    updated=$(jq -r '.updated_at // 0' "$cost_cache" 2>/dev/null)
+    age=$(( $(date +%s) - ${updated:-0} ))
+    if [ "$age" -gt "$cost_stale_sec" ]; then
+      refresh_cost_async
+    fi
+  else
+    refresh_cost_async
+  fi
+  printf '%s' "${cost:-}"
+}
+
+parts=$(read_rate_limits)
+five=$(echo "$parts" | cut -d' ' -f1)
+five_resets=$(echo "$parts" | cut -d' ' -f2)
+seven=$(echo "$parts" | cut -d' ' -f3)
+seven_resets=$(echo "$parts" | cut -d' ' -f4)
+
+five_reset_str=$(format_resets_at "$five_resets" '%H:%M')
+seven_reset_str=$(format_resets_at "$seven_resets" '%a %H:%M')
+
+cost=$(read_cost)
+
+if [ -n "$cost" ]; then
+  cost_str=$(printf '$%.2f' "$cost")
+else
+  cost_str='$--'
+fi
+
+printf '%s %s%% ▶ %s ┊ %s %s%% ▶ %s ┊ %s\n' \
+  "$(dot "$five")" "$five" "$five_reset_str" \
+  "$(dot "$seven")" "$seven" "$seven_reset_str" \
+  "$cost_str"
