@@ -16,6 +16,7 @@ $ cd dotfiles
 $ sudo ./setup_default.sh
 $ ./setup_symlinks.sh
 $ ./setup_homebrew.sh
+$ ./setup_gh_extensions.sh
 ```
 
 ## Devcontainer

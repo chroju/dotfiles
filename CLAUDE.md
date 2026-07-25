@@ -14,6 +14,7 @@ This is a personal dotfiles repository for macOS development environment setup. 
 sudo ./setup_defaults.sh      # Configure macOS system defaults
 ./setup_symlinks.sh           # Create symlinks from dotfiles/HOME to ~
 ./setup_homebrew.sh           # Install Homebrew and packages from Brewfile
+./setup_gh_extensions.sh      # Install gh extensions from dotfiles/gh-extensions
 ```
 
 ### Updating Symlinks
@@ -43,6 +44,9 @@ brew bundle dump --file=./Brewfile     # Update Brewfile with current packages
   - `git-*` - Custom git commands (invoked as `git <command>`)
   - `tfallupdate` - Terraform update utility
 
+- `dotfiles/gh-extensions/` - gh extensions installed via `setup_gh_extensions.sh`
+  - `gh-repo-init` - Create a GitHub repo (or reuse an existing one) and apply a security baseline: Dependabot, read-only Actions token, secret scanning, default-branch ruleset. Idempotent
+
 - `dotfiles/raycast-scripts/` - Raycast extension scripts
 - `Brewfile` - Homebrew package definitions
 
@@ -64,7 +68,6 @@ Git is configured with:
   - `git-change` - Check if working tree has changes (used by starship prompt)
   - `git-commit-hash` - Fuzzy find commit hash with fzf
   - `git-copy-hash` - Copy commit hash to clipboard
-  - `git-create` - Create new GitHub repo via gh CLI
   - `git-default` - Switch to default branch
   - `git-frebase` - Interactive rebase with fzf commit selection
   - `git-ppush` - Push current branch to origin

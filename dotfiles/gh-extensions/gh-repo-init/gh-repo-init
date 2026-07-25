@@ -1,0 +1,171 @@
+#!/usr/bin/env bash
+# Create a GitHub repository with a security baseline, or bring an
+# existing repository up to the same baseline. Idempotent: safe to
+# re-run, and usable against existing repositories to unify settings.
+#
+# Requires: gh (authenticated), ghq
+set -uo pipefail
+
+RULESET_NAME="protect-default-branch"
+
+usage() {
+  cat <<'EOF'
+Usage: gh repo-init <name> [--public|--private] [--license <spdx-id|none>] [--direct-push]
+
+Creates github.com/<login>/<name> (or reuses it if it already exists),
+clones it under "$(ghq root)", and applies baseline settings:
+
+  common:      delete branch on merge, allow update branch,
+               wiki/projects disabled, Dependabot alerts + security
+               updates, Actions GITHUB_TOKEN read-only by default
+  public only: secret scanning + push protection, private vulnerability
+               reporting, and a ruleset on the default branch
+               (no deletion / no force push / PRs required)
+
+Options:
+  --public / --private   Visibility. Required when creating; an existing
+                         repository keeps its current visibility.
+  --license <id|none>    License at creation time (default: mit).
+  --direct-push          Omit the PR-required rule from the ruleset so
+                         the default branch accepts direct pushes.
+EOF
+}
+
+NAME=""
+VISIBILITY=""
+LICENSE="mit"
+DIRECT_PUSH=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --public|--private) VISIBILITY="${1#--}" ;;
+    --license)
+      [[ $# -ge 2 ]] || { echo "error: --license requires a value" >&2; exit 1; }
+      LICENSE="$2"; shift ;;
+    --direct-push) DIRECT_PUSH=true ;;
+    -h|--help) usage; exit 0 ;;
+    -*) echo "error: unknown option: $1" >&2; usage >&2; exit 1 ;;
+    *)
+      [[ -z "$NAME" ]] || { echo "error: too many arguments" >&2; usage >&2; exit 1; }
+      NAME="$1" ;;
+  esac
+  shift
+done
+
+[[ -n "$NAME" ]] || { usage >&2; exit 1; }
+for cmd in gh ghq; do
+  command -v "$cmd" >/dev/null 2>&1 || { echo "error: required command not found: $cmd" >&2; exit 1; }
+done
+
+OWNER="$(gh api user --jq .login)" || { echo "error: failed to resolve the authenticated user" >&2; exit 1; }
+REPO="$OWNER/$NAME"
+
+# --- create (or reuse) the repository ---------------------------------
+
+if existing="$(gh repo view "$REPO" --json visibility --jq '.visibility | ascii_downcase' 2>/dev/null)"; then
+  echo "==> $REPO already exists ($existing) — applying settings only"
+  if [[ -n "$VISIBILITY" && "$VISIBILITY" != "$existing" ]]; then
+    echo "warn: --$VISIBILITY ignored; visibility stays $existing" >&2
+  fi
+  VISIBILITY="$existing"
+else
+  if [[ -z "$VISIBILITY" ]]; then
+    echo "error: --public or --private is required to create $REPO" >&2
+    exit 1
+  fi
+  create_args=("--$VISIBILITY")
+  [[ "$LICENSE" == "none" ]] || create_args+=(--license "$LICENSE")
+  echo "==> creating $REPO"
+  gh repo create "$REPO" "${create_args[@]}" || exit 1
+fi
+
+local_path="$(ghq root)/github.com/$REPO"
+if [[ -d "$local_path" ]]; then
+  echo "==> local checkout exists: $local_path"
+else
+  echo "==> cloning to $local_path"
+  ghq get "$REPO" || exit 1
+fi
+
+# --- apply settings ----------------------------------------------------
+
+failed=()
+apply() {
+  local desc="$1"; shift
+  local err
+  if err="$("$@" 2>&1 >/dev/null)"; then
+    echo "    OK: $desc"
+  else
+    echo "    NG: $desc" >&2
+    [[ -z "$err" ]] || sed 's/^/        /' <<<"$err" >&2
+    failed+=("$desc")
+  fi
+}
+
+enable_secret_scanning() {
+  gh api -X PATCH "repos/$REPO" --input - <<'JSON'
+{
+  "security_and_analysis": {
+    "secret_scanning": {"status": "enabled"},
+    "secret_scanning_push_protection": {"status": "enabled"}
+  }
+}
+JSON
+}
+
+ruleset_payload() {
+  local rules='{"type":"deletion"},{"type":"non_fast_forward"}'
+  if [[ "$DIRECT_PUSH" == "false" ]]; then
+    rules+=',{"type":"pull_request","parameters":{
+      "dismiss_stale_reviews_on_push":false,
+      "require_code_owner_review":false,
+      "require_last_push_approval":false,
+      "required_approving_review_count":0,
+      "required_review_thread_resolution":false}}'
+  fi
+  printf '{"name":"%s","target":"branch","enforcement":"active",
+    "conditions":{"ref_name":{"include":["~DEFAULT_BRANCH"],"exclude":[]}},
+    "rules":[%s]}' "$RULESET_NAME" "$rules"
+}
+
+apply_ruleset() {
+  local id
+  id="$(gh api "repos/$REPO/rulesets" --jq ".[] | select(.name == \"$RULESET_NAME\") | .id" 2>/dev/null | head -n1)"
+  if [[ -n "$id" ]]; then
+    ruleset_payload | gh api -X PUT "repos/$REPO/rulesets/$id" --input -
+  else
+    ruleset_payload | gh api -X POST "repos/$REPO/rulesets" --input -
+  fi
+}
+
+echo "==> applying baseline settings"
+apply "repository hygiene (delete branch on merge, update branch, wiki/projects off)" \
+  gh api -X PATCH "repos/$REPO" \
+  -F delete_branch_on_merge=true -F allow_update_branch=true \
+  -F has_wiki=false -F has_projects=false
+apply "Dependabot vulnerability alerts" \
+  gh api -X PUT "repos/$REPO/vulnerability-alerts"
+apply "Dependabot security updates" \
+  gh api -X PUT "repos/$REPO/automated-security-fixes"
+apply "Actions default token permissions: read-only" \
+  gh api -X PUT "repos/$REPO/actions/permissions/workflow" \
+  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
+
+if [[ "$VISIBILITY" == "public" ]]; then
+  apply "secret scanning + push protection" enable_secret_scanning
+  apply "private vulnerability reporting" \
+    gh api -X PUT "repos/$REPO/private-vulnerability-reporting"
+  apply "ruleset: $RULESET_NAME" apply_ruleset
+else
+  echo "    skip: secret scanning / push protection (paid feature on private repos)"
+  echo "    skip: private vulnerability reporting (public repos only)"
+  echo "    skip: ruleset (requires GitHub Pro on private repos)"
+fi
+
+echo
+if [[ ${#failed[@]} -gt 0 ]]; then
+  echo "done with ${#failed[@]} failure(s):" >&2
+  printf '  - %s\n' "${failed[@]}" >&2
+  exit 1
+fi
+echo "done: $REPO is ready at $local_path"
