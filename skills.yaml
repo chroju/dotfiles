@@ -2,11 +2,13 @@
 #
 # Entry fields:
 #   repo:  <owner/name> on GitHub
-#   path:  skill directory inside that repo
+#   path:  skill directory inside that repo (with bulk: the tree root)
 #   sha:   full 40-char commit SHA (pin)
 #   scope: project | user (optional, default: project)
 #          project -> ./.claude/skills/   (relative to this manifest)
 #          user    -> ~/.claude/skills/
+#   bulk:  true (optional) — install every directory under path that
+#          contains a SKILL.md as an individual skill
 #
 # The "# renovate:" comment must sit DIRECTLY above the sha line it
 # updates; Renovate bumps the SHA to the head of the tracked branch.
@@ -17,7 +19,8 @@ skills:
     sha: "ed37663cc5fbef691ddfecd080dff42f7e7e350d"
     scope: user
   - repo: chroju/skills
-    path: skills/engineering/driving-git-workflow
+    path: skills
     # renovate: datasource=git-refs depName=https://github.com/chroju/skills currentValue=main
-    sha: "11d58184480510b1aeffa5d77e2f6684a4ee2e2c"
+    sha: "4d60f93261d68775591c0e26bcf8fb4db157d391"
     scope: user
+    bulk: true
