@@ -35,10 +35,11 @@ width = "80%"
 height = "60%"
 
 # tmux: bind -n C-k display-popup
+# OSC 11 で popup 内シェルの背景だけ変える（tmux: popup-style 'bg=#1e1e2e' の代替）
 [[keys.command]]
 key = "ctrl+k"
 type = "popup"
-command = "zsh"
+command = "zsh -c 'printf \"\\033]11;#1e1e2e\\007\"; exec zsh'"
 description = "scratch shell"
 width = "80%"
 height = "60%"
