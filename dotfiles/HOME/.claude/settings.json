@@ -185,6 +185,7 @@
     "gopls-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": false,
+  "cleanupPeriodDays": 3650,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
