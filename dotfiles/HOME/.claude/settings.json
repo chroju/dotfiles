@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 3650,
   "env": {
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "true",
@@ -90,7 +91,7 @@
     ],
     "disableBypassPermissionsMode": "disable"
   },
-  "model": "claude-fable-5[1m]",
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -98,11 +99,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "FILE_PATH=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // .path // \"\"'); case \"$FILE_PATH\" in \"$HOME\"/dev/src/github.com/chroju/dotfiles/*) ;; \"$HOME\"/*) echo \"ERROR: $FILE_PATH is under \\$HOME but not in the dotfiles repository. Edit dotfiles/HOME/ in the repository instead.\"; exit 2 ;; esac"
+            "command": "FILE_PATH=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); [ -n \"$FILE_PATH\" ] || exit 0; REAL=$(readlink -f \"$FILE_PATH\" 2>/dev/null) || REAL=\"$(readlink -f \"$(dirname \"$FILE_PATH\")\" 2>/dev/null)/$(basename \"$FILE_PATH\")\"; case \"$REAL\" in *chroju/dotfiles/dotfiles/*) [ \"$REAL\" = \"$FILE_PATH\" ] || { echo \"ERROR: $FILE_PATH is a symlink into the dotfiles repository. Edit $REAL directly instead.\" >&2; exit 2; } ;; esac"
           },
           {
             "type": "command",
-            "command": "FILE_PATH=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // .path // \"\"'); case \"$FILE_PATH\" in *.yml) echo \"ERROR: YAML files must use the .yaml extension, not .yml. Create new files as .yaml. For an existing .yml file, rename it to .yaml (git mv) before editing. If a tool strictly requires the .yml filename (e.g. .gitlab-ci.yml), confirm with the user instead.\" >&2; exit 2 ;; esac"
+            "command": "FILE_PATH=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); case \"$FILE_PATH\" in *.yml) echo \"ERROR: YAML files must use the .yaml extension, not .yml. Create new files as .yaml. For an existing .yml file, rename it to .yaml (git mv) before editing. If a tool strictly requires the .yml filename (e.g. .gitlab-ci.yml), confirm with the user instead.\" >&2; exit 2 ;; esac"
           }
         ]
       }
@@ -185,7 +186,6 @@
     "gopls-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": false,
-  "cleanupPeriodDays": 3650,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
