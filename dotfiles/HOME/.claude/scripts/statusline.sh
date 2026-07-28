@@ -14,14 +14,15 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   fi
 fi
 
+input=$(cat)
+
 REMOTE_URL=$(git remote get-url origin 2>/dev/null)
 if [ -n "$REMOTE_URL" ]; then
   DISPLAY_DIR=$(echo "$REMOTE_URL" | sed -E 's#^git@[^:]+:##; s#^https?://[^/]+/##; s#\.git$##')
 else
-  DISPLAY_DIR="-"
+  CWD=$(echo "$input" | jq -r '.cwd // ""')
+  DISPLAY_DIR=$(echo "$CWD" | awk -F/ '{print $(NF-1)"/"$NF}')
 fi
-
-input=$(cat)
 
 CURRENT=$(echo "$input" | jq '
   (.context_window.current_usage // {}) |
