@@ -56,5 +56,11 @@ height = "60%"
 [ui]
 agent_panel_sort = "spaces"
 
+# 通知は Claude Code の hook から ntf 経由で出すので、herdr 側は黙らせる。
+# hook なら session_id や承認内容が取れ、クリックで該当 pane を focus できる。
+# Claude Code 以外の agent を使うようになったら "system" に戻す。
 [ui.toast]
-delivery = "system"
+delivery = "off"
+
+[ui.sound]
+enabled = false
