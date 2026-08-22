@@ -9,5 +9,8 @@ playbook.retry
 .devcontainer/.env.devcontainer
 .devcontainer/.env.devcontainer.local
 
+# hammerspoon
+dotfiles/HOME/.hammerspoon/secrets.lua
+
 # worktrees
 .local/
