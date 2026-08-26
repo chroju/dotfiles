@@ -5,7 +5,9 @@
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "true",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1"
+    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5[1m]",
+    "ANTHROPIC_MODEL": "opusplan"
   },
   "permissions": {
     "allow": [
@@ -91,7 +93,7 @@
     ],
     "disableBypassPermissionsMode": "disable"
   },
-  "model": "opus[1m]",
+  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -100,10 +102,6 @@
           {
             "type": "command",
             "command": "FILE_PATH=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); [ -n \"$FILE_PATH\" ] || exit 0; REAL=$(readlink -f \"$FILE_PATH\" 2>/dev/null) || REAL=\"$(readlink -f \"$(dirname \"$FILE_PATH\")\" 2>/dev/null)/$(basename \"$FILE_PATH\")\"; case \"$REAL\" in *chroju/dotfiles/dotfiles/*) [ \"$REAL\" = \"$FILE_PATH\" ] || { echo \"ERROR: $FILE_PATH is a symlink into the dotfiles repository. Edit $REAL directly instead.\" >&2; exit 2; } ;; esac"
-          },
-          {
-            "type": "command",
-            "command": "FILE_PATH=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); case \"$FILE_PATH\" in *.yml) echo \"ERROR: YAML files must use the .yaml extension, not .yml. Create new files as .yaml. For an existing .yml file, rename it to .yaml (git mv) before editing. If a tool strictly requires the .yml filename (e.g. .gitlab-ci.yml), confirm with the user instead.\" >&2; exit 2 ;; esac"
           }
         ]
       }
@@ -196,6 +194,28 @@
             "command": "~/.claude/scripts/tmux-window-name-check.sh"
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/herdr-agent-state.sh session",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/bin/bun $HOME/dev/src/github.com/chroju/obsidian/scripts/session_anchor.ts",
+            "timeout": 15
+          }
+        ]
       }
     ]
   },
@@ -204,9 +224,7 @@
     "command": "~/.claude/scripts/statusline-wrapper.sh",
     "padding": 0
   },
-  "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true
-  },
+  "enabledPlugins": {},
   "alwaysThinkingEnabled": false,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
