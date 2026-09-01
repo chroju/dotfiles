@@ -51,7 +51,13 @@ blue="${C}[34m"
 magenta="${C}[35m"
 sep="${C}[90m | "
 light="${C}[38;5;245m"
+red="${C}[38;5;210m"
 reset="${C}[0m"
+
+MODEL_COLOR="${light}"
+if echo "$MODEL_NAME" | grep -qi "fable"; then
+  MODEL_COLOR="${red}"
+fi
 
 if [ -n "$DEVCONTAINER_IND" ]; then
   printf "%s%s%s" "${blue}" "⬡" "${sep}"
@@ -60,5 +66,5 @@ fi
 printf "%s%s%s%s%s%s%s" \
   "${yellow}" "${DISPLAY_DIR}" \
   "${sep}" "${magenta}⎇ ${BRANCH}${WORKTREE_MARK}" \
-  "${sep}" "${light}${CTX} | ${MODEL_NAME}" \
+  "${sep}" "${light}${CTX} | ${MODEL_COLOR}${MODEL_NAME}" \
   "${reset}"
