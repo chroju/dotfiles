@@ -6,6 +6,10 @@ onboarding = false
 [theme]
 name = "catppuccin"
 
+[theme.custom]
+overlay0 = "#bac2de"
+mauve = "#e0c3fc"
+
 [keys]
 # tmux: prefix+d でdetach（herdrデフォルトは prefix+q）
 detach = "prefix+d"
