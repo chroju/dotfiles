@@ -1,9 +1,5 @@
 " vim:set filetype=vim:
 
-" 設定をすべて一旦解除
-sanitise tridactyllocal
-set superignore false
-
 """"""""
 " General Settings
 """"""""
@@ -15,7 +11,6 @@ set hintstyles.fg none
 set hintstyles.outline none
 set hintfiltermode vimperator
 set visualenterauto false
-set theme midnight
 set allowautofocus false
 set modeindicator false
 set tabclosepinned false
@@ -65,8 +60,8 @@ bind d composite tabprev; tabclose #
 
 "" yank
 bind ,m clipboard yankmd
-bind ,u composite getcurrenttitleandurl | yank; getclip | fillcmdline_tmp 5000 # 
-bind ,s composite getscrapboxstilelink | yank; getclip | fillcmdline_tmp 5000 # 
+bind ,u composite getcurrenttitleandurl | yank; getclip | fillcmdline_tmp 5000 #
+bind ,s composite getscrapboxstilelink | yank; getclip | fillcmdline_tmp 5000 #
 
 "" Behaves like readline
 bind --mode=ex <C-a> text.beginning_of_line
@@ -74,8 +69,8 @@ bind --mode=input <C-a> text.beginning_of_line
 bind --mode=insert <C-a> text.beginning_of_line
 
 bind --mode=ex <C-e> text.end_of_line
-bind --mode=input <C-w> text.end_of_line
-bind --mode=insert <C-w> text.end_of_line
+bind --mode=input <C-e> text.end_of_line
+bind --mode=insert <C-e> text.end_of_line
 
 bind --mode=ex <C-w> text.backward_kill_word
 bind --mode=input <C-w> text.backward_kill_word
@@ -110,9 +105,9 @@ seturl ^https://scrapbox.io/chrolog superignore true
 seturl ^https://scrapbox.io/chhh superignore true
 seturl ^https://gemini.google.com superignore true
 seturl console.aws.amazon.com superignore true
-seturl ^https://mail.notion.so/ superignore true
-seturl ^https://www.notion.so/ superignore true
 seturl ^https://ap-northeast-1.console superignore true
+seturl notion.so superignore true
+seturl datadoghq.com superignore true
 
 
 
@@ -129,8 +124,3 @@ setpref browser.urlbar.trimURLs false
 " show completion message
 sleep 2000
 fillcmdline_tmp 3000 # tridactylrc is loaded successfully.
-
-" load local tridactylrc
-source ~/.config/tridactyl/tridactylrc.local
-
-
