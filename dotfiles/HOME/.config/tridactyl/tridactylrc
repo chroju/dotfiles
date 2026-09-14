@@ -1,5 +1,14 @@
 " vim:set filetype=vim:
 
+" 起動時読み込み時にseturlの一部が失われる不具合の回避策
+" (https://github.com/tridactyl/tridactyl/issues/1409 のレースコンディション対策)
+set storageloc local
+" sanitiseを有効にすると上記の不具合が再発するため無効化している。
+" rcから削除した設定項目はstorageに残り続けるので、掃除したい場合は
+" 手動で `:sanitise tridactylconfig` → `:source` を実行し、
+" その後Firefoxを再起動してsubconfigsが正しく揃うか確認すること
+" sanitise tridactylconfig
+
 """"""""
 " General Settings
 """"""""
