@@ -1,36 +1,27 @@
-#!/bin/bash
-# Resolve a concrete Terraform version from required_version constraints via tenv.
-# Intended for mise config: terraform = "{{ exec(command='tf-required-version ' ~ cwd) | trim }}"
-set -uo pipefail
-
-fallback="latest"
-
+#!/usr/bin/env bash
+# Resolve a Terraform version from required_version, for mise config:
+#   terraform = "{{ exec(command='tf-required-version ' ~ cwd) | trim }}"
 # mise evaluates templates in the config file's directory, so the target
-# directory arrives as an argument (`exec(command='... ' ~ cwd)`).
+# directory arrives as an argument.
+#
+# Deliberately approximate: it reads the first constraint and maps it to a
+# version or prefix mise understands. Upper bounds (">= 1.5, < 1.9") are not
+# honored — use "~>" when a ceiling matters.
 dir="${1:-$PWD}"
 
-command -v tenv >/dev/null 2>&1 || { echo "$fallback"; exit 0; }
-cd "$dir" 2>/dev/null || { echo "$fallback"; exit 0; }
+while [[ "$dir" != "/" ]]; do
+  c=$(cat "$dir"/*.tf 2>/dev/null \
+      | sed -nE 's/^[[:space:]]*required_version[[:space:]]*=[[:space:]]*"([^"]*)".*/\1/p' \
+      | head -n1 | cut -d, -f1 | tr -d ' ')
+  if [[ -n "$c" ]]; then
+    case "$c" in
+      =*|[0-9]*) echo "${c#=}" ;;               # = 1.9.5 → 1.9.5
+      "~>"*)     v="${c#~>}"; echo "${v%.*}" ;; # ~> 1.9.0 → 1.9 (mise resolves the prefix)
+      *)         echo latest ;;                 # >= and friends: lower bound only
+    esac
+    exit 0
+  fi
+  dir=$(dirname "$dir")
+done
 
-# Not recursive: required_version belongs to the root module, and recursing from
-# a directory like $HOME would scan every repository below it.
-constraint=$(grep -hoE 'required_version[[:space:]]*=[[:space:]]*"[^"]+"' \
-  ./*.tf 2>/dev/null | sort -u | tr '\n' ';')
-[ -n "$constraint" ] || { echo "$fallback"; exit 0; }
-
-cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/tf-required-version"
-cache_key=$(printf '%s' "$constraint" | shasum -a 256 | cut -d' ' -f1)
-cache_file="$cache_dir/$cache_key"
-
-if [ -r "$cache_file" ]; then
-  echo "$(cat "$cache_file")"
-  exit 0
-fi
-
-# tenv has no machine-readable output; the version is the last semver it prints.
-version=$(TENV_AUTO_INSTALL=false tenv tf detect -q -n 2>/dev/null \
-  | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1)
-[ -n "$version" ] || { echo "$fallback"; exit 0; }
-
-mkdir -p "$cache_dir" && echo "$version" > "$cache_file"
-echo "$version"
+echo latest

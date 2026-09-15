@@ -97,10 +97,10 @@ Uses `mise` (migrated from asdf) for managing tool versions:
 Terraform versions are resolved from `required_version` in the project's `.tf` files:
 - `config.toml` sets `terraform = "{{ exec(command='tf-required-version ' ~ cwd) | trim }}"`
 - mise evaluates templates in the config file's directory, so `cwd` is passed as an argument
-- `dotfiles/bin/tf-required-version` delegates constraint solving to `tenv` (mise itself cannot
-  parse `required_version`, and rejects ranges like `>= 1.5, < 1.9`), then caches the result
-- Without a `required_version`, it falls back to `latest` without invoking tenv
-- tenv is used only as a resolver; its proxy binaries are not on PATH, so it does not shadow mise
+- `dotfiles/bin/tf-required-version` walks up from that directory and maps the first
+  `required_version` it finds to a version or prefix mise understands (`~> 1.9.0` → `1.9`)
+- Resolution is deliberately approximate: upper bounds (`>= 1.5, < 1.9`) fall back to `latest`.
+  Use `~>` when a ceiling matters. No external resolver, no network access
 
 ## Important Notes
 
