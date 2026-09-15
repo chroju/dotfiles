@@ -12,7 +12,6 @@ export GOPATH=$HOME/dev
 export AWS_DEFAULT_REGION=ap-northeast-1
 export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_password
 export SSH_AUTH_SOCK=$HOME/.bitwarden-ssh-agent.sock
-export TENV_AUTO_INSTALL=true
 
 
 # ====================
@@ -21,6 +20,7 @@ export TENV_AUTO_INSTALL=true
 
 typeset -U path
 path=(
+  $HOME/bin(N-/)
   /opt/homebrew/bin(N-/)
   /opt/homebrew/sbin(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)

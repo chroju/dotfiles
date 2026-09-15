@@ -86,13 +86,21 @@ Zsh configuration includes:
   - `gpr` - Push branch and create PR with gh
   - `git-root` - cd to git repository root
   - `notice` - Terminal notifications
-- tenv auto-installs Terraform versions on command execution via TENV_AUTO_INSTALL=true
 
 ### Version Management
 
 Uses `mise` (migrated from asdf) for managing tool versions:
-- Configured in `.tool-versions`
+- Configured in `dotfiles/HOME/.config/mise/config.toml` (symlinked to `~/.config/mise/config.toml`)
 - Auto-activated in `.zshrc:269`
+- `idiomatic_version_file_enable_tools = ["node"]` makes mise honor `.node-version`
+
+Terraform versions are resolved from `required_version` in the project's `.tf` files:
+- `config.toml` sets `terraform = "{{ exec(command='tf-required-version ' ~ cwd) | trim }}"`
+- mise evaluates templates in the config file's directory, so `cwd` is passed as an argument
+- `dotfiles/bin/tf-required-version` delegates constraint solving to `tenv` (mise itself cannot
+  parse `required_version`, and rejects ranges like `>= 1.5, < 1.9`), then caches the result
+- Without a `required_version`, it falls back to `latest` without invoking tenv
+- tenv is used only as a resolver; its proxy binaries are not on PATH, so it does not shadow mise
 
 ## Important Notes
 

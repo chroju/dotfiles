@@ -1,0 +1,36 @@
+#!/bin/bash
+# Resolve a concrete Terraform version from required_version constraints via tenv.
+# Intended for mise config: terraform = "{{ exec(command='tf-required-version ' ~ cwd) | trim }}"
+set -uo pipefail
+
+fallback="latest"
+
+# mise evaluates templates in the config file's directory, so the target
+# directory arrives as an argument (`exec(command='... ' ~ cwd)`).
+dir="${1:-$PWD}"
+
+command -v tenv >/dev/null 2>&1 || { echo "$fallback"; exit 0; }
+cd "$dir" 2>/dev/null || { echo "$fallback"; exit 0; }
+
+# Not recursive: required_version belongs to the root module, and recursing from
+# a directory like $HOME would scan every repository below it.
+constraint=$(grep -hoE 'required_version[[:space:]]*=[[:space:]]*"[^"]+"' \
+  ./*.tf 2>/dev/null | sort -u | tr '\n' ';')
+[ -n "$constraint" ] || { echo "$fallback"; exit 0; }
+
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/tf-required-version"
+cache_key=$(printf '%s' "$constraint" | shasum -a 256 | cut -d' ' -f1)
+cache_file="$cache_dir/$cache_key"
+
+if [ -r "$cache_file" ]; then
+  echo "$(cat "$cache_file")"
+  exit 0
+fi
+
+# tenv has no machine-readable output; the version is the last semver it prints.
+version=$(TENV_AUTO_INSTALL=false tenv tf detect -q -n 2>/dev/null \
+  | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1)
+[ -n "$version" ] || { echo "$fallback"; exit 0; }
+
+mkdir -p "$cache_dir" && echo "$version" > "$cache_file"
+echo "$version"

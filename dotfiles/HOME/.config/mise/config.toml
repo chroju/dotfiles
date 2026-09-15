@@ -1,0 +1,9 @@
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
+
+[tools]
+go = "1.25.6"
+aws-cli = "2.34.49"
+ansible = "2.21.0"
+herdr = "latest"
+terraform = "{{ exec(command='tf-required-version ' ~ cwd) | trim }}"
