@@ -424,6 +424,10 @@ micBlinkTimer = hs.timer.doEvery(0.5, function()
   paintMicIndicator()
 end)
 
+hs.hotkey.bind({ "cmd", "ctrl" }, "r", function()
+  hs.reload()
+end)
+
 hs.hotkey.bind({ "alt" }, "f", function()
   if webview == nil then webview = makeWebview() end
   local win = webview:hswindow()
