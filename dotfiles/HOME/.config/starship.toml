@@ -18,7 +18,7 @@ $line_break\
 $jobs\
 $battery\
 $time\
-${custom.vault}\
+${custom.profile}\
 $character"""
 
 [aws]
@@ -59,8 +59,8 @@ truncation_symbol = ".../"
 [terraform]
 disabled = true
 
-[custom.vault]
-command = "echo $AWS_VAULT"
-style = "bold red"
-when = "test $AWS_VAULT"
+[custom.profile]
+command = "echo $AWS_PROFILE"
+style = "bold yellow"
+when = "test $AWS_PROFILE"
 format = "[$output]($style) "
