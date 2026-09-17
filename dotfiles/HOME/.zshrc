@@ -211,6 +211,13 @@ git-root () {
   fi
 }
 
+miseinfo () {
+  echo "--- mise current ---"
+  mise current
+  echo "--- mise config ls ---"
+  mise config ls
+}
+
 # ====================
 #  load some tools
 # ====================
