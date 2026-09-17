@@ -390,12 +390,6 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "m", function()
   dev:setInputMuted(not dev:inputMuted())
   updateMicIndicator()
 
-  -- Google Meet (Firefoxのアクティブタブが前提) はフォーカスがある時のみ届く
-  local front = hs.application.frontmostApplication()
-  if front and front:name() == "Firefox" then
-    hs.eventtap.keyStroke({ "cmd" }, "d", 0)
-  end
-
   -- Zoomはグローバルショートカット (Settings > Keyboard Shortcuts > Enable Global Shortcut) が
   -- 有効な前提で、フォーカスに関係なく届く
   if hs.application.find("zoom.us") then
