@@ -321,7 +321,7 @@ local function buildMicIndicator()
     type = "rectangle",
     action = "fill",
     fillColor = { red = 0, green = 0, blue = 0, alpha = 0 },
-    roundedRectRadii = { xRadius = 17, yRadius = 17 },
+    roundedRectRadii = { xRadius = 4, yRadius = 4 },
   }
   c[2] = {
     type = "circle",
@@ -402,6 +402,19 @@ hs.hotkey.bind({ "cmd", "ctrl" }, "m", function()
     hs.eventtap.keyStroke({ "cmd", "shift" }, "space", 0)
   end
 end)
+
+-- ディスプレイの接続/切断で座標がずれるため、構成変化時にインジケータを作り直す
+local micScreenWatcher = hs.screen.watcher.new(function()
+  local hadIndicator = micIndicator ~= nil
+  if micIndicator then
+    micIndicator:delete()
+    micIndicator = nil
+  end
+  if hadIndicator or (micState and micState ~= "safe") then
+    renderMicIndicator(micState)
+  end
+end)
+micScreenWatcher:start()
 
 updateMicIndicator()
 micPollTimer = hs.timer.doEvery(1, updateMicIndicator)
