@@ -334,7 +334,7 @@ local function buildMicIndicator()
     type = "text",
     text = "",
     textColor = { red = 1, green = 1, blue = 1, alpha = 1 },
-    textFont = ".AppleSystemUIFontSemibold",
+    textFont = ".AppleSystemUIFontBold",
     textSize = 15,
     textAlignment = "center",
     frame = { x = "32%", y = "16%", w = "62%", h = "68%" },
