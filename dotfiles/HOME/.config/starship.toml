@@ -64,7 +64,7 @@ disabled = true
 command = "mise ls --current 2>/dev/null | wc -l | tr -d ' '"
 style = "bold cyan"
 when = "test -n \"$(mise ls --current 2>/dev/null)\""
-symbol = "mise:"
+symbol = "mise»"
 format = "[$symbol($output)]($style) "
 
 [custom.profile]
