@@ -1,0 +1,180 @@
+#!/bin/bash
+# Shared status engine for Claude Code agent windows in tmux.
+# Consumers: status bar agent line (statusbar), status-right (summary),
+# tmux-claude popup (--fzf), tmux-dashboard (list), mouse click jump (--jump).
+
+fmt_elapsed() {
+  local secs=$1
+  if [ "$secs" -lt 60 ]; then
+    printf '%ss' "$secs"
+  elif [ "$secs" -lt 3600 ]; then
+    printf '%sm' "$((secs / 60))"
+  else
+    printf '%sh%sm' "$((secs / 3600))" "$(((secs % 3600) / 60))"
+  fi
+}
+
+# One TSV line per window:
+#   session, window_index, window_id, claude_pane_id, state, since_epoch, window_name, path_label
+# state is waiting > working > done > idle for Claude windows, "-" otherwise.
+# waiting must win over working: the Notification hook fires while
+# @claude_working is still 1 (e.g. permission prompts).
+collect() {
+  local pane_info
+  pane_info=$(tmux list-panes -a -F $'#{session_name}\t#{window_index}\t#{pane_active}\t#{pane_current_command}\t#{pane_current_path}\t#{pane_id}')
+
+  while IFS=$'\t' read -r sess win_index win_id win_name claude_done claude_working bell_flag since; do
+    local claude_pane pane_path path_label state
+    claude_pane=$(echo "$pane_info" | awk -F'\t' -v s="$sess" -v w="$win_index" '$1==s && $2==w && ($4=="node" || $4=="claude") {print $6; exit}')
+    pane_path=$(echo "$pane_info" | awk -F'\t' -v s="$sess" -v w="$win_index" '$1==s && $2==w && $3=="1" {print $5; exit}')
+    case "$pane_path" in
+      "$HOME"/dev/src/*)
+        path_label="${pane_path#$HOME/dev/src/*/}"
+        ;;
+      "$HOME"*)
+        path_label="~${pane_path#$HOME}"
+        ;;
+      *)
+        path_label="$pane_path"
+        ;;
+    esac
+
+    if [ -n "$claude_pane" ]; then
+      if [ "$bell_flag" = "1" ]; then
+        state="waiting"
+      elif [ "$claude_working" = "1" ]; then
+        state="working"
+      elif [ "$claude_done" = "1" ]; then
+        state="done"
+      else
+        state="idle"
+      fi
+    else
+      state="-"
+      claude_pane="-"
+      since=""
+    fi
+
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+      "$sess" "$win_index" "$win_id" "$claude_pane" "$state" "${since:--}" "$win_name" "$path_label"
+  done < <(tmux list-windows -a -F $'#{session_name}\t#{window_index}\t#{window_id}\t#{window_name}\t#{@claude_done}\t#{@claude_working}\t#{window_bell_flag}\t#{@claude_since}')
+}
+
+# fzf lines for the tmux-claude popup: session \t window_index \t display
+cmd_fzf() {
+  local now current_session current_window
+  now=$(date +%s)
+  current_session=$(tmux display-message -p '#{session_name}')
+  current_window=$(tmux display-message -p '#{window_index}')
+
+  while IFS=$'\t' read -r sess win_index win_id claude_pane state since win_name path_label; do
+    local el="" plain status icon current
+    if [ "$since" != "-" ] && [ "$state" != "-" ] && [ "$state" != "idle" ]; then
+      el=" $(fmt_elapsed $((now - since)))"
+    fi
+    case "$state" in
+      waiting) plain=$(printf '%-16s' "!! waiting$el"); status="\033[5;33m${plain}\033[0m" ;;
+      working) plain=$(printf '%-16s' ">> working$el"); status="\033[5;36m${plain}\033[0m" ;;
+      done)    plain=$(printf '%-16s' "vv done$el");    status="\033[32m${plain}\033[0m" ;;
+      idle)    plain=$(printf '%-16s' ".. idle");       status="\033[37m${plain}\033[0m" ;;
+      *)       plain=$(printf '%-16s' "-- -");          status="\033[90m${plain}\033[0m" ;;
+    esac
+    if [ "$state" = "-" ]; then
+      icon="  "
+    else
+      icon="\033[38;5;208m✳ \033[0m"
+    fi
+    if [ "$sess" = "$current_session" ] && [ "$win_index" = "$current_window" ]; then
+      current="\033[35m*\033[0m "
+    else
+      current="  "
+    fi
+    printf '%b\t%b\t%b\n' "$sess" "$win_index" "${current}${status}${icon}${sess}:${win_index} [${win_name}] \033[38;5;244m${path_label}\033[0m"
+  done < <(collect)
+}
+
+# NUL-delimited two-line entries for the tmux-sidebar fzf pane (Herdr style):
+#   <icon> <window_name>
+#     <state> [elapsed] · claude
+cmd_sidebar() {
+  local now
+  now=$(date +%s)
+
+  while IFS=$'\t' read -r sess win_index win_id claude_pane state since win_name path_label; do
+    [ "$state" = "-" ] && continue
+    local el="" icon color
+    if [ "$since" != "-" ] && { [ "$state" = "working" ] || [ "$state" = "waiting" ]; }; then
+      el=" $(fmt_elapsed $((now - since)))"
+    fi
+    case "$state" in
+      working) icon="⠿"; color='\033[38;2;249;226;175m' ;;
+      waiting) icon="!"; color='\033[5;38;2;250;179;135m' ;;
+      done)    icon="✓"; color='\033[38;2;166;227;161m' ;;
+      idle)    icon="✓"; color='\033[38;2;108;112;134m' ;;
+    esac
+    printf '%s\t%s\t%b %b\n  %b\0' \
+      "$sess" "$win_index" \
+      "${color}${icon}\033[0m" \
+      "\033[1;38;2;205;214;244m${win_name}\033[0m" \
+      "${color}${state}${el}\033[0m\033[38;2;108;112;134m · claude\033[0m"
+  done < <(collect)
+}
+
+# Recompute elapsed time for every working/waiting window and stash it in
+# @claude_elapsed, so window-status-format can reference the variable
+# directly. tmux's #() shell commands don't expand nested #{} (e.g.
+# #{window_id}), so the format string can't call out per-window at render
+# time; this is called instead on status-interval via a status-right hook.
+cmd_tick() {
+  local now
+  now=$(date +%s)
+  while IFS=$'\t' read -r sess win_index wid claude_pane state since win_name path_label; do
+    [ "$wid" = "-" ] && continue
+    if [ "$since" != "-" ] && { [ "$state" = "working" ] || [ "$state" = "waiting" ]; }; then
+      tmux set-window-option -t "$wid" @claude_elapsed "$(fmt_elapsed $((now - since)))"
+    fi
+  done < <(collect)
+  # No output: this runs as a side-effecting #() call embedded in status-right
+}
+
+# Per-state counts for status-right. Emits its own trailing separator so
+# nothing shows when no Claude windows exist.
+cmd_summary() {
+  local working=0 waiting=0 done_=0
+  while IFS=$'\t' read -r sess win_index win_id claude_pane state rest; do
+    case "$state" in
+      working) working=$((working + 1)) ;;
+      waiting) waiting=$((waiting + 1)) ;;
+      done)    done_=$((done_ + 1)) ;;
+    esac
+  done < <(collect)
+
+  local out=""
+  [ "$waiting" -gt 0 ] && out+="#[fg=#fab387]!${waiting} "
+  [ "$working" -gt 0 ] && out+="#[fg=#f9e2af]⠿${working} "
+  [ "$done_" -gt 0 ] && out+="#[fg=#a6e3a1]✓${done_} "
+  [ -n "$out" ] && printf '%s#[fg=#9399b2]┊ #[default]' "$out"
+}
+
+# Jump to the window encoded in a mouse status range name (ag_<session>:<index>)
+cmd_jump() {
+  local target="${1#ag_}"
+  local sess="${target%:*}"
+  local win="${target##*:}"
+  [ -z "$sess" ] || [ -z "$win" ] && exit 0
+  tmux switch-client -t "$sess"
+  tmux select-window -t "${sess}:${win}"
+}
+
+case "$1" in
+  list)      collect ;;
+  --fzf)     cmd_fzf ;;
+  --sidebar) cmd_sidebar ;;
+  --tick)    cmd_tick ;;
+  summary)   cmd_summary ;;
+  --jump)    cmd_jump "$2" ;;
+  *)
+    echo "usage: tmux-agents {list|--fzf|--sidebar|--tick|summary|--jump <range>}" >&2
+    exit 1
+    ;;
+esac

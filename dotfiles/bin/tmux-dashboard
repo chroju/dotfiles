@@ -1,0 +1,84 @@
+#!/bin/bash
+# Tiled dashboard window mirroring every Claude Code pane (read-only).
+# No args: toggle the dashboard window in the current session.
+# --mirror <pane_id>: internal; redraw loop that mirrors one pane.
+
+mirror() {
+  local target=$1
+  printf '\033[?25l'
+  trap 'printf "\033[?25h"' EXIT
+
+  local info rows buf line sess_win key
+  while :; do
+    info=$(tmux display-message -p -t "$target" '#{session_name}:#{window_index} #{window_name}' 2>/dev/null)
+    [ -z "$info" ] && break
+
+    rows=$(tput lines)
+    buf=$(tmux capture-pane -ep -t "$target" 2>/dev/null | tail -n $((rows - 1)))
+    printf '\033[H\033[1;7m %s \033[0m [Enter:jump q:close r:rebuild]\033[K\n' "$info"
+    while IFS= read -r line; do
+      printf '%s\033[K\n' "$line"
+    done <<< "$buf"
+    printf '\033[0J'
+
+    if read -rs -n1 -t 1 key; then
+      case "$key" in
+        "")
+          # Enter: jump to the real pane
+          sess_win=$(tmux display-message -p -t "$target" '#{session_name}:#{window_index}' 2>/dev/null)
+          [ -z "$sess_win" ] && break
+          tmux switch-client -t "${sess_win%%:*}"
+          tmux select-window -t "$sess_win"
+          tmux select-pane -t "$target"
+          ;;
+        q)
+          tmux kill-window
+          ;;
+        r)
+          # Rebuild: relaunch after this window is gone
+          tmux run-shell -b 'sleep 0.2; tmux-dashboard'
+          tmux kill-window
+          ;;
+      esac
+    fi
+  done
+}
+
+if [ "$1" = "--mirror" ]; then
+  [ -z "$2" ] && exit 1
+  mirror "$2"
+  exit 0
+fi
+
+[ -z "$TMUX" ] && { echo "Error: must be run inside tmux" >&2; exit 1; }
+
+# Toggle: select the existing dashboard window, or kill it when already there
+dash=$(tmux list-windows -F $'#{window_id}\t#{@dashboard}' | awk -F'\t' '$2 == "1" {print $1; exit}')
+if [ -n "$dash" ]; then
+  current=$(tmux display-message -p '#{window_id}')
+  if [ "$current" = "$dash" ]; then
+    tmux kill-window -t "$dash"
+  else
+    tmux select-window -t "$dash"
+  fi
+  exit 0
+fi
+
+panes=$(tmux-agents list | awk -F'\t' '$5 != "-" {print $4}' | head -9)
+if [ -z "$panes" ]; then
+  tmux display-message "tmux-dashboard: no Claude panes found"
+  exit 0
+fi
+
+win=""
+while read -r pane; do
+  if [ -z "$win" ]; then
+    win=$(tmux new-window -P -F '#{window_id}' -n dashboard "tmux-dashboard --mirror $pane")
+  else
+    tmux split-window -t "$win" "tmux-dashboard --mirror $pane"
+    tmux select-layout -t "$win" tiled
+  fi
+done <<< "$panes"
+
+tmux set-window-option -t "$win" @dashboard 1
+tmux select-layout -t "$win" tiled

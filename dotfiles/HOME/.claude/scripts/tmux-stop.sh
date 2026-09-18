@@ -6,9 +6,15 @@ WINDOW_ID=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}' 2>/dev/null)
 [ -z "$WINDOW_ID" ] && exit 0
 
 tmux set-window-option -t "$WINDOW_ID" @claude_working 0
+tmux set-window-option -t "$WINDOW_ID" @claude_since "$(date +%s)"
 
 # Skip setting done marker if this window is currently active
 ACTIVE_WINDOW_ID=$(tmux display-message -p '#{window_id}' 2>/dev/null)
-[ "$WINDOW_ID" = "$ACTIVE_WINDOW_ID" ] && exit 0
+if [ "$WINDOW_ID" != "$ACTIVE_WINDOW_ID" ]; then
+  tmux set-window-option -t "$WINDOW_ID" @claude_done 1
+fi
 
-tmux set-window-option -t "$WINDOW_ID" @claude_done 1
+# Redraw every client's status bar now instead of waiting for status-interval
+tmux list-clients -F '#{client_name}' 2>/dev/null | while read -r c; do
+  tmux refresh-client -S -t "$c"
+done

@@ -50,6 +50,18 @@ TITLE="CC [${SESSION}:${WINDOW_INDEX} ${WINDOW_NAME}]"
 #     same problem and additionally triggers Claude Code's external editor.)
 [ -n "$PANE_TTY" ] && [ -w "$PANE_TTY" ] && printf '\a' > "$PANE_TTY" 2>/dev/null &
 
+# Record when the waiting state started (shown as elapsed time by tmux-agents)
+WINDOW_ID=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}' 2>/dev/null)
+[ -n "$WINDOW_ID" ] && tmux set-window-option -t "$WINDOW_ID" @claude_since "$(date +%s)"
+
+# Redraw status bars once tmux has processed the BEL and set window_bell_flag
+(
+  sleep 0.3
+  tmux list-clients -F '#{client_name}' 2>/dev/null | while read -r c; do
+    tmux refresh-client -S -t "$c"
+  done
+) &
+
 # Desktop notification. Pass strings via argv so embedded quotes /
 # backslashes / newlines cannot break the AppleScript.
 osascript \

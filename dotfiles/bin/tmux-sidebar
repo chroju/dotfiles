@@ -1,0 +1,34 @@
+#!/bin/bash
+# Toggle a Herdr-style agent sidebar pane in the current window.
+# The list comes from `tmux-agents --sidebar` (NUL-delimited two-line entries).
+# --run: internal; the persistent fzf UI running inside the sidebar pane.
+
+if [ "$1" = "--run" ]; then
+  command -v fzf &>/dev/null || { echo "Error: fzf not found" >&2; exit 1; }
+  # Enter/double-click switches to the agent's window without closing the
+  # sidebar; the list reloads itself every 2 seconds.
+  exec fzf \
+    --ansi --read0 --layout=reverse --no-info --no-separator --gap=1 --gap-line='' \
+    --header='agents' --prompt='' --pointer='▌' \
+    --delimiter=$'\t' --with-nth=3.. \
+    --color='bg+:#313244,fg+:-1,hl:-1,hl+:-1,header:#6c7086,pointer:#f9e2af,gutter:-1' \
+    --bind='start:reload:tmux-agents --sidebar' \
+    --bind='load:reload-sync(sleep 2; tmux-agents --sidebar)+rebind(load)' \
+    --bind='enter:execute-silent(tmux switch-client -t {1}; tmux select-window -t {1}:{2})' \
+    --bind='double-click:execute-silent(tmux switch-client -t {1}; tmux select-window -t {1}:{2})' \
+    --bind='esc:ignore' < /dev/null
+fi
+
+[ -z "$TMUX" ] && { echo "Error: must be run inside tmux" >&2; exit 1; }
+
+# Toggle: kill an existing sidebar pane in this window, otherwise create one
+sidebar=$(tmux list-panes -F $'#{pane_id}\t#{@sidebar}' | awk -F'\t' '$2 == "1" {print $1; exit}')
+if [ -n "$sidebar" ]; then
+  tmux kill-pane -t "$sidebar"
+  exit 0
+fi
+
+current=$(tmux display-message -p '#{pane_id}')
+new=$(tmux split-window -hbf -l 28 -P -F '#{pane_id}' "tmux-sidebar --run")
+tmux set-option -p -t "$new" @sidebar 1
+tmux select-pane -t "$current"
