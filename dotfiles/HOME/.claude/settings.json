@@ -104,6 +104,15 @@
             "command": "FILE_PATH=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); [ -n \"$FILE_PATH\" ] || exit 0; REAL=$(readlink -f \"$FILE_PATH\" 2>/dev/null) || REAL=\"$(readlink -f \"$(dirname \"$FILE_PATH\")\" 2>/dev/null)/$(basename \"$FILE_PATH\")\"; case \"$REAL\" in *chroju/dotfiles/dotfiles/*) [ \"$REAL\" = \"$FILE_PATH\" ] || { echo \"ERROR: $FILE_PATH is a symlink into the dotfiles repository. Edit $REAL directly instead.\" >&2; exit 2; } ;; esac"
           }
         ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/agent-model-guard.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
