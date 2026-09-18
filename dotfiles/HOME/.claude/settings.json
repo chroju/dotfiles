@@ -233,7 +233,24 @@
     "command": "~/.claude/scripts/statusline-wrapper.sh",
     "padding": 0
   },
-  "enabledPlugins": {},
+  "enabledPlugins": {
+    "codex@openai-codex": true,
+    "hrns@chroju": true
+  },
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "chroju": {
+      "source": {
+        "source": "github",
+        "repo": "chroju/claude-plugins"
+      }
+    }
+  },
   "alwaysThinkingEnabled": false,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
