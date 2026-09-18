@@ -52,11 +52,11 @@
   algorithm = histogram
 
 [diff "ansible-vault"]
-  textconv = ansible-vault view
+  textconv = ansible-vault view --ask-vault-password
   cachetextconv = true
 
 [diff "ansible-app-vault"]
-  textconv = ansible-vault view --vault-password-file ~/.app_vault_password
+  textconv = ansible-vault view --ask-vault-password
   cachetextconv = true
 
 [alias]
