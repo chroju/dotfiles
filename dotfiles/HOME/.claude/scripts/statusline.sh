@@ -1,7 +1,8 @@
 #!/bin/bash
 # Claude Code statusLine script
 # Displays: owner/repo | ⎇ branch[*] | Ctx: X.X% | Model
-# (branch has a trailing * when running inside a non-main worktree)
+# (owner/repo is an OSC 8 hyperlink on the host, a raw URL inside devcontainers;
+#  branch has a trailing * when running inside a non-main worktree)
 
 BRANCH=$(git branch --show-current 2>/dev/null || echo "-")
 
@@ -18,10 +19,14 @@ input=$(cat)
 
 REMOTE_URL=$(git remote get-url origin 2>/dev/null)
 if [ -n "$REMOTE_URL" ]; then
-  DISPLAY_DIR=$(echo "$REMOTE_URL" | sed -E 's#^git@[^:]+:##; s#^https?://[^/]+/##; s#\.git$##')
+  REPO_PATH=$(echo "$REMOTE_URL" | sed -E 's#^git@[^:]+:##; s#^https?://[^/]+/##; s#\.git$##')
+  REPO_HOST=$(echo "$REMOTE_URL" | sed -E 's#^git@([^:]+):.*#\1#; s#^https?://([^/]+)/.*#\1#')
+  DISPLAY_DIR="${REPO_PATH}"
+  REPO_URL="https://${REPO_HOST}/${REPO_PATH}"
 else
   CWD=$(echo "$input" | jq -r '.cwd // ""')
   DISPLAY_DIR=$(echo "$CWD" | awk -F/ '{print $(NF-1)"/"$NF}')
+  REPO_URL=""
 fi
 
 CURRENT=$(echo "$input" | jq '
@@ -63,8 +68,18 @@ if [ -n "$DEVCONTAINER_IND" ]; then
   printf "%s%s%s" "${blue}" "⬡" "${sep}"
 fi
 
+# OSC 8 hyperlinks are stripped from statusLine output inside devcontainers
+# (works on the host), so fall back to showing the raw URL there.
+if [ -n "$REPO_URL" ] && [ -n "$DEVCONTAINER_IND" ]; then
+  LINKED_DIR="${REPO_URL}"
+elif [ -n "$REPO_URL" ]; then
+  LINKED_DIR="${C}]8;;${REPO_URL}${C}\\${DISPLAY_DIR}${C}]8;;${C}\\"
+else
+  LINKED_DIR="${DISPLAY_DIR}"
+fi
+
 printf "%s%s%s%s%s%s%s" \
-  "${yellow}" "${DISPLAY_DIR}" \
+  "${yellow}" "${LINKED_DIR}" \
   "${sep}" "${magenta}⎇ ${BRANCH}${WORKTREE_MARK}" \
   "${sep}" "${light}${CTX} | ${MODEL_COLOR}${MODEL_NAME}" \
   "${reset}"
