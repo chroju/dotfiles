@@ -5,9 +5,7 @@
     "ENABLE_TOOL_SEARCH": "true",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "true",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5[1m]",
-    "ANTHROPIC_MODEL": "opusplan"
+    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1"
   },
   "permissions": {
     "allow": [
@@ -55,7 +53,6 @@
     ],
     "deny": [
       "Bash(sudo:*)",
-      "Bash(curl:*)",
       "Bash(wget:*)",
       "Bash(rm -rf:*)",
       "Bash(rm -r:*)",
@@ -93,7 +90,6 @@
     ],
     "disableBypassPermissionsMode": "disable"
   },
-  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -252,6 +248,7 @@
     }
   },
   "alwaysThinkingEnabled": false,
+  "advisorModel": "fable",
   "awaySummaryEnabled": false,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
@@ -261,5 +258,6 @@
   "agentPushNotifEnabled": true,
   "autoMode": {
     "classifyAllShell": true
-  }
+  },
+  "model": "opus"
 }
