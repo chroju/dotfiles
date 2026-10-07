@@ -43,6 +43,7 @@ alias getscrapboxstilelink js "[" + document.title.replace(/[\\[\\]]/g, "\\\\$&"
 alias translate js let googleTranslateCallback = document.createElement('script'); googleTranslateCallback.innerHTML = "function googleTranslateElementInit(){ new google.translate.TranslateElement(); }"; document.body.insertBefore(googleTranslateCallback, document.body.firstChild); let googleTranslateScript = document.createElement('script'); googleTranslateScript.charset="UTF-8"; googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=&sl=&hl="; document.body.insertBefore(googleTranslateScript, document.body.firstChild);
 alias sidebarcurrent composite get_current_url | sidebaropen
 alias sidebargemini sidebaropen https://gemini.google.com
+alias savetollyn js window.open('https://llyn.chroju.dev/share?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'llyn','width=420,height=560,popup=yes')
 
 
 """"""""
