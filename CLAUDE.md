@@ -47,6 +47,10 @@ brew bundle dump --file=./Brewfile     # Update Brewfile with current packages
 - `dotfiles/gh-extensions/` - gh extensions installed via `setup_gh_extensions.sh`
   - `gh-repo-init` - Create a GitHub repo (or reuse an existing one) and apply a security baseline: Dependabot, read-only Actions token, secret scanning, default-branch ruleset. Idempotent
 
+- `dotfiles/claude-mods/` - Claude Code mods (function-hook plugins), loaded via `CLAUDE_CODE_PLUGIN_DIRS` in `.claude/settings.json`
+  - Not under `dotfiles/HOME/`: per-file symlinks resolve outside the plugin folder and the engine refuses them (path-traversal)
+  - `rate-limit-band` - Shows 5-hour / 7-day rate-limit usage as bars above the prompt
+
 - `dotfiles/raycast-scripts/` - Raycast extension scripts
 - `Brewfile` - Homebrew package definitions
 
