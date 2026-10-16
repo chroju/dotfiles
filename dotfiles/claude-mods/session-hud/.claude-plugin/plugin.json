@@ -1,0 +1,6 @@
+{
+  "name": "session-hud",
+  "version": "0.2.0",
+  "description": "One band above the prompt: rate limits, context, PR checks and Datadog auth",
+  "types": "./types/index.d.ts"
+}

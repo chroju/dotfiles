@@ -1,6 +1,0 @@
-{
-  "name": "rate-limit-band",
-  "version": "0.1.1",
-  "description": "Shows Claude rate-limit usage (5-hour / 7-day windows) above the prompt",
-  "types": "./types/index.d.ts"
-}

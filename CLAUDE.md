@@ -49,7 +49,7 @@ brew bundle dump --file=./Brewfile     # Update Brewfile with current packages
 
 - `dotfiles/claude-mods/` - Claude Code mods (function-hook plugins), loaded via `CLAUDE_CODE_PLUGIN_DIRS` in `.claude/settings.json`
   - Not under `dotfiles/HOME/`: per-file symlinks resolve outside the plugin folder and the engine refuses them (path-traversal)
-  - `rate-limit-band` - Shows 5-hour / 7-day rate-limit usage as bars above the prompt
+  - `session-hud` - One band above the prompt: rate limits, context, the current branch's PR checks (toast on change), and Datadog auth before `pup` runs
 
 - `dotfiles/raycast-scripts/` - Raycast extension scripts
 - `Brewfile` - Homebrew package definitions
