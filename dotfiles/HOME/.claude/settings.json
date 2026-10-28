@@ -47,7 +47,6 @@
       "mcp__claude_ai_Slack__slack_search_public_and_private",
       "mcp__claude_ai_Slack__slack_read_channel",
       "mcp__claude_ai_Slack__slack_read_thread",
-      "mcp__claude_ai_Gmail__gmail_search_messages",
       "mcp__claude_ai_Google_Calendar__list_events",
       "mcp__aws-terraform-mcp-server__SearchAwsProviderDocs",
       "mcp__aws-knowledge-mcp-server__aws___search_documentation"
@@ -98,7 +97,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "FILE_PATH=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); [ -n \"$FILE_PATH\" ] || exit 0; REAL=$(readlink -f \"$FILE_PATH\" 2>/dev/null) || REAL=\"$(readlink -f \"$(dirname \"$FILE_PATH\")\" 2>/dev/null)/$(basename \"$FILE_PATH\")\"; case \"$REAL\" in *chroju/dotfiles/dotfiles/*) [ \"$REAL\" = \"$FILE_PATH\" ] || { echo \"ERROR: $FILE_PATH is a symlink into the dotfiles repository. Edit $REAL directly instead.\" >&2; exit 2; } ;; esac"
+            "command": "FILE_PATH=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); [ -n \"$FILE_PATH\" ] || exit 0; REAL=$(readlink -f \"$FILE_PATH\" 2>/dev/null) || REAL=\"$(readlink -f \"$(dirname \"$FILE_PATH\")\" 2>/dev/null)/$(basename \"$FILE_PATH\")\"; case \"$REAL\" in *chroju/dotfiles/dotfiles/*) [ \"$REAL\" = \"$FILE_PATH\" ] || { echo \"ERROR: $FILE_PATH is a symlink into the dotfiles repository. Edit $REAL directly instead.\" >&2; exit 2; } ;; esac",
+            "onFailure": "block"
           }
         ]
       },
@@ -107,7 +107,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/scripts/agent-model-guard.sh"
+            "command": "~/.claude/scripts/agent-model-guard.sh",
+            "onFailure": "block"
           }
         ]
       }
@@ -249,6 +250,7 @@
     }
   },
   "alwaysThinkingEnabled": false,
+  "outputStyle": "Concise",
   "advisorModel": "fable",
   "awaySummaryEnabled": false,
   "plansDirectory": "./.local/claude/plans",

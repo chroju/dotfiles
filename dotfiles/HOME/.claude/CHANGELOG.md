@@ -5,7 +5,15 @@ Claude Code 自体の新機能・バグ修正は記録しない。
 
 `check-version.md` コマンドが `claude-code-version:` 行を読み取り、バージョン乖離を検出する。
 
-<!-- claude-code-version: 2.1.195 -->
+<!-- claude-code-version: 2.1.310 -->
+
+## 2.1.310 (2026-10-29)
+
+### 設定変更
+
+- `settings.json`: PreToolUse の2フック（dotfiles へのシンボリックリンク経由編集ガード、`agent-model-guard.sh`）に `"onFailure": "block"` を追加。フックが起動失敗・タイムアウトしたとき素通りせず操作をブロックする（v2.1.295 で導入）
+- `settings.json`: `"outputStyle": "Concise"` を追加。組み込みの Concise 出力スタイル（結論先行、前置き・実況・まとめを省く）を既定にする（v2.1.237 で導入）
+- `settings.json`: 現行の Gmail コネクタのツール名と一致しなくなった allow ルール `mcp__claude_ai_Gmail__gmail_search_messages` を削除
 
 ## 2.1.195 (2026-06-27)
 
