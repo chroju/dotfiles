@@ -14,3 +14,7 @@ dotfiles/HOME/.hammerspoon/secrets.lua
 
 # worktrees
 .local/
+
+# karabiner
+dotfiles/HOME/.config/karabiner/automatic_backups/
+dotfiles/HOME/.config/karabiner/assets/
