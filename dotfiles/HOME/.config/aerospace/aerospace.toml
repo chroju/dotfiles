@@ -68,6 +68,11 @@ on-window-detected = [
         if = 'test %{app-bundle-id} = com.anthropic.claudefordesktop || test %{app-bundle-id} = com.mitchellh.ghostty',
         run = 'move-node-to-workspace dev',
     },
+    # Firefox popups (sign-in, password managers) float on the focused workspace
+    {
+        if = 'test %{app-bundle-id} = org.mozilla.firefox && test %{window-title} ~= "OAuth|iCloud ?パスワード|Bitwarden|llyn"',
+        run = 'layout floating',
+    },
     {
         if = 'test %{app-bundle-id} = org.mozilla.firefox',
         run = 'move-node-to-workspace browse',
