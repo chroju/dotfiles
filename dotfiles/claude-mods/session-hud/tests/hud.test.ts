@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'claude-code/testing'
 import type { RenderElement } from 'claude-code'
 
-import { colorOf, describePr, pie, resetTime, summarizeChecks } from '../hooks/register'
+import { colorOf, describePr, fableLimit, pie, resetTime, summarizeChecks } from '../hooks/register'
 
 const BAND = {
   component: 'AbovePrompt',
@@ -16,9 +16,31 @@ const BAND = {
 } as const
 
 describe('formatting', () => {
-  test('pie steps by quarter and color by threshold', async () => {
+  test('pie steps by quarter', async () => {
     expect([0, 18, 50, 80, 95].map(pie).join('')).toBe('○◔◑◕●')
-    expect([10, 70, 90].map(colorOf)).toEqual(['green', 'yellow', 'red'])
+  })
+
+  test('color blends from green through yellow to red', async () => {
+    expect([0, 75, 100].map(colorOf)).toEqual(['#3fb950', '#d29922', '#f85149'])
+    expect(colorOf(37.5)).toBe('#89a939')
+    expect(colorOf(87.5)).toBe('#e57536')
+    expect([-5, 140].map(colorOf)).toEqual(['#3fb950', '#f85149'])
+  })
+
+  test('the Fable window is read from the usage limits', async () => {
+    const limits = [
+      { kind: 'weekly_scoped', percent: 80, resets_at: null, scope: { model: { display_name: 'Sonnet' } } },
+      { kind: 'session', percent: 99, resets_at: null, scope: { model: { display_name: 'Fable' } } },
+      { kind: 'weekly_scoped', percent: 12.5, resets_at: '2026-11-20T00:00:00Z', scope: { model: { display_name: 'Fable 5' } } },
+    ]
+    expect(fableLimit(JSON.stringify({ limits }))).toEqual({
+      kind: 'fable',
+      percentUsed: 12.5,
+      resetsAt: '2026-11-20T00:00:00Z',
+    })
+    expect(fableLimit(JSON.stringify({ limits: limits.slice(0, 2) }))).toBeUndefined()
+    expect(fableLimit(JSON.stringify({ five_hour: {} }))).toBeUndefined()
+    expect(fableLimit('<html>')).toBeUndefined()
   })
 
   test('checks are counted from both CheckRun and StatusContext', async () => {
@@ -104,4 +126,41 @@ test('the band follows session.measure and the PR checks', async ($, on) => {
   expect(svgs.length).toBe(2)
   expect((await desktop.find({ key: 'session-hud' }))?.text ?? '').not.toMatch(/[○◔◑◕●]/)
   await desktop.unmount()
+})
+
+test('the band shows the Fable window the usage endpoint reports', async ($, on) => {
+  const requests: { url: string; auth?: string }[] = []
+  on('ui.render', ($, e) => {
+    const { Box } = $.ui.resolve(e)
+    return h(Box, { key: 'engine' }) as RenderElement
+  })
+  on('process.run', () => ({
+    value: { exitCode: 1, stdout: '', stderr: '', isStdoutTruncated: false, isStderrTruncated: false },
+  }))
+  let now = 1_000
+  on('clock.now', () => ({ value: now }) as never)
+  on('session.authorize', () => ({ value: { handle: 'handle-1', kind: 'bearer' } }) as never)
+  on('http.fetch', (_, e) => {
+    requests.push({ url: e.url, auth: e.init?.auth })
+    const limits = [{ kind: 'weekly_scoped', percent: 42, resets_at: null, scope: { model: { display_name: 'Fable' } } }]
+    return { value: { status: 200, ok: true, headers: {}, text: JSON.stringify({ limits }) } } as never
+  })
+  on('turn.complete', (_, e) => ({ text: e.answer }))
+
+  const ui = await $.ui.mount({ plugin: 'session-hud', surface: 'terminal', ...BAND })
+  const turn = { reason: 'answer', answer: '', durationMs: 1, isAborted: false, turnId: 't' } as const
+  await $.turn.complete(turn)
+  let text = ''
+  for (let i = 0; i < 200 && !text.includes('fable'); i++) text = (await ui.find({ key: 'session-hud' }))?.text ?? ''
+  expect(text).toMatch(/fable.*◑.*42%/)
+  expect(requests[0]).toEqual({ url: 'https://api.anthropic.com/api/oauth/usage', auth: 'handle-1' })
+
+  // asked again within the interval: the endpoint is left alone
+  await $.turn.complete(turn)
+  expect(requests.length).toBe(1)
+  now += 5 * 60_000
+  await $.turn.complete(turn)
+  for (let i = 0; i < 200 && requests.length < 2; i++) await ui.find({ key: 'session-hud' })
+  expect(requests.length).toBe(2)
+  await ui.unmount()
 })

@@ -7,15 +7,30 @@ type CheckItem = { status?: string; conclusion?: string; state?: string }
 
 const PR_POLL_MS = 60_000
 const DATADOG_CHECK_MS = 5 * 60_000
+// The usage endpoint is rate limited: ask at most this often
+const FABLE_POLL_MS = 5 * 60_000
+const USAGE_URL = 'https://api.anthropic.com/api/oauth/usage'
 
 const view = atom({ plugin: 'session-hud', key: 'view' } as const, { limits: [], isDatadogOut: false } as HudView)
 
 const pad = (n: number) => String(n).padStart(2, '0')
+const pad16 = (n: number) => n.toString(16).padStart(2, '0')
 
 export const pie = (percent: number): string =>
   percent < 12.5 ? '○' : percent < 37.5 ? '◔' : percent < 62.5 ? '◑' : percent < 87.5 ? '◕' : '●'
 
-export const colorOf = (percent: number) => (percent >= 90 ? 'red' : percent >= 70 ? 'yellow' : 'green')
+const GREEN = [0x3f, 0xb9, 0x50]
+const YELLOW = [0xd2, 0x99, 0x22]
+const RED = [0xf8, 0x51, 0x49]
+const YELLOW_AT = 75
+
+// Green at 0, yellow at 75, red at 100, blended in between
+export const colorOf = (percent: number): string => {
+  const p = Math.min(Math.max(percent, 0), 100)
+  const [from, to, t] =
+    p < YELLOW_AT ? [GREEN, YELLOW, p / YELLOW_AT] : [YELLOW, RED, (p - YELLOW_AT) / (100 - YELLOW_AT)]
+  return `#${from.map((c, i) => pad16(Math.round(c + ((to[i] ?? c) - c) * t))).join('')}`
+}
 
 export const summarizeChecks = (items: readonly CheckItem[]): Checks => {
   const checks = { pass: 0, fail: 0, pending: 0 }
@@ -45,12 +60,10 @@ export const resetTime = (l: Limit): string | undefined => {
   return l.kind === 'five_hour' ? time : `${d.getMonth() + 1}/${d.getDate()} ${time}`
 }
 
-const SVG_COLORS: Record<string, string> = { green: '#3fb950', yellow: '#d29922', red: '#f85149' }
-
 // A pie drawn as SVG, for surfaces whose fonts draw ○◔◑◕● at different sizes
 export const pieSvg = (percent: number): string => {
   const p = Math.min(Math.max(percent, 0), 100) / 100
-  const fill = SVG_COLORS[colorOf(percent)]
+  const fill = colorOf(percent)
   const r = 6
   const c = 7
   const track = `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${fill}" stroke-width="1.5"/>`
@@ -66,10 +79,37 @@ export const pieSvg = (percent: number): string => {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">${track}${slice}</svg>`
 }
 
+type UsageLimit = {
+  kind?: string
+  percent?: number
+  resets_at?: string | null
+  scope?: { model?: { display_name?: string } | null } | null
+}
+
+// The weekly Fable window, which the engine's own rateLimits leave out:
+// read from the usage endpoint's `limits`, where /usage finds it
+export const fableLimit = (body: string): Limit | undefined => {
+  let limits: unknown
+  try {
+    limits = (JSON.parse(body) as { limits?: unknown }).limits
+  } catch {
+    return undefined
+  }
+  if (!Array.isArray(limits)) return undefined
+  const found = (limits as UsageLimit[]).find(
+    l =>
+      l?.kind === 'weekly_scoped' &&
+      typeof l.percent === 'number' &&
+      /^fable\b/i.test(l.scope?.model?.display_name ?? ''),
+  )
+  if (found === undefined) return undefined
+  return { kind: 'fable', percentUsed: found.percent as number, resetsAt: found.resets_at ?? undefined }
+}
+
 const label = (kind: string) => (kind === 'five_hour' ? '5h' : kind === 'seven_day' ? '7d' : kind)
 
 // Work that is not drawn: kept in the module, started over on a reload
-type Runtime = { poll?: { cancel: () => void }; datadogCheckedAt?: number }
+type Runtime = { poll?: { cancel: () => void }; datadogCheckedAt?: number; fableCheckedAt?: number }
 
 async function setUsage($: EngineInterface, limits: readonly SessionRateLimit[], percent?: number) {
   await update($, view, v => ({ ...v, limits: [...limits], contextPercent: percent }))
@@ -103,6 +143,26 @@ async function refreshPr($: EngineInterface, rt: Runtime) {
   }
 }
 
+async function refreshFable($: EngineInterface, rt: Runtime) {
+  try {
+    const now = await $.clock.now()
+    if (rt.fableCheckedAt !== undefined && now - rt.fableCheckedAt < FABLE_POLL_MS) return
+    rt.fableCheckedAt = now
+    const auth = await $.session.authorize()
+    if (auth === null) return
+    const r = await $.http.fetch(USAGE_URL, {
+      auth: auth.handle,
+      headers: { 'anthropic-beta': 'oauth-2025-04-20' },
+    })
+    // A refusal (rate limited, offline) keeps the last reading
+    if (!r.ok) return
+    const fable = fableLimit(r.text)
+    await update($, view, v => ({ ...v, fable }))
+  } catch {
+    // no credential to spend or no network: the band goes on without it
+  }
+}
+
 async function checkDatadog($: EngineInterface, rt: Runtime) {
   const now = await $.clock.now()
   const isOut = (await read($, view)).isDatadogOut
@@ -127,6 +187,7 @@ export const register: Register = on => {
     const usage = await $.session.usage()
     await setUsage($, usage.rateLimits, usage.context.percent)
     void refreshPr($, rt)
+    void refreshFable($, rt)
     return result
   })
 
@@ -138,6 +199,7 @@ export const register: Register = on => {
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
     void refreshPr($, rt)
+    void refreshFable($, rt)
     return result
   })
 
@@ -148,7 +210,7 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const v = await read($, view)
-    const hasAny = v.limits.length > 0 || v.contextPercent !== undefined || v.pr || v.isDatadogOut
+    const hasAny = v.limits.length > 0 || v.fable || v.contextPercent !== undefined || v.pr || v.isDatadogOut
     if (e.props.hasSurvey || !hasAny) return next(e)
 
     const elements = $.ui.resolve(e)
@@ -171,6 +233,7 @@ export const register: Register = on => {
     return (
       <Box key="session-hud" flexDirection="row" flexWrap="wrap" columnGap={3}>
         {v.limits.map(l => meter(`limit-${l.kind}`, label(l.kind), l.percentUsed, resetTime(l)))}
+        {v.fable ? meter('limit-fable', 'fable', v.fable.percentUsed, resetTime(v.fable)) : null}
         {v.contextPercent !== undefined ? meter('context', 'ctx', v.contextPercent) : null}
         {v.pr && pr ? (
           <Box key="pr">
