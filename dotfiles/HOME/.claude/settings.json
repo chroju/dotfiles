@@ -90,6 +90,7 @@
     ],
     "disableBypassPermissionsMode": "disable"
   },
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -233,7 +234,8 @@
   },
   "enabledPlugins": {
     "codex@openai-codex": true,
-    "hrns@chroju": true
+    "hrns@chroju": true,
+    "claude-security@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -249,18 +251,19 @@
       }
     }
   },
-  "alwaysThinkingEnabled": false,
   "outputStyle": "Concise",
+  "alwaysThinkingEnabled": false,
   "advisorModel": "fable",
   "awaySummaryEnabled": false,
   "plansDirectory": "./.local/claude/plans",
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "preferredNotifChannel": "terminal_bell",
+  "switchModelsOnFlag": false,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "autoMode": {
     "classifyAllShell": true
   },
-  "model": "opus"
+  "defaultMode": "auto"
 }
