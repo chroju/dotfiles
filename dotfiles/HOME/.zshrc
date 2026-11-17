@@ -264,3 +264,11 @@ eval "$(mise activate zsh)"
 
 # Added by Antigravity
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+cghq() {
+  local repo
+  repo=$(ghq list -p | fzf \
+    --delimiter / --with-nth -3.. \
+    --preview 'git -C {} log --oneline -5 2>/dev/null; echo; ls {}') || return
+  (cd "$repo" && claude --desktop)
+}
