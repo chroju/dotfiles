@@ -6,9 +6,21 @@ if not ok then secrets = {} end
 local WF_API = "https://workflowy.com/api/v1/nodes"
 local WF_KEY = secrets.workflowy_api_key or ""
 
+-- 登録先の固定リスト。key は Workflowy API の parent_id にそのまま渡せる固定値
+-- (先頭が既定の登録先)。リストにない登録先はパネルの自由入力欄で指定する
+local WF_DESTS = {
+  { key = "today",     label = "Today" },
+  { key = "tomorrow",  label = "Tomorrow" },
+  { key = "next_week", label = "Next week" },
+  { key = "inbox",     label = "Inbox" },
+}
+
 local FRAME_KEY = "captureFrame"
 
-local function postToWorkflowy(text, mode, done)
+-- parent は parent_id にそのまま渡す。固定値のほか、ノードのURL・ID・ショートカット名を受け付ける
+local function postToWorkflowy(text, mode, parent, done)
+  parent = (parent or ""):match("^%s*(.-)%s*$")
+  if parent == "" then parent = WF_DESTS[1].key end
   local lines = {}
   for line in (text .. "\n"):gmatch("(.-)\n") do
     table.insert(lines, line)
@@ -20,7 +32,7 @@ local function postToWorkflowy(text, mode, done)
     if note:match("^%s*$") then note = nil end
   end
   local body = hs.json.encode({
-    parent_id = "today",
+    parent_id = parent,
     name = name,
     note = note,
     layoutMode = mode,
@@ -85,6 +97,41 @@ local function buildHtml()
     color: rgba(240,240,250,0.95);
     border-bottom-color: rgba(150,145,240,0.85);
   }
+
+  /* 登録先 */
+  .dests {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 20px 0;
+  }
+  #dest {
+    -webkit-appearance: none;
+    background: rgba(140,130,255,0.08)
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='5'><path d='M0 0l4 5 4-5z' fill='%23aaa6e8'/></svg>")
+      no-repeat right 10px center;
+    border: 1px solid rgba(150,145,240,0.45);
+    border-radius: 8px;
+    color: rgba(240,240,250,0.95);
+    font-size: 12px; font-family: inherit;
+    padding: 5px 26px 5px 10px;
+    cursor: pointer;
+    outline: none;
+  }
+  .dests .kbd { color: rgba(235,235,245,0.24); font-size: 11px; }
+  #custom {
+    flex: 1; min-width: 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(235,235,245,0.14);
+    border-radius: 8px;
+    color: #ececf4;
+    caret-color: #8f8af0;
+    font-size: 12px; font-family: inherit;
+    padding: 5px 10px;
+    outline: none;
+  }
+  #custom:focus { border-color: rgba(150,145,240,0.55); }
+  #custom.invalid { border-color: rgba(240,110,110,0.75); }
+  #custom::placeholder { color: rgba(235,235,245,0.24); }
+  #custom[hidden] { display: none; }
 
   /* 全面入力欄 */
   textarea {
@@ -152,6 +199,12 @@ local function buildHtml()
         </button>
       </div>
     </div>
+    <div class="dests">
+      <select id="dest"></select>
+      <span class="kbd">⇧⇥</span>
+      <input id="custom" type="text" hidden spellcheck="false" autocomplete="off"
+             placeholder="URL / ID / ショートカット名">
+    </div>
     <textarea id="text" autofocus></textarea>
     <div class="bottom">
       <button class="cancel" onclick="cancel()">Cancel<span class="kbd">esc</span></button>
@@ -169,10 +222,47 @@ local function buildHtml()
     ta.focus();
   }
 
+  // ── 登録先(固定リスト + 自由入力)。選択は送信後も保持する ──
+  const DESTS = ]=] .. hs.json.encode(WF_DESTS) .. [=[;
+  const CUSTOM = DESTS.length;  // 固定リストの次の番号が自由入力
+  const destEl = document.getElementById("dest");
+  const customEl = document.getElementById("custom");
+  let dest = 0;
+
+  DESTS.map((d) => d.label).concat(["Other…"]).forEach((label, i) => {
+    const o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = label;
+    destEl.appendChild(o);
+  });
+  destEl.addEventListener("change", () => setDest(Number(destEl.value)));
+
+  function setDest(i) {
+    dest = i;
+    destEl.value = String(i);
+    customEl.hidden = i !== CUSTOM;
+    customEl.classList.remove("invalid");
+    if (i === CUSTOM) { customEl.focus(); customEl.select(); } else { ta.focus(); }
+  }
+  setDest(0);
+
+  customEl.addEventListener("input", () => customEl.classList.remove("invalid"));
+
   function send() {
     if (!ta.value.trim()) return;
+    let parent;
+    if (dest === CUSTOM) {
+      parent = customEl.value.trim();
+      if (!parent) {
+        customEl.classList.add("invalid");
+        customEl.focus();
+        return;
+      }
+    } else {
+      parent = DESTS[dest].key;
+    }
     webkit.messageHandlers.capture.postMessage({
-      action: "send", text: ta.value, mode: mode
+      action: "send", text: ta.value, mode: mode, parent: parent
     });
     ta.value = "";
   }
@@ -182,11 +272,19 @@ local function buildHtml()
   }
 
   document.addEventListener("keydown", (e) => {
+    const inCustom = document.activeElement === customEl;
     if (e.key === "Tab") {
       e.preventDefault();
-      setMode(mode === "bullets" ? "todo" : "bullets");
+      if (e.shiftKey) {
+        setDest((dest + 1) % (CUSTOM + 1));
+      } else if (inCustom) {
+        ta.focus();  // 自由入力欄からは本文へ移るだけ(モードは変えない)
+      } else {
+        setMode(mode === "bullets" ? "todo" : "bullets");
+      }
     }
     if (e.key === "Enter" && e.metaKey) { e.preventDefault(); send(); }
+    else if (e.key === "Enter" && inCustom && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); ta.focus(); }
     if (e.key === "Escape") {
       webkit.messageHandlers.capture.postMessage({ action: "close" });
     }
@@ -257,7 +355,7 @@ ucc:setCallback(function(msg)
   if body.action == "send" then
     saveFrame()
     if webview then webview:hide() end
-    postToWorkflowy(body.text, body.mode, function(status, respBody, _)
+    postToWorkflowy(body.text, body.mode, body.parent, function(status, respBody, _)
       if status < 200 or status >= 300 then
         hs.pasteboard.setContents(body.text)
         hs.notify.new({
