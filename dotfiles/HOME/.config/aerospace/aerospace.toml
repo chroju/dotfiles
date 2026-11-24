@@ -65,7 +65,7 @@ on-window-detected = [
         run = 'true',
     },
     {
-        if = 'test %{app-bundle-id} = com.anthropic.claudefordesktop || test %{app-bundle-id} = com.mitchellh.ghostty',
+        if = 'test %{app-bundle-id} = com.anthropic.claudefordesktop || test %{app-bundle-id} = com.mitchellh.ghostty || test %{app-bundle-id} = com.superlogical.rex',
         run = 'move-node-to-workspace dev',
     },
     # Firefox popups (sign-in, password managers) float on the focused workspace
