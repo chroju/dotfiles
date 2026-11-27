@@ -57,8 +57,12 @@ persistent-workspaces = ["dev", "browse", "com", "misc"]
 on-window-detected = [
     # Open in whichever workspace is focused
     {
-        if = 'test %{app-bundle-id} = com.apple.finder || test %{app-bundle-id} = md.obsidian',
+        if = 'test %{app-bundle-id} = com.apple.finder',
         run = 'layout floating',
+    },
+    {
+        if = 'test %{app-bundle-id} = md.obsidian',
+        run = 'layout tiling',
     },
     {
         if = 'test %{app-bundle-id} = com.raycast.macos',
@@ -180,7 +184,10 @@ gaps.outer.right =      0
 
     # Toggle Obsidian like a scratchpad: launch it if it has no window, send it to
     # the hidden workspace "0" if it is focused, otherwise bring it to the focused
-    # workspace. '--monitor all' because '--all' conflicts with filtering flags
+    # workspace at a quarter of the focused monitor's width (only takes effect in a
+    # horizontal tiles container). 'resize' takes pixels only, so the width is
+    # computed from NSScreen. '--monitor all' because '--all' conflicts with
+    # filtering flags
     alt-g = '''exec-and-forget
 app=md.obsidian
 wid=$(aerospace list-windows --monitor all --app-bundle-id $app --format '%{window-id}' | head -n1)
@@ -191,6 +198,9 @@ elif [ "$(aerospace list-windows --focused --format '%{app-bundle-id}')" = "$app
 else
   aerospace move-node-to-workspace --window-id $wid "$(aerospace list-workspaces --focused)"
   aerospace focus --window-id $wid
+  screen=$(aerospace list-monitors --focused --format '%{monitor-appkit-nsscreen-screens-id}')
+  width=$(osascript -l JavaScript -e "ObjC.import('AppKit'); Math.floor(\$.NSScreen.screens.objectAtIndex($screen - 1).frame.size.width / 4)")
+  [ -n "$width" ] && aerospace resize --window-id $wid width "$width"
 fi
 '''
 
